@@ -35,9 +35,19 @@ namespace BusinessLayer.Concrete
             _blogDal.Update(blog);
         }
 
+        public List<Blog> GetBlogListWithCategory()
+        {
+            return _blogDal.GetListWithCategory(); // todo Blog service de oluşturduğumuz metot ile EfblogDal da oluşturduğumuz metodu çağırıyoruz.
+        }
+
         public Blog GetByID(int id)
         {
             return _blogDal.Get(x => x.BlogId == id);
+        }
+
+        public List<Blog> GetBlogByID(int id)
+        {
+            return _blogDal.FilterList(x => x.BlogId == id);
         }
 
         public List<Blog> GetList()

@@ -1,0 +1,46 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+@{
+    Layout = null;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Kategori Adı</th>
+                <th scope="col">Açıklama</th>
+                <th scope="col">Durum</th>
+                <th scope="col">Detaylar</th>
+                <th scope="col">Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.CategoryId</th>
+                    <td>@item.CategoryName</td>
+                    <td>@item.CategoryDescription</td>
+                    <td>@item.CategoryStatus</td>
+                    <td><a href="#" class="btn btn-warning">Detaylar</a></td>
+                    <td><a href="#" class="btn btn-danger">Sil</a></td>
+                
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>

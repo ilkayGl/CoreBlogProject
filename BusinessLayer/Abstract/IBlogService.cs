@@ -18,5 +18,7 @@ namespace BusinessLayer.Abstract
         void BlogUpdateBL(Blog blog);
 
         Blog GetByID(int id);
+
+        List<Blog> GetBlogListWithCategory(); // todo Include için  list metodu oluşturuldu
     }
 }
