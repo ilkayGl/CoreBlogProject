@@ -4,15 +4,23 @@
 }
 
 <div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
-    <span>Hoşgeldin İlkay Gül</span>
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <span>Hoşgeldin <b> @User.Identity.Name</b></span>
+    }
+
     <span class="mx-lg-4 mx-md-2  mx-1">
-        <a href="login.html">
+        <a href="/Login/Index">
             <i class="fas fa-lock"></i> Sign In
         </a>
     </span>
     <span>
-        <a href="register.html">
+        <a href="/Register/Index">
             <i class="far fa-user"></i> Register
         </a>
+    </span>
+    <br />
+    <span>
+        <a asp-controller="Login" asp-action="GoogleLogOut"><i class="fas fa-lock"></i> Çıkış Yap</a>
     </span>
 </div>

@@ -1,0 +1,73 @@
+﻿@model EntityLayer.Concrete.Writer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <h3 class="tittle">Yazar Kayıt Sayfası</h3>
+        <div class="inner-sec">
+            <div class="login p-5 bg-light mx-auto mw-100">
+                <form asp-action="Index" , asp-controller="Register" method="post">
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Adınız Soyadınız</label>
+
+                            <input type="text" class="form-control" asp-for="WriterName" id="validationDefault01" placeholder="" required="">
+                            <span style="color:red" asp-validation-for="WriterName"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Mail Adresi</label>
+                            <input type="email" class="form-control" asp-for="WriterMail" id="validationDefault02" placeholder="" required="">
+                            <span style="color:red" asp-validation-for="WriterMail"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword1 mb-2">Şifre</label>
+                            <input type="password" class="form-control" asp-for="WriterPassword" id="password1" placeholder="" required="">
+                            <span style="color:red" asp-validation-for="WriterPassword"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword2 mb-2">Tekrar Şifreyi Giriniz</label>
+                            <input type="password" class="form-control" asp-for="WriterPassword" id="password2" placeholder="" required="">
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary submit mb-4">Kayıt Ol</button>
+                    <p>
+                        <input type="checkbox" checked />
+                        <a href="#" id="btn1">Tüm Şartları Okudum, Kabul Ediyorum</a>
+                    </p>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <script>
+        $('#btn1').click(function () {
+            swal("Sitemizde verdiğiniz mail adresi üzerinden bilgi ve haber e-postaları spam ölçüsüne varmadan gönderilmeye devam edicektir.");
+        });
+    </script>
+</section>
+
+<!--passwordMach-->
+<script>
+    window.onload = function () {
+        document.getElementById("password1").onchange = validatePassword;
+        document.getElementById("password2").onchange = validatePassword;
+    }
+
+    function validatePassword() {
+        var pass2 = document.getElementById("password2").value;
+        var pass1 = document.getElementById("password1").value;
+        if (pass1 != pass2)
+            document.getElementById("password2").setCustomValidity("Şifreniz Eşleşmiyor");
+        else
+            document.getElementById("password2").setCustomValidity('');
+    }
+</script>

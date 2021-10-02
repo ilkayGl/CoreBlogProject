@@ -11,6 +11,8 @@ namespace BusinessLayer.Abstract
     {
         List<Comment> GetList();
 
+        List<Comment> GetFilterList(int id);
+
         void CommentAddBL(Comment comment);
 
         void CommentDeleteBL(Comment comment);

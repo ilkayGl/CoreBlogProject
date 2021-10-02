@@ -18,7 +18,7 @@ namespace EntityLayer.Concrete
 
         public string CommentContent { get; set; }
 
-        public DateTime CommentDate { get; set; }
+        public DateTime CommentDate { get; set; } = DateTime.Now;
 
         public bool CommentStatus { get; set; }
 

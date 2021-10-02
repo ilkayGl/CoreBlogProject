@@ -40,6 +40,11 @@ namespace BusinessLayer.Concrete
             return _commentDal.Get(x => x.CommentId == id);
         }
 
+        public List<Comment> GetFilterList(int id)
+        {
+            return _commentDal.FilterList(x => x.BlogId == id);
+        }
+
         public List<Comment> GetList()
         {
             return _commentDal.List();

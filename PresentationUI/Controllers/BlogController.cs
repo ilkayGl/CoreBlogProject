@@ -21,6 +21,7 @@ namespace PresentationUI.Controllers
 
         public IActionResult BlogReadAll(int id)
         {
+            ViewBag.i = id; // todo =* ViewComment= BlogId ye göre yorum getirmek için id yi çekiyoruz BlogReadAll.cshtl Vc id olarak atıyoruz
             var values = bm.GetBlogByID(id);
             return View(values);
         }
