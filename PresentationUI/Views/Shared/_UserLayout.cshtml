@@ -23,6 +23,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/Thema/web/css/fontawesome-all.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
           rel="stylesheet">
+    
 </head>
 
 <body>
@@ -51,6 +52,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             });
         });
     </script>
+    <a href="#home" class="scroll" id="toTop" style="display: block;">
+        <span id="toTopHover" style="opacity: 1;"> </span>
+    </a>
     <!--// end-smoth-scrolling -->
 
     <script>
@@ -75,6 +79,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- //Custom-JavaScript-File-Links -->
     <script src="~/Thema/web/js/bootstrap.js"></script>
 
+    @await Component.InvokeAsync("Notyf")
 
 </body>
 

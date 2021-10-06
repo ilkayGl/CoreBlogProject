@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using AspNetCoreHero.ToastNotification;
 
 namespace PresentationUI
 {
@@ -27,6 +28,13 @@ namespace PresentationUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.BottomRight;
+            });
+
             services.AddControllersWithViews();
 
             services.AddAuthentication(options =>
@@ -53,10 +61,13 @@ namespace PresentationUI
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
+                //app.UseExceptionHandler("/Home/Error");
+
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/Page404", "?code={0}"); //ErrorPage
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -70,7 +81,7 @@ namespace PresentationUI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Blog}/{action=Index}/{id?}");
             });
         }
     }

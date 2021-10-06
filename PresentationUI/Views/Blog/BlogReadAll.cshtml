@@ -87,14 +87,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     }
 
                     <!--Comment List ViewComponent-->
-                    <cache expires-after="@TimeSpan.FromMinutes(5)"> <!--cache ile ön belleğe alıyoruz her istek neticesinde tekrar dan tetiklenmez-->
-                        <vc:comment-list-by-blog id="@ViewBag.i"></vc:comment-list-by-blog>
-                    </cache>
-
+                    <vc:comment-list-by-blog id="@ViewBag.i"></vc:comment-list-by-blog>
 
                     <!--BlogController=id çektik - CommentListByBlog:ViewComponent Yapısını kullandık(vc)-->
                     <!--Comment Add View-->
-                    @*<partial name="~/Views/Shared/PartialViews/CommentAddByBlog.cshtml" />*@
+                    <partial name="~/Views/Comment/PartialAddComment.cshtml" />
 
                 </div>
 
@@ -105,15 +102,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <div class="tech-btm">
                             <img src="~/Thema/web/images/banner1.jpg" class="img-fluid" alt="">
                         </div>
-                        <div class="tech-btm">
-                            <h4>Sign up to our newsletter</h4>
-                            <p>Pellentesque dui, non felis. Maecenas male </p>
-                            <form action="#" method="post">
-                                <input type="email" placeholder="Email" required="">
-                                <input type="submit" value="Subscribe">
-                            </form>
 
-                        </div>
+                        <!--SubscribeMail PartialView -->
+                        <partial name="~/Views/NewsLetter/SubscribeMail.cshtml" />
 
                         <!--Category List ViewComponent-->
                         <vc:category-list></vc:category-list>
@@ -176,38 +167,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!--/ start-smoth-scrolling -->
     <script src="~/Thema/web/js/move-top.js"></script>
     <script src="~/Thema/web/js/easing.js"></script>
-    <script>
-        jQuery(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
-                $('html,body').animate({
-                    scrollTop: $(this.hash).offset().top
-                }, 900);
-            });
-        });
-    </script>
-    <!--// end-smoth-scrolling -->
 
-    <script>
-        $(document).ready(function () {
-            /*
-                                    var defaults = {
-                                            containerID: 'toTop', // fading element id
-                                        containerHoverID: 'toTopHover', // fading element hover id
-                                        scrollSpeed: 1200,
-                                        easingType: 'linear'
-                                        };
-                                    */
 
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
-
-        });
-    </script>
-    <a href="#home" class="scroll" id="toTop" style="display: block;">
-        <span id="toTopHover" style="opacity: 1;"> </span>
-    </a>
 
     <!-- //Custom-JavaScript-File-Links -->
     <script src="~/Thema/web/js/bootstrap.js"></script>
