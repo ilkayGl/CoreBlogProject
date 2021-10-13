@@ -21,7 +21,6 @@ namespace PresentationUI.Controllers
             _notyf = notyf;
         }
 
-
         [HttpGet]
         public IActionResult SubscribeMail()
         {

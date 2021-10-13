@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PresentationUI.Controllers
 {
+    [AllowAnonymous]
     public class AboutController : Controller
     {
         AboutManager am = new AboutManager(new EfAboutDal());

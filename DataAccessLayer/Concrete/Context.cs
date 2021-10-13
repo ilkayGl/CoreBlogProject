@@ -10,10 +10,13 @@ namespace DataAccessLayer.Concrete
 {
     public class Context : DbContext
     {
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=.\\SQLEXPRESS;database=DbbCoreBlog; integrated security=true;");
         }
+
+        //public Context(DbContextOptions<Context> options) : base(options) { }
 
         public DbSet<About> Abouts { get; set; }
         public DbSet<Blog> Blogs { get; set; }
@@ -22,6 +25,6 @@ namespace DataAccessLayer.Concrete
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Writer> Writers { get; set; }
         public DbSet<NewsLetter> NewsLetters { get; set; }
-        
+
     }
 }

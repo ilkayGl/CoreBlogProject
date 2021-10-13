@@ -55,6 +55,11 @@ namespace BusinessLayer.Concrete
             return _blogDal.List();
         }
 
+        public List<Blog> GetLast3Blog()
+        {
+            return _blogDal.List().Take(3).ToList();
+        }
+
         public List<Blog> GetBlogListByWriter(int id)
         {
             return _blogDal.FilterList(x => x.WriterId == id);
