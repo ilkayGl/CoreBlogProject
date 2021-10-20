@@ -18,20 +18,7 @@ namespace BusinessLayer.Concrete
             _aboutDal = aboutDal;
         }
 
-        public void AboutAddBL(About about)
-        {
-            _aboutDal.Insert(about);
-        }
 
-        public void AboutDeleteBL(About about)
-        {
-            _aboutDal.Delete(about);
-        }
-
-        public void AboutUpdateBL(About about)
-        {
-            _aboutDal.Update(about);
-        }
 
         public About GetByID(int id)
         {
@@ -41,6 +28,21 @@ namespace BusinessLayer.Concrete
         public List<About> GetList()
         {
             return _aboutDal.List();
+        }
+
+        public void TAddBL(About t)
+        {
+            _aboutDal.Insert(t);
+        }
+
+        public void TDeleteBL(About t)
+        {
+            _aboutDal.Delete(t);
+        }
+
+        public void TUpdateBL(About t)
+        {
+            _aboutDal.Update(t);
         }
     }
 }

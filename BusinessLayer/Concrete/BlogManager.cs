@@ -20,19 +20,19 @@ namespace BusinessLayer.Concrete
 
 
 
-        public void BlogAddBL(Blog blog)
+        public void TAddBL(Blog t)
         {
-            _blogDal.Insert(blog);
+            _blogDal.Insert(t);
         }
 
-        public void BlogDeleteBL(Blog blog)
+        public void TDeleteBL(Blog t)
         {
-            _blogDal.Delete(blog);
+            _blogDal.Delete(t);
         }
 
-        public void BlogUpdateBL(Blog blog)
+        public void TUpdateBL(Blog t)
         {
-            _blogDal.Update(blog);
+            _blogDal.Update(t);
         }
 
         public List<Blog> GetBlogListWithCategory()
@@ -64,5 +64,7 @@ namespace BusinessLayer.Concrete
         {
             return _blogDal.FilterList(x => x.WriterId == id);
         }
+
+
     }
 }

@@ -20,22 +20,6 @@ namespace BusinessLayer.Concrete
 
 
 
-
-        public void ContactAddBL(Contact contact)
-        {
-            _contactDal.Insert(contact);
-        }
-
-        public void ContactDeleteBL(Contact contact)
-        {
-            _contactDal.Delete(contact);
-        }
-
-        public void ContactUpdateBL(Contact contact)
-        {
-            _contactDal.Update(contact);
-        }
-
         public Contact GetByID(int id)
         {
             return _contactDal.Get(x => x.ContactId == id);
@@ -44,6 +28,21 @@ namespace BusinessLayer.Concrete
         public List<Contact> GetList()
         {
             return _contactDal.List();
+        }
+
+        public void TAddBL(Contact t)
+        {
+            _contactDal.Insert(t);
+        }
+
+        public void TDeleteBL(Contact t)
+        {
+            _contactDal.Delete(t);
+        }
+
+        public void TUpdateBL(Contact t)
+        {
+            _contactDal.Update(t);
         }
     }
 }

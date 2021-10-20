@@ -35,7 +35,7 @@ namespace PresentationUI.Controllers
         {
             contact.ContactStatus = true;
             contact.ContactDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-            cm.ContactAddBL(contact);
+            cm.TAddBL(contact);
             _notyf.Success("Mesajınız Başarıyla İletildi.");
             return RedirectToAction("Index","Contact");
         }

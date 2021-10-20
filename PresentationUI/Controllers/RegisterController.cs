@@ -34,7 +34,7 @@ namespace PresentationUI.Controllers
             if (results.IsValid)
             {
                 writer.WriterStatus = true;
-                wm.WriterAddBL(writer);
+                wm.TAddBL(writer);
                 return RedirectToAction("Index", "Blog");
             }
             else

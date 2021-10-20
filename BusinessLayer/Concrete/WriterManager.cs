@@ -30,19 +30,20 @@ namespace BusinessLayer.Concrete
             return _writerDal.List();
         }
 
-        public void WriterAddBL(Writer writer)
+        public void TAddBL(Writer t)
         {
-            _writerDal.Insert(writer);
+            _writerDal.Insert(t);
         }
 
-        public void WriterDeleteBL(Writer writer)
+        public void TDeleteBL(Writer t)
         {
-            _writerDal.Delete(writer);
+            _writerDal.Delete(t);
         }
 
-        public void WriterUpdateBL(Writer writer)
+        public void TUpdateBL(Writer t)
         {
-            _writerDal.Update(writer);
+            _writerDal.Update(t);
         }
+
     }
 }

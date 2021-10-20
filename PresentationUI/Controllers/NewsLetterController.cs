@@ -31,7 +31,7 @@ namespace PresentationUI.Controllers
         public IActionResult SubscribeMail(NewsLetter newsLetter)
         {
             newsLetter.MailStatus = true;
-            nlm.NewsLatterAddBL(newsLetter);
+            nlm.TAddBL(newsLetter);
             _notyf.Success("Bültene Abone Oldunuz.");
             return RedirectToAction("Index", "Blog");
         }

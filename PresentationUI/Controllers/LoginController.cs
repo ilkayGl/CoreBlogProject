@@ -38,6 +38,7 @@ namespace PresentationUI.Controllers
                 ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
                 await HttpContext.SignInAsync(principal);
                 //HttpContext.Session.SetString("username", writer.WriterMail);
+
                 return RedirectToAction("WriterTest", "Writer");
             }
             else

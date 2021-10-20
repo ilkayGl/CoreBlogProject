@@ -38,7 +38,7 @@ namespace PresentationUI.Controllers
             comment.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             comment.CommentStatus = true;
             comment.BlogId = 1;
-            cm.CommentAddBL(comment);
+            cm.TAddBL(comment);
             _notyf.Success("Yorum Yaptınız");
             return RedirectToAction("BlogReadAll", "Blog", new { id = comment.BlogId });
         }

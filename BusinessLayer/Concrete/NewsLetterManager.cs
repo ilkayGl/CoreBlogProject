@@ -20,9 +20,30 @@ namespace BusinessLayer.Concrete
         }
 
 
-        public void NewsLatterAddBL(NewsLetter newsLetter)
+
+        public NewsLetter GetByID(int id)
         {
-            _newsLetterDal.Insert(newsLetter);
+            return _newsLetterDal.Get(x => x.MailId == id);
+        }
+
+        public List<NewsLetter> GetList()
+        {
+            return _newsLetterDal.List();
+        }
+
+        public void TAddBL(NewsLetter t)
+        {
+            _newsLetterDal.Insert(t);
+        }
+
+        public void TDeleteBL(NewsLetter t)
+        {
+            _newsLetterDal.Delete(t);
+        }
+
+        public void TUpdateBL(NewsLetter t)
+        {
+            _newsLetterDal.Update(t);
         }
     }
 }

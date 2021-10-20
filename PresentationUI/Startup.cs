@@ -17,6 +17,9 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity;
+using EntityLayer.Concrete;
+using PresentationUI.Helpers;
 
 namespace PresentationUI
 {
@@ -69,6 +72,7 @@ namespace PresentationUI
                 config.Position = NotyfPosition.BottomRight;
             });
 
+           // services.AddScoped<IUserClaimsPrincipalFactory<Writer>, ApplicationUserClaimsPrincipalFactory>();
 
         }
 

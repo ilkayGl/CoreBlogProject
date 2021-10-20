@@ -19,22 +19,6 @@ namespace BusinessLayer.Concrete
         }
 
 
-
-        public void CommentAddBL(Comment comment)
-        {
-            _commentDal.Insert(comment);
-        }
-
-        public void CommentDeleteBL(Comment comment)
-        {
-            _commentDal.Delete(comment);
-        }
-
-        public void CommentUpdateBL(Comment comment)
-        {
-            _commentDal.Update(comment);
-        }
-
         public Comment GetByID(int id)
         {
             return _commentDal.Get(x => x.CommentId == id);
@@ -48,6 +32,21 @@ namespace BusinessLayer.Concrete
         public List<Comment> GetList()
         {
             return _commentDal.List();
+        }
+
+        public void TAddBL(Comment t)
+        {
+            _commentDal.Insert(t);
+        }
+
+        public void TDeleteBL(Comment t)
+        {
+            _commentDal.Delete(t);
+        }
+
+        public void TUpdateBL(Comment t)
+        {
+            _commentDal.Update(t);
         }
     }
 }
