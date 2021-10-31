@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="~/Thema/writerUI/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/Thema/writerUI/assets/images/favicon.ico" />
+   
+
+
 </head>
 <body>
     <div class="container-scroller">
@@ -35,7 +38,6 @@
                     @RenderBody()
                 </div>
                 <!-- content-wrapper ends -->
-
                 <!-- partial:PartialsViews/_footer.html -->
                 <partial name="~/Views/Shared/PartialViews/WriterUIPartials/_Footer.cshtml" />
                 <!-- partial -->
@@ -60,5 +62,10 @@
     <script src="~/Thema/writerUI/assets/js/dashboard.js"></script>
     <script src="~/Thema/writerUI/assets/js/todolist.js"></script>
     <!-- End custom js for this page -->
+
+    <!--Toastr-->
+    @await Component.InvokeAsync("Notyf")
+
+
 </body>
 </html>

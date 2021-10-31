@@ -1,0 +1,49 @@
+﻿@model EntityLayer.Concrete.Blog
+@{
+    ViewData["Title"] = "BlogEdit";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<!-- include summernote css/js -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+
+<h1 class="mb-4">Blog Güncelleme Sayfası</h1>
+
+<form asp-action="BlogEdit" asp-controller="Blog" method="post" enctype="multipart/form-data" autocomplete="off" class="form-group">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="BlogId" />
+
+    <input type="text" asp-for="BlogTitle" placeholder="Blog Başlığı" class="form-control" style="width:27rem; border-radius:10px" />
+    <span class="badge badge-danger" asp-validation-for="BlogTitle"></span>
+
+    <input type="text" asp-for="BlogImage" placeholder="Blog Resmi" class="form-control" style="width:27rem; border-radius:10px" />
+
+    <select asp-for="CategoryId" asp-items="@((List<SelectListItem>)ViewBag.dgr1)" class="form-control" style="width:27rem; border-radius: 10px">
+        <option>Kategori Seçiniz...</option>
+    </select>
+    <span class="badge badge-danger" asp-validation-for="CategoryId"></span>
+
+    <input type="text" asp-for="BlogCreateDate" placeholder="Tarih" class="form-control" style="width:27rem; border-radius:10px" />
+
+    <textarea id="blogContent" asp-for="BlogContent" class="form-control"></textarea>
+    <span class="badge badge-danger"></span>
+
+
+    <button class="btn btn-gradient-warning mt-3">Güncelle</button>
+</form>
+
+
+
+
+
+
+<!--SummerNote JS-->
+<script>
+
+    $('#blogContent').summernote();
+
+</script>

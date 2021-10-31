@@ -10,6 +10,7 @@ using EntityLayer.Concrete;
 using DataAccessLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace PresentationUI.Controllers
 {
@@ -34,7 +35,7 @@ namespace PresentationUI.Controllers
                 {
                     new Claim(ClaimTypes.Name,writer.WriterMail),
                 };
-                var useridentity = new ClaimsIdentity(claims, "a");
+                var useridentity = new ClaimsIdentity(claims, "Blog");
                 ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
                 await HttpContext.SignInAsync(principal);
                 //HttpContext.Session.SetString("username", writer.WriterMail);
@@ -48,8 +49,6 @@ namespace PresentationUI.Controllers
 
         }
 
-
-
         public async Task GoogleLogin()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
@@ -57,6 +56,21 @@ namespace PresentationUI.Controllers
                 RedirectUri = Url.Action("WriterTest", "Writer")
             });
         }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities
+                .FirstOrDefault().Claims.Select(claim => new
+                {
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value
+                });
+            return Json(claims);
+        }
+
 
         public async Task<IActionResult> GoogleLogOut()
         {

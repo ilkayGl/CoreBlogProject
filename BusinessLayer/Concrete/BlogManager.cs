@@ -65,6 +65,10 @@ namespace BusinessLayer.Concrete
             return _blogDal.FilterList(x => x.WriterId == id);
         }
 
+        public List<Blog> GetListWithCategoryByWriterBm(int id)
+        {
+            return _blogDal.GetListWithCategoryByWriter(id);
+        }
 
     }
 }

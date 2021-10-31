@@ -10,5 +10,6 @@ namespace DataAccessLayer.Abstract
     public interface IBlogDal : IRepository<Blog>
     {
         List<Blog> GetListWithCategory(); // todo Blogları categori ile birlikte getir. Bloga özel olduğu için Burada tanımlanır
+        List<Blog> GetListWithCategoryByWriter(int id); //incule metodu ile categori name getirdik
     }
 }

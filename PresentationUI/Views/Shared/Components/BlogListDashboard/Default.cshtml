@@ -1,0 +1,60 @@
+﻿@using EntityLayer.Concrete
+@model List<Blog>
+
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Son 10 Blog</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Yazar</th>
+                                <th>Başlık</th>
+                                <th>Kategori</th>
+                                <th>Durum</th>
+                                <th>Tarih</th>
+                                <th>Detaylar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@item.Writer.WriterImage" class="mr-2" alt="image"> @item.Writer.WriterName
+                                    </td>
+
+                                    <td> @item.BlogTitle </td>
+
+                                    <td> @item.Category.CategoryName </td>
+
+                                    <td>
+                                        <label class="badge badge-gradient-success">
+                                            @if (item.BlogStatus == true)
+                                            {
+                                                <span class="badge badge-gradient-success">Aktif</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-gradient-secondary">Pasif</span>
+                                            }
+
+                                        </label>
+                                    </td>
+
+                                    <td> @(((DateTime)item.BlogCreateDate).ToString("dd-MMMM-yyyy"))</td>
+
+                                    <td><a class="btn btn-gradient-dark" href="/Blog/BlogReadAll/@item.BlogId">Detaylar</a></td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

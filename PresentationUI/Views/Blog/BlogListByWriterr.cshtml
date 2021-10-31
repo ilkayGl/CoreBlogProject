@@ -1,0 +1,73 @@
+﻿@using EntityLayer.Concrete
+@model List<Blog>
+@{
+    ViewData["Title"] = "BlogListByWriterr";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+@{
+    string checkStatus = "";
+    string statusColor = "";
+}
+
+<h1 class="mb-3">Yazarın Blogları</h1>
+<table class="table table-bordered table-hover .table-striped">
+    <tr>
+        <th>#</th>
+        <th>Blog Başlığı</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Kategori</th>
+        <th>Durum</th>
+        <th>Sil</th>
+        <th>Düzenle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.BlogId</th>
+            <td>@item.BlogTitle</td>
+            <td>@item.BlogCreateDate.ToString("ddd, dd MMM yyyy")</td>
+            <td><span class="badge badge-gradient-dark"> @item.Category.CategoryName</span></td>
+            <td>
+                @switch (item.BlogStatus)
+                {
+                    case true:
+                        statusColor = "badge badge-gradient-danger";
+                        break;
+                    case false:
+                        statusColor = "badge badge-gradient-success";
+                        break;
+                }
+                @if (item.BlogStatus == true)
+                {
+                    <span class="badge badge-gradient-success">Aktif</span>
+                }
+                else
+                {
+                    <span class="badge badge-gradient-secondary">Pasif</span>
+                }
+            </td>
+            <td>
+                <a class="btn btn-@statusColor" href="/Blog/BlogDelete/@item.BlogId">
+
+                    @if (item.BlogStatus == true)
+                    {
+                        statusColor = "badge badge-gradient-danger";
+                        checkStatus = "Sil";
+
+                    }
+                    else
+                    {
+                        statusColor = "badge badge-gradient-success";
+                        checkStatus = "Ekle";
+                    }
+                    @checkStatus
+
+                </a>
+            </td>
+            <td><a href="/Blog/BlogEdit/@item.BlogId" class="btn btn-gradient-warning">Düzenle</a></td>
+        </tr>
+    }
+</table>
+<a href="/Blog/BlogAdd/" class="btn btn-gradient-primary">Yeni Blog Oluştur</a>
+

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace PresentationUI.Controllers
 {
-    
+    [AllowAnonymous]
     public class WriterController : Controller
     {
         WriterManager wm = new WriterManager(new EfWriterDal());
+
         public IActionResult Index()
         {
             return View();
