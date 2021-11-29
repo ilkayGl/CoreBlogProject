@@ -12,5 +12,7 @@ namespace BusinessLayer.Abstract
         List<Blog> GetBlogListWithCategory(); // todo Include için  list metodu oluşturuldu categoriye göre listele
 
         List<Blog> GetBlogListByWriter(int id);
+
+        List<Blog> GetBlogIdListWriter(int id); //include metodu blog ile id ye göre yazar adını aldık
     }
 }

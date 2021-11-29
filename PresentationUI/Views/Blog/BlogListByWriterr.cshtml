@@ -10,64 +10,89 @@
     string statusColor = "";
 }
 
-<h1 class="mb-3">Yazarın Blogları</h1>
-<table class="table table-bordered table-hover .table-striped">
-    <tr>
-        <th>#</th>
-        <th>Blog Başlığı</th>
-        <th>Oluşturma Tarihi</th>
-        <th>Kategori</th>
-        <th>Durum</th>
-        <th>Sil</th>
-        <th>Düzenle</th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <th>@item.BlogId</th>
-            <td>@item.BlogTitle</td>
-            <td>@item.BlogCreateDate.ToString("ddd, dd MMM yyyy")</td>
-            <td><span class="badge badge-gradient-dark"> @item.Category.CategoryName</span></td>
-            <td>
-                @switch (item.BlogStatus)
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title mb-3">Yazarın Blogları</h1>
+            <table id="tbl1" class="table table-bordered table-hover .table-striped">
+                <thead id="tbl1">
+                    <tr>
+                        <th>Blog Başlığı</th>
+                        <th>Oluşturma Tarihi</th>
+                        <th>Kategori</th>
+                        <th>Durum</th>
+                        <th>Sil</th>
+                        <th>Düzenle</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
                 {
-                    case true:
-                        statusColor = "badge badge-gradient-danger";
-                        break;
-                    case false:
-                        statusColor = "badge badge-gradient-success";
-                        break;
+                    <tr>
+                        <td>@item.BlogTitle</td>
+                        <td>@item.BlogCreateDate.ToString("ddd, dd MMM yyyy")</td>
+                        <td><span class="badge badge-gradient-dark"> @item.Category.CategoryName</span></td>
+                        <td>
+                            @switch (item.BlogStatus)
+                            {
+                                case true:
+                                    statusColor = "badge badge-gradient-danger";
+                                    break;
+                                case false:
+                                    statusColor = "badge badge-gradient-success";
+                                    break;
+                            }
+                            @if (item.BlogStatus == true)
+                            {
+                                <span class="badge badge-gradient-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-gradient-secondary">Pasif</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-@statusColor" href="/Blog/BlogDelete/@item.BlogId">
+
+                                @if (item.BlogStatus == true)
+                                {
+                                    statusColor = "badge badge-gradient-danger";
+                                    checkStatus = "Sil";
+
+                                }
+                                else
+                                {
+                                    statusColor = "badge badge-gradient-success";
+                                    checkStatus = "Ekle";
+                                }
+                                @checkStatus
+
+                            </a>
+                        </td>
+                        <td><a href="/Blog/BlogEdit/@item.BlogId" class="btn btn-gradient-warning">Düzenle</a></td>
+                    </tr>
                 }
-                @if (item.BlogStatus == true)
-                {
-                    <span class="badge badge-gradient-success">Aktif</span>
-                }
-                else
-                {
-                    <span class="badge badge-gradient-secondary">Pasif</span>
-                }
-            </td>
-            <td>
-                <a class="btn btn-@statusColor" href="/Blog/BlogDelete/@item.BlogId">
+            </table>
+            <a href="/Blog/BlogAdd/" class="btn btn-gradient-primary">Yeni Blog Oluştur</a>
+        </div>
+    </div>
+</div>
 
-                    @if (item.BlogStatus == true)
-                    {
-                        statusColor = "badge badge-gradient-danger";
-                        checkStatus = "Sil";
 
-                    }
-                    else
-                    {
-                        statusColor = "badge badge-gradient-success";
-                        checkStatus = "Ekle";
-                    }
-                    @checkStatus
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
 
-                </a>
-            </td>
-            <td><a href="/Blog/BlogEdit/@item.BlogId" class="btn btn-gradient-warning">Düzenle</a></td>
-        </tr>
-    }
-</table>
-<a href="/Blog/BlogAdd/" class="btn btn-gradient-primary">Yeni Blog Oluştur</a>
 
+
+<script>
+    $('#tbl1').dataTable({
+        "language": {
+
+            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+
+        }
+    });
+</script>

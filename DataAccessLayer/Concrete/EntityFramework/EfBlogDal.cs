@@ -12,10 +12,17 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EfBlogDal : GenericRepository<Blog>, IBlogDal
     {
+        public List<Blog> GetBlogIdListWriter(int id)
+        {
+            using var c = new Context();
+            return c.Blogs.Include(x => x.Writer).Where(x => x.BlogId == id).ToList(); //include metodu ile blog id ye göre yazar adını aldık
+        }
+
         public List<Blog> GetListWithCategory()
         {
             using var c = new Context();
-            return c.Blogs.Include(x => x.Category).Include(y => y.Writer).Where(x => x.BlogStatus == true).ToList(); // todo Kategoriye ait değerleri (true) blog içerisine getirir.
+            return c.Blogs.Include(x => x.Category).Include(y => y.Writer).OrderByDescending(d => d.BlogCreateDate).Where(x => x.BlogStatus == true).ToList(); // todo Kategoriye ait değerleri (true) blog içerisine son yazılana (tarihe) göre  getirir.
+
         }
 
         public List<Blog> GetListWithCategoryByWriter(int id)

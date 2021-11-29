@@ -10,32 +10,49 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 
-<h1 class="mb-4">Blog Güncelleme Sayfası</h1>
-
-<form asp-action="BlogEdit" asp-controller="Blog" method="post" enctype="multipart/form-data" autocomplete="off" class="form-group">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <input type="hidden" asp-for="BlogId" />
-
-    <input type="text" asp-for="BlogTitle" placeholder="Blog Başlığı" class="form-control" style="width:27rem; border-radius:10px" />
-    <span class="badge badge-danger" asp-validation-for="BlogTitle"></span>
-
-    <input type="text" asp-for="BlogImage" placeholder="Blog Resmi" class="form-control" style="width:27rem; border-radius:10px" />
-
-    <select asp-for="CategoryId" asp-items="@((List<SelectListItem>)ViewBag.dgr1)" class="form-control" style="width:27rem; border-radius: 10px">
-        <option>Kategori Seçiniz...</option>
-    </select>
-    <span class="badge badge-danger" asp-validation-for="CategoryId"></span>
-
-    <input type="text" asp-for="BlogCreateDate" placeholder="Tarih" class="form-control" style="width:27rem; border-radius:10px" />
-
-    <textarea id="blogContent" asp-for="BlogContent" class="form-control"></textarea>
-    <span class="badge badge-danger"></span>
 
 
-    <button class="btn btn-gradient-warning mt-3">Güncelle</button>
-</form>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-4"> Blog Güncelle</h2>
+            <form class="forms-sample" asp-action="BlogEdit" asp-controller="Blog" method="post" autocomplete="off" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="BlogId" />
+                <div class="form-group">
+                    <label for="exampleInputName1">Blog Başlığı</label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="BlogTitle" placeholder="Blog Başlığı">
+                    <span class="badge badge-danger" asp-validation-for="BlogTitle"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" asp-for="BlogCreateDate" placeholder="Tarih" class="form-control" border-radius:10px" />
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Kategoriler</label>
+                    <select asp-for="CategoryId" asp-items="@((List<SelectListItem>)ViewBag.dgr1)" class="form-control" border-radius: 10px">
+                        <option>Kategori Seçiniz...</option>
+                    </select>
+                    <span class="badge badge-danger" asp-validation-for="CategoryId"></span>
+                </div>
+                @*<div class="form-group">
+                        <label>Görsel</label>
+                        <input type="file" asp-for="BlogImage">
+                    </div>*@
+                <div class="form-group">
+                    <input type="text" asp-for="BlogImage" placeholder="Blog Resmi" class="form-control" border-radius:10px" />
+                </div>
 
+                <div class="form-group">
+                    <span class="badge badge-danger"></span>
+                    <textarea id="blogContent" asp-for="BlogContent"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-success mr-2">Güncelle</button>
+                <button class="btn btn-light" type="reset">İptal Et</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
@@ -47,3 +64,5 @@
     $('#blogContent').summernote();
 
 </script>
+
+

@@ -50,6 +50,12 @@ namespace BusinessLayer.Concrete
             return _blogDal.FilterList(x => x.BlogId == id);
         }
 
+        public List<Blog> GetBlogIdListWriter(int id)
+        {
+            return _blogDal.GetBlogIdListWriter(id); //include metodu ile blog id ye göre yazar adını aldık
+        }
+
+
         public List<Blog> GetList()
         {
             return _blogDal.List();
@@ -57,17 +63,17 @@ namespace BusinessLayer.Concrete
 
         public List<Blog> GetLast3Blog()
         {
-            return _blogDal.List().Take(3).ToList();
+            return _blogDal.List().OrderByDescending(d => d.BlogCreateDate).Where(x => x.BlogStatus == true).Take(3).ToList();
         }
 
         public List<Blog> GetBlogListByWriter(int id)
         {
-            return _blogDal.FilterList(x => x.WriterId == id);
+            return _blogDal.FilterList(x => x.WriterId == id).OrderByDescending(d => d.BlogCreateDate).Where(y => y.BlogStatus == true).Take(3).ToList();
         }
 
         public List<Blog> GetListWithCategoryByWriterBm(int id)
         {
-            return _blogDal.GetListWithCategoryByWriter(id);
+            return _blogDal.GetListWithCategoryByWriter(id).OrderByDescending(d => d.BlogCreateDate).ToList();
         }
 
     }

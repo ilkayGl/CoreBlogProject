@@ -1,0 +1,43 @@
+﻿@model PresentationUI.Models.AddProfileImage
+@{
+    ViewData["Title"] = "WriterAdd";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-4">Yeni Yazar Ekle</h2>
+            <form class="forms-sample" asp-action="WriterAdd" asp-controller="Writer" method="post" autocomplete="off" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="exampleInputName1">Yazarın Adı/Soyadı</label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="WriterName" placeholder="Yazarın Adı/Soyadı">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Mail Adresi</label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="WriterMail" placeholder="Mail">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Password</label>
+                    <input type="text" class="form-control" id="exampleInputPassword4" asp-for="WriterPassword" placeholder="Password">
+                </div>
+                @*<div class="form-group">
+                        <label>Yazar Görsel</label>
+                        <input type="file" asp-for="WriterImage">
+                    </div>*@
+                <div class=" form-group">
+                    <label for="formFile" class="form-label">Yazar Görsel</label>
+                    <input class="form-control" type="file" asp-for="WriterImage" id="formFile">
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Hakkımda</label>
+                    <textarea class="form-control" id="exampleTextarea1" asp-for="WriterAbout" rows="10"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary mr-2">Ekle</button>
+                <button class="btn btn-light" type="reset">İptal Et</button>
+            </form>
+        </div>
+    </div>
+</div>
+

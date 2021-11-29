@@ -1,180 +1,150 @@
 ﻿@model IEnumerable<EntityLayer.Concrete.Blog>
 
 
-@{
-    ViewData["Title"] = "BlogReadAll";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
-}
+@{ ViewData["Title"] = "BlogReadAll";
+    Layout = "~/Views/Shared/_UserLayout.cshtml"; }
 
-
-
-<!DOCTYPE html>
-<html lang="tr">
 
 <head>
-    <title>Weblog a Blogging Category Bootstrap responsive WebTemplate | Single :: w3layouts</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <meta name="keywords" content="Weblog a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script src="https://kit.fontawesome.com/709f5aa806.js" crossorigin="anonymous"></script>
 
-    <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-
-        function hideURLbar() {
-            window.scrollTo(0, 1);
+    <style>
+        .img1 {
+            padding: 0;
+            max-height: 100%;
+            min-width: 100%;
         }
-    </script>
-    <link href="~/Thema/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="~/Thema/css/single.css">
-    <link href="~/Thema/web/css/style.css" rel='stylesheet' type='text/css' />
-    <link href="~/Thema/web/css/fontawesome-all.css" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
-          rel="stylesheet">
+    </style>
+
+
 </head>
 
-<body>
 
-
-
-    <section class="banner-bottom">
-        <!--/blog-->
-        <div class="container">
-            <div class="row">
-                <!--left-->
-                <div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
-                    @foreach (var item in Model)
-                    {
-                        <div class="blog-grid-top">
-                            <div class="b-grid-top">
-                                <div class="blog_info_left_grid">
-                                    <a>
-                                        <img src="@item.BlogImage" class="img-fluid" alt="">
-                                    </a>
-                                </div>
-                                <div class="blog-info-middle">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="far fa-calendar-alt"></i> @item.BlogCreateDate.ToString("ddd, dd MMM yyyy")
-                                            </a>
-                                        </li>
-                                        <li class="mx-2">
-                                            <a href="#">
-                                                <i class="far fa-thumbs-up"></i> 201 Likes
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="far fa-comment"></i>Yorum
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </div>
+<section class="banner-bottom">
+    <!--/blog-->
+    <div class="container">
+        <div class="row">
+            <!--left-->
+            <div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
+                @foreach (var item in Model)
+                {
+                    <div class="blog-grid-top">
+                        <div class="b-grid-top">
+                            <div class="blog_info_left_grid">
+                                <a style="width:40rem; height:40rem">
+                                    <img src="@item.BlogImage" alt="image" class="img1 img-fluid" />
+                                </a>
                             </div>
+                            <div class="blog-info-middle">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="far fa-calendar-alt"></i> @item.BlogCreateDate.ToString("ddd, dd MMM yyyy")
+                                        </a>
+                                    </li>
 
-                            <h3>
-                                <a href="single.html">@item.BlogTitle </a>
-                            </h3>
-                            <p>
-                                @item.BlogContent
-                            </p>
+                                    <li class="mx-2">
+                                        <a href="#">
+                                            <i class="far fa-thumbs-up"></i> 201 Beğeni
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="far fa-comment"></i> Yorum
+                                        </a>
+                                    </li>
+                                    <li class="ml-2">
+                                        <a href="#">
+                                            <i class="fas fa-feather-alt"></i> @item.Writer.WriterName
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
 
                         </div>
-                    }
 
-                    <!--Comment List ViewComponent-->
-                    <vc:comment-list-by-blog id="@ViewBag.i"></vc:comment-list-by-blog>
+                        <h3>
+                            <a href="single.html">@item.BlogTitle </a>
+                        </h3>
+                        <p>
+                            @Html.Raw(item.BlogContent)
+                        </p>
 
-                    <!--BlogController=id çektik - CommentListByBlog:ViewComponent Yapısını kullandık(vc)-->
-                    <!--Comment Add View-->
-                    <partial name="~/Views/Comment/PartialAddComment.cshtml" />
+                    </div>
+                }
 
-                </div>
+                <!--Comment List ViewComponent-->
+                <vc:comment-list-by-blog id="@ViewBag.i"></vc:comment-list-by-blog>
+                <!--BlogController=id çektik - CommentListByBlog:ViewComponent Yapısını kullandık(vc)-->
+                <!--Comment Add View-->
+                <partial name="~/Views/Comment/PartialAddComment.cshtml" />
 
-                <!--//left-->
-                <!--right-->
-                <aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
-                    <div class="right-blog-info text-left">
-                        <div class="tech-btm">
-                            <img src="~/Thema/web/images/banner1.jpg" class="img-fluid" alt="">
-                        </div>
 
-                        <!--SubscribeMail PartialView -->
-                        <partial name="~/Views/NewsLetter/SubscribeMail.cshtml" />
+            </div>
 
-                        <!--Category List ViewComponent-->
-                        <vc:category-list></vc:category-list>
-
-                        <!--Writer Last Blog  ViewComponent-->
-                        <vc:writer-last-blog></vc:writer-last-blog>
-
-                        <div class="single-gd my-5 tech-btm">
-                            <h4>Our Progress</h4>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="single-gd tech-btm">
-                            <h4>Son Eklenen Post</h4>
-                            <div class="blog-grids">
-                                <div class="blog-grid-left">
-                                    <a href="single.html">
-                                        <img src="~/Thema/web/images/b1.jpg" class="img-fluid" alt="">
-                                    </a>
-                                </div>
-                                <div class="blog-grid-right">
-
-                                    <h5>
-                                        <a href="single.html">Pellentesque dui, non felis. Maecenas male</a>
-                                    </h5>
-                                </div>
-                                <div class="clearfix"> </div>
-                            </div>
-                        </div>
+            <!--//left-->
+            <!--right-->
+            <aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
+                <div class="right-blog-info text-left">
+                    <div class="tech-btm">
+                        <img src="~/Thema/web/images/banner1.jpg" class="img-fluid" alt="">
                     </div>
 
-                </aside>
-                <!--//right-->
-            </div>
+                    <!--SubscribeMail PartialView -->
+                    <partial name="~/Views/NewsLetter/SubscribeMail.cshtml" />
+
+                    <!--Category List ViewComponent-->
+                    <vc:category-list></vc:category-list>
+
+                    <!--Writer Last Blog  ViewComponent-->
+                    <vc:writer-last-blog></vc:writer-last-blog>
+
+                    <div class="single-gd my-5 tech-btm">
+                        <h4>Our Progress</h4>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0"
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0"
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+                                 aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="single-gd tech-btm">
+                        <h4>Son Eklenen Post</h4>
+                        <div class="blog-grids">
+                            <div class="blog-grid-left">
+                                <a href="#">
+                                    <img src="~/Thema/web/images/b1.jpg" class="img-fluid" alt="">
+                                </a>
+                            </div>
+                            <div class="blog-grid-right">
+
+                                <h5>
+                                    <a href="#">Pellentesque dui, non felis. Maecenas male</a>
+                                </h5>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+            <!--//right-->
         </div>
-    </section>
-    <!--//main-->
-    <!---->
-    <!-- js -->
-    <script src="~/Thema/web/js/jquery-2.2.3.min.js"></script>
-    <!-- //js -->
-    <!--/ start-smoth-scrolling -->
-    <script src="~/Thema/web/js/move-top.js"></script>
-    <script src="~/Thema/web/js/easing.js"></script>
-
-
-
-    <!-- //Custom-JavaScript-File-Links -->
-    <script src="~/Thema/web/js/bootstrap.js"></script>
-
-
-</body>
-
-</html>
-
+    </div>
+</section>
+<!--//main-->

@@ -1,0 +1,100 @@
+﻿@using EntityLayer.Concrete
+@model List<Message2>
+@{
+    ViewData["Title"] = "InBox";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+@{
+    string checkStatus = "";
+    string statusColor = "";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title mb-3">Gelen Kutusu</h1>
+            <table id="tbl1" class="table table-bordered table-hover .table-striped">
+                <thead id="tbl1">
+                    <tr>
+                        <th>Konu</th>
+                        <th>Gönderen</th>
+                        <th>Tarih</th>
+                        <th>Mesajı Aç</th>
+                        <th>Durum</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Subject</td>
+                        <td>@item.SenderUser.WriterName</td>
+                        <td>@item.MessageDate.ToString("ddd, dd MMM yyyy")</td>
+                        <td><a href="/Message/MessageDetails/@item.MessageId" class="btn btn-gradient-primary">Mesajı Aç</a></td>
+                        <td>
+                            @switch (item.MessageBool)
+                            {
+                                case true:
+                                    statusColor = "badge badge-gradient-danger";
+                                    break;
+                                case false:
+                                    statusColor = "badge badge-gradient-success";
+                                    break;
+                            }
+                            @if (item.MessageBool == true)
+                            {
+                                <span class="btn btn-gradient-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="btn btn-gradient-secondary">Pasif</span>
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-@statusColor" href="/Message/MessageDelete/@item.MessageId">
+
+                                @if (item.MessageBool == true)
+                                {
+                                    statusColor = "badge badge-gradient-danger";
+                                    checkStatus = "Sil";
+
+                                }
+                                else
+                                {
+                                    statusColor = "badge badge-gradient-success";
+                                    checkStatus = "Ekle";
+                                }
+                                @checkStatus
+
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <a href="#" class="btn btn-gradient-primary">Yeni Mesaj Oluştur</a>
+        </div>
+    </div>
+</div>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+
+<script>
+    $('#tbl1').dataTable({
+        "language": {
+
+            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+
+        }
+    });
+</script>
+
+

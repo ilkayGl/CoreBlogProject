@@ -26,7 +26,12 @@ namespace BusinessLayer.Concrete
 
         public List<Category> GetList()
         {
-            return _categoryDal.List();
+            return _categoryDal.List().Where(x => x.CategoryStatus == true).ToList();
+        }
+
+        public List<Category> GetListAll()
+        {
+            return _categoryDal.List().ToList();
         }
 
         public void TAddBL(Category t)

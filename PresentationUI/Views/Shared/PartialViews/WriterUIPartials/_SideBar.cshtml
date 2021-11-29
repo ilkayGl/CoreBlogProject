@@ -1,27 +1,55 @@
-﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
+﻿
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
                 <div class="nav-profile-image">
-                    <img src="~/Thema/writerUI/assets/images/faces/face1.jpg" alt="profile">
+                    @if (ViewBag.writerImage != null)
+                    {
+                        <img src="~/WriterImageFiles/@ViewBag.writerImage" alt="profile">
+                    }
+                    else
+                    {
+                        @if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <img src="~/@User.Identity.AuthenticationType" alt="profile">
+
+                        }
+                    }
+                    @*<img src="~/WriterImageFiles/@ViewBag.writerImage" alt="profile">*@
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                    <span class="font-weight-bold mb-2">David Grey. H</span>
-                    <span class="text-secondary text-small">Project Manager</span>
+                    @if (ViewBag.writerName != null)
+                    {
+                        <span class="font-weight-bold mb-2">@ViewBag.writerName</span>
+                    }
+                    else
+                    {
+                        @if (Context.User.Identity.IsAuthenticated)
+                        {
+                            <span class="font-weight-bold mb-2">@User.Identity.Name</span>
+
+                        }
+                    }
+                    <span class="text-secondary text-small">
+                        @DateTime.Now.ToString("MM/dd/yyyy h:mm tt")
+                    </span>
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" href="/Dashboard/Index">
                 <span class="menu-title">DashBoard</span>
                 <i class="mdi mdi-home menu-icon"></i>
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/Writer/WriterEditProfile">
                 <span class="menu-title">Profilim</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
             </a>
@@ -33,33 +61,43 @@
                 <i class="mdi mdi-format-list-bulleted menu-icon"></i>
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/Blog/BlogAdd">
                 <span class="menu-title">Yeni Blog</span>
                 <i class="mdi mdi-chart-bar menu-icon"></i>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/Message/InBox/">
                 <span class="menu-title">Mesajlar</span>
                 <i class="mdi mdi-message-alert menu-icon"></i>
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/Notification/AllNotification/">
+                <span class="menu-title">Bildirimler</span>
+                <i class="mdi mdi-notification-clear-all menu-icon"></i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/Blog/Index">
                 <span class="menu-title">Siteye Git</span>
                 <i class="mdi mdi-backup-restore menu-icon"></i>
             </a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/Writer/WriterEditProfile">
                 <span class="menu-title">Ayarlar</span>
                 <i class="mdi mdi-settings menu-icon"></i>
             </a>
         </li>
-       
-       
+
+
     </ul>
-   
+
 </nav>

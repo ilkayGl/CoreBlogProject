@@ -1,13 +1,32 @@
-﻿@using EntityLayer.Concrete
-@model List<Blog>
+﻿@using X.PagedList.Web.Common
+@using X.PagedList.Mvc.Core
+@using X.PagedList;
+@using EntityLayer.Concrete
+@model IPagedList<Blog>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
+<head>
+    <style>
+        .ss {
+            background: linear-gradient(#cac0c0,#fff);
+        }
+
+        .aa {
+            font-size: small;
+        }
+
+        ul.pagination li :hover:not(.active) {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+
 <section class="main-content-w3layouts-agileits">
     <div class="container">
-        <h3 class="tittle">Blog Posts</h3>
+        <h3 class="tittle">Gündem <span class="text-muted text-small aa">@DateTime.Now.ToString("MM/dd/yyyy h:mm tt")</span></h3>
         <div class="inner-sec">
             <!--left-->
             <div class="left-blog-info-w3layouts-agileits text-left">
@@ -15,9 +34,9 @@
 
                     @foreach (var item in Model)
                     {
-                        <div class="col-lg-4 card">
+                        <div class="col-lg-4 card ss">
                             <a href="/Blog/BlogReadAll/@item.BlogId">
-                                <img src="@item.BlogImage" class="card-img-top img-fluid" alt="">
+                                <img src="@item.BlogImage" style="height:18rem" class="card-img-top img-fluid ss" alt="">
                             </a>
                             <div class="card-body">
                                 <ul class="blog-icons my-4">
@@ -41,20 +60,48 @@
                                 <h5 class="card-title">
                                     @item.BlogTitle
                                 </h5>
-                                <p class="card-text mb-3">@item.BlogContent.Substring(0, item.BlogContent.Substring(0, 120).LastIndexOf(" "))... </p>
+                                @*<p class="card-text mb-3">@Html.Raw(item.BlogContent.Substring(0, item.BlogContent.Substring(0, 120).LastIndexOf(" ")))... </p>*@
                                 <a href="/Blog/BlogReadAll/@item.BlogId" class="btn btn-primary read-m">Devamını Oku</a>
                             </div>
                         </div>
                     }
-
-
-
-
                 </div>
                 <!--//left-->
+                <hr />
+
+                @Html.PagedListPager((IPagedList)Model, Sayfa => Url.Action("Index", new { Sayfa = Sayfa }), new PagedListRenderOptions
+           {
+               DisplayItemSliceAndTotal = false,
+               ContainerDivClasses = new[] { "navigation" },
+               LiElementClasses = new[] { "page-item" },
+               PageClasses = new[] { "page-link" },
+               LinkToFirstPageFormat = "««",
+               LinkToPreviousPageFormat = "«",
+               LinkToIndividualPageFormat = "{0}",
+               LinkToNextPageFormat = "»",
+               LinkToLastPageFormat = "»»",
+
+
+               ///////////////CustumSetting///////////////
+               //PageCountAndCurrentLocationFormat = "Sayfa {0} of {1}.",
+               //ItemSliceAndTotalFormat = "Gösterilen Sayfa {0} Bulunduğun Sayfa {1} of {2}.",
+               //FunctionToDisplayEachPageNumber = null,
+               //ClassToApplyToFirstListItemInPager = null,
+               //lassToApplyToLastListItemInPager = null,
+               //DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+               //DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+               //DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+               //DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+               //DisplayLinkToIndividualPages = true,
+               //DisplayPageCountAndCurrentLocation = true,
+               //MaximumPageNumbersToDisplay = 3,
+               //EllipsesFormat = "&#8230;",
+               UlElementClasses = new[] { "pagination" },
+           })
+
+
             </div>
         </div>
     </div>
 </section>
-
 

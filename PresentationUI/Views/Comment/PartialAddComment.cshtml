@@ -2,7 +2,9 @@
 <div class="comment-top">
     <h4>Bir Yorum Bırak</h4>
     <div class="comment-bottom">
+
         <form asp-action="PartialAddComment" asp-controller="Comment" method="post" autocomplete="off">
+            <input class="form-control" type="hidden" name="BlogId" value="@ViewBag.i" placeholder="BlogID" required="">
             <input class="form-control" type="text" name="CommentUserName" placeholder="Adınız" required="">
             <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
 
@@ -11,3 +13,8 @@
         </form>
     </div>
 </div>
+
+
+
+
+

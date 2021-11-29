@@ -11,6 +11,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace PresentationUI.Controllers
 {
@@ -29,18 +30,24 @@ namespace PresentationUI.Controllers
         {
             Context c = new Context();
             var datavalue = c.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
+
             if (datavalue != null)
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,writer.WriterMail),
                 };
-                var useridentity = new ClaimsIdentity(claims, "Blog");
-                ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
-                await HttpContext.SignInAsync(principal);
-                //HttpContext.Session.SetString("username", writer.WriterMail);
 
-                return RedirectToAction("WriterTest", "Writer");
+
+                var useridentity = new ClaimsIdentity(claims, "Blog");
+
+
+                ClaimsPrincipal principal = new ClaimsPrincipal(new[] { useridentity });
+
+                await HttpContext.SignInAsync(principal);
+
+
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
@@ -49,11 +56,13 @@ namespace PresentationUI.Controllers
 
         }
 
+
+
         public async Task GoogleLogin()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
             {
-                RedirectUri = Url.Action("WriterTest", "Writer")
+                RedirectUri = Url.Action("Index", "Dashboard")
             });
         }
 

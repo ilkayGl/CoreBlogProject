@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Identity;
 using EntityLayer.Concrete;
 using PresentationUI.Helpers;
+using System.Security.Claims;
 
 namespace PresentationUI
 {
@@ -37,7 +38,6 @@ namespace PresentationUI
         {
             //services.AddDbContext<Context>(opsions => opsions.UseSqlServer(Configuration.GetConnectionString("DbContext"))); //configuration
             services.AddControllersWithViews();
-
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -45,6 +45,11 @@ namespace PresentationUI
                 .Build();
                 config.Filters.Add(new AuthorizeFilter(policy)); // todo Proje-level-Authorization
             });
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("WriterOp", policy => policy.RequireClaim(ClaimTypes.Name));
+            //});
 
             services.AddAuthentication(options =>
             {
@@ -62,7 +67,9 @@ namespace PresentationUI
                     options.ClientId = Configuration["Authentication:Google:ClientId"];
                     options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                     options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                    //options.AuthorizationEndpoint += "?prompt=consent";
                 });
+
 
 
             services.AddNotyf(config =>
@@ -72,7 +79,9 @@ namespace PresentationUI
                 config.Position = NotyfPosition.BottomRight;
             });
 
-           // services.AddScoped<IUserClaimsPrincipalFactory<Writer>, ApplicationUserClaimsPrincipalFactory>();
+            // services.AddScoped<IUserClaimsPrincipalFactory<Writer>, ApplicationUserClaimsPrincipalFactory>();
+
+            //services.AddSession();
 
         }
 
@@ -94,6 +103,8 @@ namespace PresentationUI
 
             app.UseStaticFiles();
 
+            // app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization(); //
@@ -102,6 +113,11 @@ namespace PresentationUI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                   name: "areas",
+                   pattern: "{area:exists}/{controller=Category}/{action=Index}/{id?}");
+
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Blog}/{action=Index}/{id?}");

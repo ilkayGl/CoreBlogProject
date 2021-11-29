@@ -1,0 +1,79 @@
+﻿@using EntityLayer.Concrete
+@model List<Notification>
+@{
+    ViewData["Title"] = "AllNotification";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class=" card-title card-body">
+            <h1 class="mb-3">Bütün Bildirimler</h1>
+            <table id="tbl1" class="table table-bordered table-hover .table-striped ">
+                <thead id="tbl1">
+                    <tr>
+                        <th>Bildirimler</th>
+                        <th>Tarihi</th>
+                        <th>Bildirim İçeriği</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NotificationType</td>
+                        <td>
+                            @item.NotificationDate.ToString("ddd, dd MMM yyyy")
+                            @{
+                                DateTime end = (DateTime)item.NotificationDate;
+                                DateTime now = DateTime.Now;
+                                TimeSpan diff = end.Subtract(now);
+                            }
+                            @if (diff.Days != 0 && diff.Hours != 0 && diff.Minutes != 0)
+                            {
+                                <p class="text-gray mb-0 text-small">
+                                    @diff.ToString(@"dd") gün
+                                    @diff.ToString(@"hh") saat
+                                    @diff.ToString(@"mm") dakika
+                                    @diff.ToString(@"ss") saniye önce
+                                </p>
+                            }
+                            else if (diff.Days == 0 && diff.Hours != 0 && diff.Minutes != 0)
+                            {
+                                <p class="text-gray mb-0 text-small">
+                                    @diff.ToString(@"hh") saat
+                                    @diff.ToString(@"mm") dakika
+                                    @diff.ToString(@"ss") saniye önce
+                                </p>
+                            }
+                        </td>
+                        <td><span class=""> @item.NotificationDetails</span></td>
+                        <td><a href="/Notification/NotificationDelete/@item.NotificationId" class="btn btn-gradient-danger">Sil</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+
+<script>
+    $('#tbl1').dataTable({
+        "language": {
+
+            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+        }
+    });
+</script>
+

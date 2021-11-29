@@ -20,6 +20,8 @@ namespace EntityLayer.Concrete
 
         public DateTime CommentDate { get; set; } = DateTime.Now;
 
+        public int BlogScore { get; set; }
+
         public bool CommentStatus { get; set; }
 
 

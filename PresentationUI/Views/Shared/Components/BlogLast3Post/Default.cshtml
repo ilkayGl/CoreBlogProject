@@ -1,14 +1,24 @@
 ﻿@using EntityLayer.Concrete
 @model List<Blog>
 
+<head>
+    <style>
+        .img1 {
+            padding: 0;
+            max-height: 100%;
+            /* min-width: 100%;*/
+        }
+    </style>
+</head>
+
 <div class="tech-btm">
     <h3>Son Postlar</h3>
     @foreach (var item in Model)
     {
         <div class="blog-grids row mb-3">
             <div class="col-md-5 blog-grid-left">
-                <a href="/Blog/BlogReadAll/@item.BlogId">
-                    <img src="@item.BlogImage" class="card-img-top img-fluid" alt="">
+                <a href="/Blog/BlogReadAll/@item.BlogId" style="width:40rem; height:40rem">
+                    <img src="@item.BlogImage" alt="image" class="img1 img-fluid" />
                 </a>
             </div>
 
@@ -16,7 +26,7 @@
             <div class="col-md-7 blog-grid-right">
                 <h4>@item.BlogTitle</h4>
                 <h5>
-                    <a href="/Blog/BlogReadAll/@item.BlogId">@item.BlogContent.Substring(0, item.BlogContent.Substring(0, 50).LastIndexOf(" "))... </a>
+                    @*<a href="/Blog/BlogReadAll/@item.BlogId">@item.BlogContent.Substring(0, item.BlogContent.Substring(0, 50).LastIndexOf(" "))... </a>*@
                 </h5>
                 <div class="sub-meta">
                     <span>
@@ -24,8 +34,6 @@
                     </span>
                 </div>
             </div>
-
-
 
         </div>
     }
