@@ -307,6 +307,41 @@ namespace PresentationUI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult CategoryDetail(int? Sayfa, int id)
+        {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerID = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            /////
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            //yorum sayısını getirme-güncellenecek
+            var yrm = c.Comments.Select(u => u.CommentId).FirstOrDefault();
+            var value = c.Blogs.Where(x => x.BlogId == yrm).Count().ToString();
+            ViewBag.comment = value;
+
+
+
+            var pageNumber = Sayfa ?? 1;
+            int pagaSize = 9;
+
+            var valueCategory = _bs.GetBlogListWithCategory().Where(x => x.Category.CategoryId == id).ToList();
+            return View(valueCategory.ToPagedList(pageNumber, pagaSize));
+        }
 
     }
 }

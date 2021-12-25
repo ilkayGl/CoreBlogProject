@@ -75,10 +75,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Contact/Index">İletişim</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Kategoriler
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" ><vc:category-list></vc:category-list></a>
+                        
+
+                    </div>
+                </li>
             </ul>
 
             <form asp-action="Index" asp-controller="Blog" autocomplete="off" method="get" class="form-inline my-2 my-lg-0 header-search">
-                <input class="form-control mr-sm-2" value="@ViewData["blogall"]" type="search" placeholder="Search here..." name="Blogsearch" required="">
+                <input class="form-control mr-sm-2" value="@ViewData["blogall"]" type="search" placeholder="Arama yap..." name="Blogsearch" required="">
                 <button class="btn btn1 my-2 my-sm-0" type="submit">
                     <i class="fas fa-search"></i>
                 </button>

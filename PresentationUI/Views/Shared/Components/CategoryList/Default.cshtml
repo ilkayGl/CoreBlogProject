@@ -1,18 +1,14 @@
 ﻿@model IEnumerable<EntityLayer.Concrete.Category>
+
 <div class="tech-btm">
     <h4>Kategoriler</h4>
-    @{ int no = 0;}
-    <ul class="list-group single">
+    <table class="table  table-hover">
         @foreach (var item in Model)
         {
-            <li class="list-group-item d-flex justify-content-between align-items-center table-hover">
-                <span class="badge badge-pill"></span>
-                @{no++;} @no )
-                @item.CategoryName
+            <tr>
+                <td colspan="2"><a style="color:black;" href="/Blog/CategoryDetail/@item.CategoryId">@item.CategoryName </a></td>
 
-
-            </li>
+            </tr>
         }
-    </ul>
-
+    </table>
 </div>

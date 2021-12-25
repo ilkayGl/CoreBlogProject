@@ -20,9 +20,9 @@ namespace PresentationUI.Controllers
 
         public IActionResult Index()
         {
-
             var values = _cs.GetList();
             return View(values);
         }
+
     }
 }
