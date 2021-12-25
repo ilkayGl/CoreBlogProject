@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,14 @@ namespace PresentationUI.ViewComponents.Blog
 {
     public class BlogListDashboard : ViewComponent
     {
-        BlogManager bm = new BlogManager(new EfBlogDal());
-        Context c = new Context();
+        private readonly Context c = new();
+        private readonly IBlogService _bs;
+
+        public BlogListDashboard(IBlogService bs)
+        {
+            _bs = bs;
+        }
+
 
         public IViewComponentResult Invoke()
         {
@@ -27,7 +34,7 @@ namespace PresentationUI.ViewComponents.Blog
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            var values = bm.GetBlogListWithCategory().OrderByDescending(x => x.BlogCreateDate).Take(10).ToList();
+            var values = _bs.GetBlogListWithCategory().OrderByDescending(x => x.BlogCreateDate).Take(10).ToList();
             return View(values);
         }
     }

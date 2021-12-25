@@ -1,0 +1,92 @@
+﻿@using EntityLayer.Concrete
+@model List<Message2>
+@{
+    ViewData["Title"] = "SendBox";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/Thema/AdminPanel/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <!--MessageMenuPartialView-->
+        <partial name="~/Areas/Admin/Views/Message/MessageMenuPartialView.cshtml" />
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+
+                <form method="get" action="index.html" class="float-right mail-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" name="search" placeholder="Search email">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <h2>
+                    Gönderilen Mesajlar <i class="fa fa-envelope-o"></i>
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+                    <div class="btn-group float-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+
+                    </div>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
+
+                </div>
+            </div>
+            <div class="mail-box">
+
+                <table class="table table-hover table-mail">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="read">
+                                <td class="check-mail">
+                                    <input type="checkbox" class="i-checks">
+                                </td>
+                                <td><span class="label label-primary float-right"><i class="fa fa-envelope-o"></i></span></td>
+                                <td class="mail-ontact">
+                                    <strong>@item.ReceiverUser.WriterName</strong>
+                                </td>
+                                <td class="mail-subject"><b>Konu : </b> @item.Subject <br /></td>
+                                <td class=""><i class="fa fa-paperclip"></i><a href="/Admin/Message/MessageDetails/@item.MessageId">Mesajı Oku.</a></td>
+                                <td class="text-right mail-date">
+                                    @(((DateTime)item.MessageDate).ToString("dd-MMMM-yyyy"))
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" style="color:white" href="/Admin/Message/MessageDelete/@item.MessageId">
+                                        Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- iCheck -->
+@*<script src="~/Thema/AdminPanel/js/plugins/iCheck/icheck.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+</script>
+

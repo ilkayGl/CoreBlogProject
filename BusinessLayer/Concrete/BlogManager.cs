@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -71,9 +72,14 @@ namespace BusinessLayer.Concrete
             return _blogDal.FilterList(x => x.WriterId == id).OrderByDescending(d => d.BlogCreateDate).Where(y => y.BlogStatus == true).Take(3).ToList();
         }
 
-        public List<Blog> GetListWithCategoryByWriterBm(int id)
+        public List<Blog> GetListWithCategoryByWriter(int id)
         {
             return _blogDal.GetListWithCategoryByWriter(id).OrderByDescending(d => d.BlogCreateDate).ToList();
+        }
+
+        public List<Blog> GetBlogCategoryWriter()
+        {
+            return _blogDal.GetBlogCategoryWriterD();
         }
 
     }

@@ -1,5 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
@@ -14,20 +16,28 @@ namespace PresentationUI.Controllers
     [AllowAnonymous]
     public class ContactController : Controller
     {
-        ContactManager cm = new ContactManager(new EfContactDal());
-
+        private readonly Context c = new();
+        private readonly IContactService _cs;
+        private readonly IContactLocationService _cls;
         private readonly INotyfService _notyf;
 
-        public ContactController(INotyfService notyf)
+        public ContactController(IContactService cs, IContactLocationService cls, INotyfService notyf)
         {
+            _cs = cs;
+            _cls = cls;
             _notyf = notyf;
         }
+
+
 
         [HttpGet]
         public IActionResult Index()
         {
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
-            return View();
+            var contactLocationValue = _cls.GetList();
+            return View(contactLocationValue);
         }
 
         [HttpPost]
@@ -35,9 +45,9 @@ namespace PresentationUI.Controllers
         {
             contact.ContactStatus = true;
             contact.ContactDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-            cm.TAddBL(contact);
+            _cs.TAddBL(contact);
             _notyf.Success("Mesajınız Başarıyla İletildi.");
-            return RedirectToAction("Index","Contact");
+            return RedirectToAction("Index", "Contact");
         }
     }
 }

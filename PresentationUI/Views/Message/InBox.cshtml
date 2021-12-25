@@ -1,100 +1,236 @@
 ﻿@using EntityLayer.Concrete
 @model List<Message2>
-@{
-    ViewData["Title"] = "InBox";
-    Layout = "~/Views/Shared/_WriterLayout.cshtml";
-}
+@{ ViewData["Title"] = "InBox";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml"; }
 
-@{
-    string checkStatus = "";
-    string statusColor = "";
-}
 
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h1 class="card-title mb-3">Gelen Kutusu</h1>
-            <table id="tbl1" class="table table-bordered table-hover .table-striped">
-                <thead id="tbl1">
-                    <tr>
-                        <th>Konu</th>
-                        <th>Gönderen</th>
-                        <th>Tarih</th>
-                        <th>Mesajı Aç</th>
-                        <th>Durum</th>
-                        <th>Sil</th>
-                    </tr>
-                </thead>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Subject</td>
-                        <td>@item.SenderUser.WriterName</td>
-                        <td>@item.MessageDate.ToString("ddd, dd MMM yyyy")</td>
-                        <td><a href="/Message/MessageDetails/@item.MessageId" class="btn btn-gradient-primary">Mesajı Aç</a></td>
-                        <td>
-                            @switch (item.MessageBool)
-                            {
-                                case true:
-                                    statusColor = "badge badge-gradient-danger";
-                                    break;
-                                case false:
-                                    statusColor = "badge badge-gradient-success";
-                                    break;
-                            }
-                            @if (item.MessageBool == true)
-                            {
-                                <span class="btn btn-gradient-success">Aktif</span>
-                            }
-                            else
-                            {
-                                <span class="btn btn-gradient-secondary">Pasif</span>
-                            }
-                        </td>
-                        <td>
-                            <a class="btn btn-@statusColor" href="/Message/MessageDelete/@item.MessageId">
+<head>
+    <meta http-equiv="refresh" content="30">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
 
+        <div class="content-wrapper">
+
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Mesaj Kutusu</h1>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+
+                    <partial name="~/Views/Message/InBoxMenuPartialView.cshtml" />
+
+                    <div class="col-md-9">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Gelen Mesajlar</h3>
+
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="table-responsive table-borderless mailbox-messages">
+                                    <table class="table table-hover table-striped">
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="icheck-primary">
+                                                            <input type="checkbox" value="" id="check1">
+                                                            <label for="check1"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="mailbox-star"><a><i class="fas fa-star text-warning"></i></a></td>
+                                                    <td class="mailbox-name">
+                                                        <i class="fas fa-inbox"></i>
+                                                        <b>@item.SenderUser.WriterName</b>
+                                                    </td>
+                                                    <td class="mailbox-subject">
+                                                        <b>Konu : </b> @item.Subject <br />
+                                                    </td>
+                                                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i> <a href="/Message/MessageDetails/@item.MessageId">Mesajı Oku.</a></td>
+                                                    <td class="mailbox-date">
+                                                        @{ DateTime end = (DateTime)item.MessageDate;
+                                                            DateTime now = DateTime.Now;
+                                                            TimeSpan diff = end.Subtract(now); }
+                                                        @if (diff.Days != 0 && diff.Hours != 0 && diff.Minutes != 0)
+                                                        {
+                                                            <p class="text-gray mb-0 text-small">
+                                                                @diff.ToString(@"dd") gün
+                                                                @diff.ToString(@"hh") saat
+                                                                @diff.ToString(@"mm") dakika
+                                                                @diff.ToString(@"ss") saniye önce
+                                                            </p> }
+                                                        else if (diff.Days == 0 && diff.Hours != 0 && diff.Minutes != 0)
+                                                        {
+                                                            <p class="text-gray mb-0 text-small">
+                                                                @diff.ToString(@"hh") saat
+                                                                @diff.ToString(@"mm") dakika
+                                                                @diff.ToString(@"ss") saniye önce
+                                                            </p>}
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger" href="/Message/MessageDelete/@item.MessageId">
+                                                            Sil
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- Main content End-->
+        </div>
+    </div>
+
+    <!-- Page Script -->
+    <script>
+        $(function () {
+            //Enable check and uncheck all functionality
+            $('.checkbox-toggle').click(function () {
+                var clicks = $(this).data('clicks')
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
+                    $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
+                } else {
+                    //Check all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
+                    $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
+                }
+                $(this).data('clicks', !clicks)
+            })
+
+            //Handle starring for glyphicon and font awesome
+            $('.mailbox-star').click(function (e) {
+                e.preventDefault()
+                //detect type
+                var $this = $(this).find('a > i')
+                var glyph = $this.hasClass('glyphicon')
+                var fa = $this.hasClass('fa')
+
+                //Switch states
+                if (glyph) {
+                    $this.toggleClass('glyphicon-star')
+                    $this.toggleClass('glyphicon-star-empty')
+                }
+
+                if (fa) {
+                    $this.toggleClass('fa-star')
+                    $this.toggleClass('fa-star-o')
+                }
+            })
+        })
+    </script>
+
+</body>
+
+
+
+
+
+<!-------------------------Opsion------------------------>
+@*@{ string checkStatus = "";
+    string statusColor = ""; }*@
+
+@*<div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title mb-3">Gelen Kutusu</h1>
+                <table id="tbl1" class="table table-bordered table-hover .table-striped">
+                    <thead id="tbl1">
+                        <tr>
+                            <th>Konu</th>
+                            <th>Gönderen</th>
+                            <th>Tarih</th>
+                            <th>Mesajı Aç</th>
+                            <th>Durum</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Subject</td>
+                            <td>@item.SenderUser.WriterName</td>
+                            <td>@item.MessageDate.ToString("ddd, dd MMM yyyy")</td>
+                            <td><a href="/Message/MessageDetails/@item.MessageId" class="btn btn-gradient-primary">Mesajı Aç</a></td>
+                            <td>
+                                @switch (item.MessageBool)
+                                {
+                                    case true:
+                                        statusColor = "badge badge-gradient-danger";
+                                        break;
+                                    case false:
+                                        statusColor = "badge badge-gradient-success";
+                                        break;
+                                }
                                 @if (item.MessageBool == true)
                                 {
-                                    statusColor = "badge badge-gradient-danger";
-                                    checkStatus = "Sil";
-
+                                    <span class="btn btn-gradient-success">Aktif</span>
                                 }
                                 else
                                 {
-                                    statusColor = "badge badge-gradient-success";
-                                    checkStatus = "Ekle";
+                                    <span class="btn btn-gradient-secondary">Pasif</span>
                                 }
-                                @checkStatus
+                            </td>
+                            <td>
+                                <a class="btn btn-@statusColor" href="/Message/MessageDelete/@item.MessageId">
 
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </table>
-            <a href="#" class="btn btn-gradient-primary">Yeni Mesaj Oluştur</a>
+                                    @if (item.MessageBool == true)
+                                    {
+                                        statusColor = "badge badge-gradient-danger";
+                                        checkStatus = "Sil";
+
+                                    }
+                                    else
+                                    {
+                                        statusColor = "badge badge-gradient-success";
+                                        checkStatus = "Ekle";
+                                    }
+                                    @checkStatus
+
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <a href="/Message/NewMessage/" class="btn btn-gradient-primary">Yeni Mesaj Oluştur</a>
+            </div>
         </div>
     </div>
-</div>
 
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
-<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
-<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
 
 
 
-<script>
-    $('#tbl1').dataTable({
-        "language": {
+    <script>
+        $('#tbl1').dataTable({
+            "language": {
 
-            "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Turkish.json"
 
-        }
-    });
-</script>
-
-
+            }
+        });
+    </script>*@

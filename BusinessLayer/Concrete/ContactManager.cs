@@ -27,7 +27,7 @@ namespace BusinessLayer.Concrete
 
         public List<Contact> GetList()
         {
-            return _contactDal.List();
+            return _contactDal.List().OrderByDescending(d=>d.ContactDate).ToList();
         }
 
         public void TAddBL(Contact t)

@@ -27,5 +27,7 @@ namespace EntityLayer.Concrete
 
         public Writer SenderUser { get; set; }
         public Writer ReceiverUser { get; set; }
+
+
     }
 }

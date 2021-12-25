@@ -1,0 +1,30 @@
+﻿
+
+<div class="col-md-3">
+    <a href="/Message/NewMessage/" class="btn btn-success btn-block mb-3">Yeni Mesaj Oluştur</a>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item active">
+                    <a href="/Message/InBox/" class="nav-link btn btn-info">
+                        <i class="fas fa-inbox"></i> Gelen Mesajlar
+                        <span class="label label-warning float-right">@ViewBag.inboxMessage</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Message/SendBox/" class="nav-link btn btn-secondary">
+                        <i class="far fa-envelope"></i> Gönderilen Mesajlar <span class="label label-primary float-right">@ViewBag.sendboxMessage</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Message/TrashBox/" class="nav-link btn btn-danger">
+                        <i class="far fa-trash-alt"></i> Çöp Kutusu <span class="label label-danger float-right">@ViewBag.trashboxMessage</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>

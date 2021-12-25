@@ -1,7 +1,7 @@
-﻿@model PresentationUI.Models.AddProfileImage
+﻿@model PresentationUI.Areas.Admin.Models.WriterImageFileAdd
 @{
     ViewData["Title"] = "WriterAdd";
-    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="col-12 grid-margin stretch-card">
@@ -21,10 +21,6 @@
                     <label for="exampleInputPassword4">Password</label>
                     <input type="text" class="form-control" id="exampleInputPassword4" asp-for="WriterPassword" placeholder="Password">
                 </div>
-                @*<div class="form-group">
-                        <label>Yazar Görsel</label>
-                        <input type="file" asp-for="WriterImage">
-                    </div>*@
                 <div class=" form-group">
                     <label for="formFile" class="form-label">Yazar Görsel</label>
                     <input class="form-control" type="file" asp-for="WriterImage" id="formFile">
@@ -34,7 +30,7 @@
                     <textarea class="form-control" id="exampleTextarea1" asp-for="WriterAbout" rows="10"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-gradient-primary mr-2">Ekle</button>
+                <button type="submit" class="btn btn-primary mr-2">Ekle</button>
                 <button class="btn btn-light" type="reset">İptal Et</button>
             </form>
         </div>

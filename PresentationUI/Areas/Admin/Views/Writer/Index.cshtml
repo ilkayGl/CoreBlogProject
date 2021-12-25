@@ -1,0 +1,77 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@using EntityLayer.Concrete
+@model IPagedList<Writer>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4" >
+                <div class="contact-box" style="border-radius:30px 30px;">
+                    <a class="row">
+                        <div class="col-4">
+                            <div class="text-center">
+                                @if (item.WriterImage == null)
+                                {
+                                    <img class="rounded-circle m-t-xs img-fluid" style="height:10rem;"
+                                         src="~/WriterImageFiles/user-icon.jpg"
+                                         alt="User Default Profile Picture">
+                                }
+                                else
+                                {
+                                    <img src="~/WriterImageFiles/@item.WriterImage" class="rounded-circle m-t-xs img-fluid" style="height:10rem;" alt="image">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <h3><strong><i class="fa fa-user-circle"></i> @item.WriterName</strong></h3>
+
+                            <p><strong><i class="fa fa-pencil"></i> @item.WriterTitle</strong></p>
+
+                            <span>
+                                <strong><i class="fa fa-envelope"></i>  @item.WriterMail</strong><br>
+                            </span>
+
+                            <div class="mt-4">
+                                <strong><i class="fa fa-expeditedssl"></i> Role =  @item.WriterRole</strong>
+
+                            </div>
+                        </div>
+                    </a>
+                    <br />
+                    <a class="btn btn-info" style="color:white" href="/Admin/Writer/WriterRole/@item.WriterId">
+                        <i class="fa fa-spinner"></i> Düzenle
+                    </a>
+                    <a class="btn btn-danger" style="color:white" href="/Admin/Writer/WriterDelete/@item.WriterId">
+                        <i class="fa fa-trash"></i> Sil
+                    </a>
+                </div>
+
+            </div>
+        }
+
+    </div>
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+       {
+           DisplayItemSliceAndTotal = false,
+           ContainerDivClasses = new[] { "navigation" },
+           LiElementClasses = new[] { "page-item" },
+           PageClasses = new[] { "page-link" },
+           LinkToFirstPageFormat = "««",
+           LinkToPreviousPageFormat = "«",
+           LinkToIndividualPageFormat = "{0}",
+           LinkToNextPageFormat = "»",
+           LinkToLastPageFormat = "»»",
+
+           UlElementClasses = new[] { "pagination" },
+       })
+
+</div>

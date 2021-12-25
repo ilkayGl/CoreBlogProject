@@ -1,0 +1,129 @@
+﻿@using EntityLayer.Concrete
+@model List<About>
+@{
+    ViewData["Title"] = "AboutIndex";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h2>Hakkımızda</h2>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                        <a class="">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Başlık</th>
+                                    <th>İçerik Kısmı</th>
+                                    <th>Görsel</th>
+                                    <th>Sil</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.AboutId</td>
+                                        <td>@item.AboutDetails2</td>
+                                        <td>@item.AboutDetails1</td>
+                                        <td>
+                                            <img src="~/AboutImageFiles/@item.AboutImage1" style="width:40rem;height:20rem;" alt="image" />
+                                        </td>
+
+                                        <td>
+                                            <a href="/Admin/About/AboutDelete/@item.AboutId" class="btn btn-danger">
+                                                Sil
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="/Admin/About/AboutEdit/@item.AboutId" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">
+                                                Düzenle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary dim" data-toggle="modal" data-target="#Modal1">
+                            Yeni Oluştur
+                        </button>
+                        <!--ModalCategoryAdded-->
+                        <div class="modal mt-5" id="Modal1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>Hakkımda</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/About/AboutAdd/" autocomplete="off" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <label><b>Başlık Adı</b></label>
+                                            <input type="text" name="AboutDetails2" required class="form-control" />
+                                            <br />
+                                            <label><b>Açıklama</b></label>
+                                            <input type="text" name="AboutDetails1" required class="form-control" />
+                                            <br />
+                                            <label><b>Görsel</b></label>
+                                            <input type="file" name="AboutImage1" class="form-control">
+                                            <br />
+                                            <button class="btn btn-success"> Ekle</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ModalCategoryAddedEnd-->
+                        <!--ModalCategoryEdit2-->
+                        <div class="modal mt-5" id="Modal2">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>Kategori Düzenle</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/About/AboutEdit/" autocomplete="off" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <label><b>About ID</b></label>
+                                            <input type="text" name="AboutId" required class="form-control" />
+                                            <br />
+                                            <label><b>Başlık Adı</b></label>
+                                            <input type="text" name="AboutDetails2" required class="form-control" />
+                                            <br />
+                                            <label><b>Açıklama</b></label>
+                                            <input type="text" name="AboutDetails1" required class="form-control" />
+                                            <br />
+                                            <label><b>Görsel</b></label>
+                                            <input type="file" name="AboutImage1" class="form-control">
+                                            <br />
+                                            <button class="btn btn-success">Güncelle</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ModalCategory2Edit End-->
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

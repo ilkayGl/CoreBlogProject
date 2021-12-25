@@ -50,8 +50,8 @@
 
                                 @if (Model.WriterImage == null)
                                 {
-                                    <img class="profile-user-img img-fluid img-circle"
-                                         src="~/WriterImageFiles/97c425d6-870f-43b8-a6f9-a63f6e5f3067.jpg"
+                                    <img width="150" height="150" class="img-circle"
+                                         src="~/WriterImageFiles/user-icon.jpg"
                                          alt="User Default Profile Picture">
                                 }
                                 else
@@ -81,7 +81,7 @@
                             <strong><i class="far fa-file-alt mr-1"></i> Mail Adresi</strong>
                             <p class="text-muted">@Model.WriterMail</p>
                             <hr>
-                            <a href="/WriterPanelMessage/Inbox/" class="btn btn-info btn-block"><b>Mesaj Gelen Kutusu</b></a>
+                            <a href="/Message/InBox/" class="btn btn-info btn-block"><b>Mesaj Gelen Kutusu</b></a>
                         </div>
 
                         <!-- /.card-body -->

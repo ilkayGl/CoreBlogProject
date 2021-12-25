@@ -1,0 +1,64 @@
+﻿@model EntityLayer.Concrete.Contact
+@{
+    ViewData["Title"] = "ContactDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <!--MessageMenuPartialView-->
+        <partial name="~/Areas/Admin/Views/Message/MessageMenuPartialView.cshtml" />
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <h3>
+                    <span class="float-right tooltip-demo">
+                        @Model.ContactMail
+                    </span>
+                </h3>
+                <h2>
+                    Mesaj Görüntüle
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+
+                    <input type="hidden" asp-for="ContactId" />
+
+                    <h3>
+                        <span class="font-normal">Gönderen : </span><b>@Model.ContactUserName</b>
+                    </h3>
+                    <h3>
+                        <span class="font-normal">Konu : </span> @Model.ContactSubject
+                    </h3>
+                    <h5>
+                        <span class="float-right font-normal">
+                            @(((DateTime)Model.ContactDate).ToString("dd-MMMM-yyyy")) <br />
+                            @(((DateTime)Model.ContactDate).ToString(" h:mm tt"))
+                        </span>
+
+                    </h5>
+                    <h4>
+                        <span class="font-normal">Tarih : @(((DateTime)Model.ContactDate).ToString("dd-MMMM-yyyy")) </span>
+                    </h4>
+
+                </div>
+            </div>
+            <div class="mail-box">
+
+                <div class="mail-body">
+                    <p>
+                        @Html.Raw(@Model.ContactMessage)
+                    </p>
+                </div>
+
+                <div class="mail-body text-right tooltip-demo">
+                    <a class="btn btn-sm btn-white" href="/Admin/Message/ContactMessage/"><i class="fa fa-reply"></i> Geri Dön</a>
+                </div>
+                <div class="clearfix"></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

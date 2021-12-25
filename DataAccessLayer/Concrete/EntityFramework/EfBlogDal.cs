@@ -12,6 +12,13 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EfBlogDal : GenericRepository<Blog>, IBlogDal
     {
+        public List<Blog> GetBlogCategoryWriterD()
+        {
+            using var c = new Context();
+            return c.Blogs.Include(x => x.Writer).Include(y => y.Category).OrderByDescending(d => d.BlogCreateDate).ToList(); 
+            //admin tarafı için yazar category blog üçlüsü alınır
+        }
+
         public List<Blog> GetBlogIdListWriter(int id)
         {
             using var c = new Context();

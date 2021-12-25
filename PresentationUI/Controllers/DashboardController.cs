@@ -14,9 +14,6 @@ namespace PresentationUI.Controllers
         public IActionResult Index()
         {
             Context c = new Context();
-            ViewBag.v1 = c.Blogs.Count().ToString();
-            ViewBag.v2 = c.Blogs.Where(x => x.WriterId == 1).Count().ToString();
-            ViewBag.v3 = c.Categories.Count().ToString();
 
             var userMail = User.Identity.Name;
             ViewBag.mail = userMail;
@@ -29,6 +26,18 @@ namespace PresentationUI.Controllers
 
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+            //dashboard
+            ViewBag.v1 = c.Blogs.Count().ToString();
+            ViewBag.v3 = c.Categories.Count().ToString();
+            ViewBag.v2 = c.Blogs.Where(x => x.WriterId == writerID).Count().ToString();
 
             return View();
         }

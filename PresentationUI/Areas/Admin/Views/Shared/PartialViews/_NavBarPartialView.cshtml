@@ -1,19 +1,29 @@
-﻿<nav class="navbar-default navbar-static-side" role="navigation">
+﻿
+<nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <img alt="image" class="rounded-circle" src="~/Thema/AdminPanel/img/profile_small.jpg" />
+                    @if (ViewBag.writerImage != null)
+                    {
+                        <img alt="image" class="rounded-circle" style="height:5rem;" src="~/WriterImageFiles/@ViewBag.writerImage">
+                    }
+                    else
+                    {
+                        <img alt="image" class="rounded-circle" style="height:5rem;" src="~/WriterImageFiles/user-icon.jpg">
+                    }
+
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="block m-t-xs font-bold">İlkay Gül</span>
-                        <span class="text-muted text-xs block">Software Developher <b class="caret"></b></span>
+                        <span class="block m-t-xs  font-bold">
+                            @ViewBag.writerName
+                        </span>
+                        <span class="text-muted text-xs block">Site Sahibi / Yönetici <b class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a class="dropdown-item" href="~/Thema/AdminPanel/profile.html">Profile</a></li>
-                        <li><a class="dropdown-item" href="~/Thema/AdminPanel/contacts.html">Contacts</a></li>
-                        <li><a class="dropdown-item" href="~/Thema/AdminPanel/mailbox.html">Mailbox</a></li>
+                        <li><a class="dropdown-item" href="/Admin/Writer/Index">Profil</a></li>
+                        <li><a class="dropdown-item" href="/Admin/Message/InBox/">Mesajlar</a></li>
                         <li class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="~/Thema/AdminPanel/login.html">Logout</a></li>
+                        <li><a class="dropdown-item" href="/Login/GoogleLogOut">Çıkış Yap</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
@@ -26,7 +36,7 @@
             </li>
 
             <li>
-                <a href=""><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
+                <a href="/Admin/BlogTitle/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Blog</span></a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
@@ -38,89 +48,72 @@
                 </ul>
             </li>
             <li>
-                <a href=""><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning float-right">16/24</span></a>
+                <a href=""><i class="fa fa-envelope"></i> <span class="nav-label">Mesaj Kutusu </span><span class="label label-warning float-right">@ViewBag.contactMessage / @ViewBag.inboxMessage</span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="">Inbox</a></li>
-                    <li><a href="">Email view</a></li>
-                    <li><a href="">Compose email</a></li>
-                    <li><a href="">Email templates</a></li>
+                    <li><a href="/Admin/Message/InBox/">Mesajlar</a></li>
+                    <li><a href="/Admin/Message/NewMessage/">Hızlı Mesaj Oluştur</a></li>
                 </ul>
             </li>
             <li>
-                <a href=""><i class="fa fa-pie-chart"></i> <span class="nav-label">Metrics</span>  </a>
+                <a href="/Admin/Writer/Index"><i class="fa fa-pie-chart"></i> <span class="nav-label">Yazarlar</span></a>
             </li>
             <li>
-                <a href=""><i class="fa fa-flask"></i> <span class="nav-label">Widgets</span></a>
+                <a href="/Admin/Writer/WriterAdd"><i class="fa fa-pencil-square-o"></i> <span class="nav-label">Yazar Ekle</span></a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Forms</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Basic form</a></li>
+                <a href="/Admin/Comment/Index"><i class="fa fa-comment-o"></i> <span class="nav-label">Yorumlar</span></a>
+            </li>
+            <li>
+                <a href="/Admin/About/AboutIndex"><i class="fa fa-address-book"></i> <span class="nav-label">Hakkımızda</span></a>
+            </li>
+            <li>
+                <a href="/Admin/LogoTitle/Index"><i class="fa fa-exchange"></i> <span class="nav-label">Logo/Başlık</span></a>
+            </li>
+            <li>
+                <a href="/Admin/ContactLocation/Index"><i class="fa fa-phone"></i> <span class="nav-label">İletişim</span></a>
+            </li>
+            <li>
+                <a href="/Admin/Widget/Index"><i class="fa fa-bar-chart"></i> <span class="nav-label">Widgetler</span></a>
+            </li>
+            <li>
+                <a href="/Blog/Index" target="_blank"><i class="fa fa-sign-out"></i><span class="nav-label">Siteye Git</span></a>
+            </li>
+            @*<li>
 
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">App Views</span>  <span class="float-right label label-primary">SPECIAL</span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Contacts</a></li>
-                    <li><a href="">Profile</a></li>
 
+                <li>
+                    <a href="grid_options.html"><i class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="">Static Tables</a></li>
+                        <li><a href="">Data Tables</a></li>
+                        <li><a href="">Foo Tables</a></li>
+                        <li><a href="">jqGrid</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">E-commerce</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="">Products grid</a></li>
+                        <li><a href="">Products list</a></li>
+                        <li><a href="">Product edit</a></li>
+                        <li><a href="">Product detail</a></li>
+                        <li><a href="">Cart</a></li>
+                        <li><a href="">Orders</a></li>
+                        <li><a href="">Credit Card form</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Gallery</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="">Lightbox Gallery</a></li>
+                        <li><a href="">Slick Carousel</a></li>
+                        <li><a href="">Bootstrap Carousel</a></li>
 
-                </ul>
-            </li>
-
-            <li>
-                <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Miscellaneous</span><span class="label label-info float-right">NEW</span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Notification</a></li>
-                    <li><a href="">Nestable list</a></li>
-                    <li><a href="">Agile board</a></li>
-
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">UI Elements</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Typography</a></li>
-                    <li><a href="">Icons</a></li>
-                    <li><a href="">Draggable Panels</a></li>
-
-                </ul>
-            </li>
-
-            <li>
-                <a href="grid_options.html"><i class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Static Tables</a></li>
-                    <li><a href="">Data Tables</a></li>
-                    <li><a href="">Foo Tables</a></li>
-                    <li><a href="">jqGrid</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">E-commerce</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Products grid</a></li>
-                    <li><a href="">Products list</a></li>
-                    <li><a href="">Product edit</a></li>
-                    <li><a href="">Product detail</a></li>
-                    <li><a href="">Cart</a></li>
-                    <li><a href="">Orders</a></li>
-                    <li><a href="">Credit Card form</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Gallery</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="">Lightbox Gallery</a></li>
-                    <li><a href="">Slick Carousel</a></li>
-                    <li><a href="">Bootstrap Carousel</a></li>
-
-                </ul>
-            </li>
+                    </ul>
+                </li>*@
 
 
         </ul>

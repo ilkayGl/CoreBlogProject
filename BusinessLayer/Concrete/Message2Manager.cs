@@ -28,7 +28,17 @@ namespace BusinessLayer.Concrete
 
         public List<Message2> GetInBoxListWriter(int id)
         {
-            return _message2Dal.GetInBoxListWriter(id); //Writer of Message2 include
+            return _message2Dal.GetInBoxListWriter(id); //Writer mesajı alan of Message2 include
+        }
+
+        public List<Message2> GetSendBoxWriter(int id)
+        {
+            return _message2Dal.GetSendBoxWriter(id); //Writer mesajı gönderen of Message2 include
+        }
+
+        public List<Message2> GetTrashMessageWriter(int id)
+        {
+            return _message2Dal.GetTrashMessageWriter(id); //Trash
         }
 
         public List<Message2> GetList()
@@ -50,5 +60,7 @@ namespace BusinessLayer.Concrete
         {
             _message2Dal.Update(t);
         }
+
+
     }
 }

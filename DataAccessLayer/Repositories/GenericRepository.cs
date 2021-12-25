@@ -12,8 +12,8 @@ namespace DataAccessLayer.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T : class, new()
     {
-        Context c = new Context();
-        DbSet<T> _object;
+        private readonly Context c = new();
+        private readonly DbSet<T> _object;
 
         public GenericRepository()
         {
@@ -22,38 +22,63 @@ namespace DataAccessLayer.Repositories
 
         public void Delete(T p)
         {
-            var deleteentity = c.Entry(p);
-            deleteentity.State = EntityState.Deleted;
-            c.SaveChanges();
+            using (Context c = new())
+            {
+                var deleteentity = c.Entry(p);
+                deleteentity.State = EntityState.Deleted;
+                c.SaveChanges();
+            }
+
         }
 
         public List<T> FilterList(Expression<Func<T, bool>> filter)
         {
-            return _object.Where(filter).ToList();
+            using (Context c = new())
+            {
+                return _object.Where(filter).ToList();
+            }
+
         }
 
         public T Get(Expression<Func<T, bool>> filter)
         {
-            return _object.SingleOrDefault(filter);
+            using (Context c = new())
+            {
+                return _object.SingleOrDefault(filter);
+            }
+
         }
 
         public void Insert(T p)
         {
-            var addentity = c.Entry(p);
-            addentity.State = EntityState.Added;
-            c.SaveChanges();
+            using (Context c = new())
+            {
+                var addentity = c.Entry(p);
+                addentity.State = EntityState.Added;
+                c.SaveChanges();
+            }
+
         }
 
         public List<T> List()
         {
-            return _object.ToList();
+            using (Context c = new())
+            {
+                return _object.ToList();
+            }
         }
 
         public void Update(T p)
         {
-            var updateenity = c.Entry(p);
-            updateenity.State = EntityState.Modified;
-            c.SaveChanges();
+            using (Context c = new())
+            {
+                var updatedEntity = c.Entry(p);
+                updatedEntity.State = EntityState.Modified;
+                c.SaveChanges();
+            }
+
         }
+
+
     }
 }

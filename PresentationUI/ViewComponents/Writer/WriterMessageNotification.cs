@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,14 @@ namespace PresentationUI.ViewComponents.Writer
 {
     public class WriterMessageNotification : ViewComponent
     {
-        Message2Manager mm = new Message2Manager(new EfMessage2Dal());
-        Context c = new Context();
+        private readonly Context c = new();
+        private readonly IMessage2Service _ms;
+
+        public WriterMessageNotification(IMessage2Service ms)
+        {
+            _ms = ms;
+        }
+
 
         public IViewComponentResult Invoke()
         {
@@ -27,9 +34,10 @@ namespace PresentationUI.ViewComponents.Writer
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            //int id = 1;
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
 
-            var values = mm.GetInBoxListWriter(writerID);
+            var values = _ms.GetInBoxListWriter(writerID).Take(3).OrderByDescending(x => x.MessageDate).ToList();
             return View(values);
         }
     }

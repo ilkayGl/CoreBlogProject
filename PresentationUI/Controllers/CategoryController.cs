@@ -1,5 +1,4 @@
-﻿using BusinessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
+﻿using BusinessLayer.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,11 +9,19 @@ namespace PresentationUI.Controllers
 {
     public class CategoryController : Controller
     {
-        CategoryManager cm = new CategoryManager(new EfCategoryDal());
+        private readonly ICategoryService _cs;
+
+        public CategoryController(ICategoryService cs)
+        {
+            _cs = cs;
+        }
+
+
 
         public IActionResult Index()
         {
-            var values = cm.GetList();
+
+            var values = _cs.GetList();
             return View(values);
         }
     }

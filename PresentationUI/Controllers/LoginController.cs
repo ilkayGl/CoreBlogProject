@@ -11,24 +11,26 @@ using DataAccessLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace PresentationUI.Controllers
 {
     [AllowAnonymous]
     public class LoginController : Controller
     {
+        private readonly Context c = new();
 
         [HttpGet]
         public IActionResult Index()
         {
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(Writer writer)
         {
-            Context c = new Context();
             var datavalue = c.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
 
             if (datavalue != null)
@@ -36,8 +38,9 @@ namespace PresentationUI.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,writer.WriterMail),
-                };
+                    //new Claim(ClaimTypes.Role,"A"),
 
+                };
 
                 var useridentity = new ClaimsIdentity(claims, "Blog");
 
@@ -48,6 +51,8 @@ namespace PresentationUI.Controllers
 
 
                 return RedirectToAction("Index", "Dashboard");
+
+
             }
             else
             {

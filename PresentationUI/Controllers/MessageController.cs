@@ -1,8 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +15,18 @@ namespace PresentationUI.Controllers
 {
     public class MessageController : Controller
     {
-        Message2Manager mm = new Message2Manager(new EfMessage2Dal());
-        Context c = new Context();
-
+        private readonly Context c = new();
+        private readonly IMessage2Service _ms;
+        private readonly IWriterService _ws;
         private readonly INotyfService _notyf;
 
-        public MessageController(INotyfService notyf)
+        public MessageController(IMessage2Service ms, IWriterService ws, INotyfService notyf)
         {
+            _ms = ms;
+            _ws = ws;
             _notyf = notyf;
         }
+
 
 
         public IActionResult InBox()
@@ -36,28 +42,200 @@ namespace PresentationUI.Controllers
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            //int id = 1;
-            var values = mm.GetInBoxListWriter(writerID);
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+
+            var values = _ms.GetInBoxListWriter(writerID);
             return View(values);
         }
 
-
-        public IActionResult MessageDetails(int id)
+        public IActionResult SendBox()
         {
             var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
             var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
             ViewBag.writerName = writerName;
 
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            var value = mm.GetByID(id);
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+
+            var values = _ms.GetSendBoxWriter(writerID);
+            return View(values);
+        }
+
+        public IActionResult TrashBox()
+        {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+            var values = _ms.GetTrashMessageWriter(writerID);
+            return View(values);
+        }
+
+
+        [HttpGet]
+        public IActionResult NewMessage()
+        {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+
+            List<SelectListItem> deger2 = (from x in _ws.GetList()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.WriterName + " /  " + x.WriterMail,
+                                               Value = x.WriterId.ToString()
+
+                                           }).ToList();
+
+
+
+            ViewBag.dgr2 = deger2;
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NewMessage(Message2 message2)
+        {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+            message2.SenderId = writerID;
+            message2.MessageBool = true;
+            message2.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+            _notyf.Success("Mesaj Başarıyla Gönderildi.");
+            _ms.TAddBL(message2);
+
+            return RedirectToAction("InBox", "Message");
+        }
+
+
+        public IActionResult MessageDetails(int id)
+        {
+            var userMail = User.Identity.Name;
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+
+            var value = _ms.GetByID(id);
             return View(value);
         }
 
         public IActionResult MessageDelete(int id)
         {
-            var values = mm.GetByID(id);
+            var values = _ms.GetByID(id);
             if (values.MessageBool == true)
             {
                 values.MessageBool = false;
@@ -68,8 +246,16 @@ namespace PresentationUI.Controllers
                 values.MessageBool = true;
                 _notyf.Success("Mesaj Başarıyla Eklendi.");
             }
-            mm.TUpdateBL(values);
+            _ms.TUpdateBL(values);
             return RedirectToAction("InBox", "Message");
+        }
+
+        public IActionResult MessageRemove(int id)
+        {
+            var values = _ms.GetByID(id);
+            _notyf.Error("Mesaj Kalıcı Olarak Silindi.");
+            _ms.TDeleteBL(values);
+            return RedirectToAction("TrashBox", "Message");
         }
     }
 }

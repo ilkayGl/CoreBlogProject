@@ -1,0 +1,69 @@
+﻿@model EntityLayer.Concrete.Writer
+
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <title>| Admin Giriş</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="~/Thema/adminlogin/css/animate.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="~/Thema/adminlogin/css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="top">
+            <h1 id="title" class="hidden"><span id="logo">Admin<span>Giriş</span></span></h1>
+        </div>
+        <div class="login-box animated fadeInUp">
+            <div class="box-header">
+                <h2>Log In</h2>
+            </div>
+
+            <form  asp-action="Index" asp-controller="LogIn" method="post" >
+                <label for="username">E-Posta Adresi</label>
+                <br />
+                <input type="text" asp-for="WriterMail" id="username">
+                <br />
+                <label for="password">Parola</label>
+                <br />
+                <input type="password" asp-for="WriterPassword" id="password">
+                <br />
+                <button type="submit">Giriş Yap</button>
+                <br />
+                <a href="#"><p class="small">Forgot your password?</p></a>
+            </form>
+            
+        </div>
+    </div>
+</body>
+
+
+</html>
+
+<script>
+    $(document).ready(function () {
+        $('#logo').addClass('animated fadeInDown');
+        $("input:text:visible:first").focus();
+    });
+    $('#username').focus(function () {
+        $('label[for="username"]').addClass('selected');
+    });
+    $('#username').blur(function () {
+        $('label[for="username"]').removeClass('selected');
+    });
+    $('#password').focus(function () {
+        $('label[for="password"]').addClass('selected');
+    });
+    $('#password').blur(function () {
+        $('label[for="password"]').removeClass('selected');
+    });
+</script>

@@ -1,73 +1,75 @@
-﻿
+﻿@using EntityLayer.Concrete
+@model List<ContactLocation>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
 
-
 <link href="~/Thema/web/css/contact.css" rel='stylesheet' type='text/css' />
 
 
 <section class="main-content-w3layouts-agileits">
+    @foreach (var item in Model)
+    {
 
-    <h3 class="tittle">İletişim</h3>
-    <p class="sub text-center">FİKİRİNİZİ ÖNEMSİYORUZ</p>
-    <div class="contact-map inner-sec">
-        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1Pdo1m2jXc0OLnaGh9sT8H1_SaH84RnxW" style="border:0" allowfullscreen="" class="map"></iframe>
+        <h3 class="tittle"> @item.ContactTitle   </h3>
+        <p class="sub text-center"> @item.ContactTitle2   </p>
+        <div class="contact-map inner-sec">
 
-    </div>
-    <div class="ad-inf-sec bg-light">
-        <div class="container">
-            <div class="address row">
+            <iframe src="@item.ContactMapLocation" style="border:0" allowfullscreen="" class="map"></iframe>
 
-                <div class="col-lg-4 address-grid">
-                    <div class="row address-info">
-                        <div class="col-md-4 address-left text-center">
-                            <i class="far fa-map"></i>
-                        </div>
-                        <div class="col-md-8 address-right text-left">
-                            <h6>Adres</h6>
-                            <p>
-                                Tekirdağ/ÇORLU, TÜRKİYE
+        </div>
+        <div class="ad-inf-sec bg-light">
+            <div class="container">
+                <div class="address row">
 
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-4 address-grid">
-                    <div class="row address-info">
-                        <div class="col-md-4 address-left text-center">
-                            <i class="far fa-envelope"></i>
-                        </div>
-                        <div class="col-md-8 address-right text-left">
-                            <h6>Email</h6>
-                            <p>
-                                Email :
-                                <a href="mailto:example@email.com"> mail@example.com</a>
-
-                            </p>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="far fa-map"></i>
+                            </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>Adres</h6>
+                                <p>
+                                    @item.ContactAdress
+                                </p>
+                            </div>
                         </div>
 
                     </div>
-                </div>
-                <div class="col-lg-4 address-grid">
-                    <div class="row address-info">
-                        <div class="col-md-4 address-left text-center">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="col-md-8 address-right text-left">
-                            <h6>Telefon</h6>
-                            <p>+1 234 567 8901</p>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="far fa-envelope"></i>
+                            </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>Email</h6>
+                                <p>
+                                    <a href="mailto:ilkaygl@outlook.com"> @item.ContactEMail </a>
+
+                                </p>
+                            </div>
 
                         </div>
+                    </div>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>Telefon</h6>
+                                <p>+@item.ContactPhone</p>
 
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
     <div class="container">
         <div class="contact_grid_right">
             <form asp-action="Index" asp-controller="Contact" method="post" autocomplete="off">

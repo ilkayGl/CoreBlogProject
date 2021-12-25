@@ -1,0 +1,114 @@
+﻿@using EntityLayer.Concrete
+@model List<ContactLocation>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h2>Hakkımızda</h2>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                        <a class="">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>Başlık</th>
+                                    <th>Alt Başlık</th>
+                                    <th>Konum</th>
+                                    <th>Konum Görsel</th>
+                                    <th>Adres</th>
+                                    <th>E-Mail</th>
+                                    <th>Telefon No</th>
+                                    <th>Sil</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.ContactTitle</td>
+                                        <td>@item.ContactTitle2</td>
+                                        <td>@item.ContactMapLocation</td>
+                                        <td>
+                                            <iframe src="@item.ContactMapLocation" style="border: 0; width: 40rem; height: 20rem" allowfullscreen="" class="map"></iframe>
+                                        </td>
+                                        <td>@item.ContactAdress</td>
+                                        <td>@item.ContactEMail</td>
+                                        <td>@item.ContactPhone</td>
+                                        <td>
+                                            <a href="/Admin/ContactLocation/ContactLocationDelete/@item.ContactLocationId" class="btn btn-danger">
+                                                Sil
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="/Admin/ContactLocation/ContactLocationEdit/@item.ContactLocationId" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">
+                                                Düzenle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary dim" data-toggle="modal" data-target="#Modal1">
+                            Yeni Oluştur
+                        </button>
+                        <!--ModalCategoryAdded-->
+                        <div class="modal mt-5" id="Modal1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>İletişim</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/ContactLocation/ContactLocationAdd/" autocomplete="off" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <label><b>Başlık </b></label>
+                                            <input type="text" name="ContactTitle" required class="form-control" />
+                                            <br />
+                                            <label><b>Alt Başlık</b></label>
+                                            <input type="text" name="ContactTitle2" required class="form-control" />
+                                            <br />
+                                            <label><b>Konum</b></label>
+                                            <input type="text" name="ContactMapLocation" required class="form-control" />
+                                            <br />
+                                            <label><b>Adres</b></label>
+                                            <input type="text" name="ContactAdress" required class="form-control" />
+                                            <br />
+                                            <label><b>Mail Adresi</b></label>
+                                            <input type="text" name="ContactEMail" required class="form-control" />
+                                            <br />
+                                            <label><b>Telefon No</b></label>
+                                            <input type="text" name="ContactPhone" required class="form-control" />
+                                            <br />
+                                            <button class="btn btn-success"> Ekle</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ModalCategoryAddedEnd-->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

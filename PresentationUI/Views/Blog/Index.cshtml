@@ -9,6 +9,8 @@
 }
 
 <head>
+    <meta http-equiv="refresh" content="40">
+
     <style>
         .ss {
             background: linear-gradient(#cac0c0,#fff);
@@ -36,7 +38,7 @@
                     {
                         <div class="col-lg-4 card ss">
                             <a href="/Blog/BlogReadAll/@item.BlogId">
-                                <img src="@item.BlogImage" style="height:18rem" class="card-img-top img-fluid ss" alt="">
+                                <img src="~/BlogImageFiles/@item.BlogImage" style="height:18rem" class="card-img-top img-fluid ss" alt="">
                             </a>
                             <div class="card-body">
                                 <ul class="blog-icons my-4">
@@ -47,7 +49,7 @@
                                     </li>
                                     <li class="mx-2">
                                         <a href="#">
-                                            <i class="far fa-comment"></i> 21
+                                            <i class="far fa-comment"></i> @ViewBag.comment
                                         </a>
                                     </li>
                                     <li>

@@ -13,136 +13,159 @@
     string statusColor = "";
 }
 
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h2>Kategoriler</h2>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
 
-            <h1 class="card-title mb-3">Kategoriler</h1>
-            <table class="table table-bordered table-hover .table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Kategori Adı</th>
-                        <th>Açıklama</th>
-                        <th>Durum</th>
-                        <th>Sil</th>
-                        <th>Düzenle</th>
-                    </tr>
-                </thead>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.CategoryId</td>
-                        <td>@item.CategoryName</td>
-                        <td>@item.CategoryDescription</td>
-                        <td>
-                            @switch (item.CategoryStatus)
-                            {
-                                case true:
-                                    statusColor = "badge badge-danger";
-                                    break;
-                                case false:
-                                    statusColor = "badge badge-success";
-                                    break;
-                            }
-                            @if (item.CategoryStatus == true)
-                            {
-                                <span class="badge badge-success">Aktif</span> }
-                            else
-                            {
-                                <span class="badge badge-secondary">Pasif</span>}
-                        </td>
-                        <td>
-                            <a class="btn btn-@statusColor" href="/Admin/Category/CategoryDelete/@item.CategoryId">
-
-                                @if (item.CategoryStatus == true)
-                                {
-                                    statusColor = "badge badge-danger";
-                                    checkStatus = "Sil";
-
-                                }
-                                else
-                                {
-                                    statusColor = "badge badge-success";
-                                    checkStatus = "Ekle";
-                                }
-                                @checkStatus
-
-                            </a>
-                        </td>
-                        <td>
-                            <a href="/Admin/Category/CategoryEdit/@item.CategoryId" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">
-                                Düzenle
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </table>
-
-            <button class="btn btn-primary" data-toggle="modal" data-target="#Modal1">
-                Yeni Kategori Oluştur
-            </button>
-            <!--ModalCategoryAdded-->
-            <div class="modal mt-5" id="Modal1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2><b>Kategori Oluştur</b></h2>
-                        </div>
-                        <form method="post" action="/Admin/Category/CategoryAdd/" autocomplete="off">
-                            <div class="modal-body">
-                                <label><b>Kategori Adı</b></label>
-                                <input type="text" name="CategoryName" required class="form-control" />
-                                <br />
-                                <label><b>Açıklama</b></label>
-                                <input type="text" name="CategoryDescription" required class="form-control" />
-                                <br />
-                                <button class="btn btn-success">Kategori Ekle</button>
-                            </div>
-                        </form>
+                        <a class="">
+                            <i class="fa fa-times"></i>
+                        </a>
                     </div>
                 </div>
-            </div>
-            <!--ModalCategoryAddedEnd-->
-            <!--ModalCategoryEdit2-->
-            <div class="modal mt-5" id="Modal2">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2><b>Kategori Düzenle</b></h2>
-                        </div>
-                        <form method="post" action="/Admin/Category/CategoryEdit/" autocomplete="off">
-                            <div class="modal-body">
-                                <label><b>Kategori ID</b></label>
-                                <input type="text" name="CategoryId" required class="form-control" />
-                                <br />
-                                <label><b>Kategori Adı</b></label>
-                                <input type="text" name="CategoryName" required class="form-control" />
-                                <br />
-                                <label><b>Açıklama</b></label>
-                                <input type="text" name="CategoryDescription" required class="form-control" />
-                                <br />
-                                <button class="btn btn-success">Güncelle</button>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Kategori Adı</th>
+                                    <th>Açıklama</th>
+                                    <th>Durum</th>
+                                    <th>Sil</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.CategoryId</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>@item.CategoryDescription</td>
+                                        <td>
+                                            @switch (item.CategoryStatus)
+                                            {
+                                                case true:
+                                                    statusColor = "badge badge-danger";
+                                                    break;
+                                                case false:
+                                                    statusColor = "badge badge-success";
+                                                    break;
+                                            }
+                                            @if (item.CategoryStatus == true)
+                                            {
+                                                <span class="badge badge-success">Aktif</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-secondary">Pasif</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-@statusColor" href="/Admin/Category/CategoryDelete/@item.CategoryId">
+
+                                                @if (item.CategoryStatus == true)
+                                                {
+                                                    statusColor = "badge badge-danger";
+                                                    checkStatus = "Sil";
+
+                                                }
+                                                else
+                                                {
+                                                    statusColor = "badge badge-success";
+                                                    checkStatus = "Ekle";
+                                                }
+                                                @checkStatus
+
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/Category/CategoryEdit/@item.CategoryId" class="btn btn-warning" data-toggle="modal" data-target="#Modal2">
+                                                Düzenle
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <button class="btn btn-primary dim" data-toggle="modal" data-target="#Modal1">
+                            Yeni Kategori Oluştur
+                        </button>
+                        <!--ModalCategoryAdded-->
+                        <div class="modal mt-5" id="Modal1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>Kategori Oluştur</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/Category/CategoryAdd/" autocomplete="off">
+                                        <div class="modal-body">
+                                            <label><b>Kategori Adı</b></label>
+                                            <input type="text" name="CategoryName" required class="form-control" />
+                                            <br />
+                                            <label><b>Açıklama</b></label>
+                                            <input type="text" name="CategoryDescription" required class="form-control" />
+                                            <br />
+                                            <button class="btn btn-success">Kategori Ekle</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </form>
+                        </div>
+                        <!--ModalCategoryAddedEnd-->
+                        <!--ModalCategoryEdit2-->
+                        <div class="modal mt-5" id="Modal2">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>Kategori Düzenle</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/Category/CategoryEdit/" autocomplete="off">
+                                        <div class="modal-body">
+                                            <label><b>Kategori ID</b></label>
+                                            <input type="text" name="CategoryId" required class="form-control" />
+                                            <br />
+                                            <label><b>Kategori Adı</b></label>
+                                            <input type="text" name="CategoryName" required class="form-control" />
+                                            <br />
+                                            <label><b>Açıklama</b></label>
+                                            <input type="text" name="CategoryDescription" required class="form-control" />
+                                            <br />
+                                            <button class="btn btn-success">Güncelle</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ModalCategory2Edit End-->
+
+
                     </div>
+                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+                    {
+                        DisplayItemSliceAndTotal = false,
+                        ContainerDivClasses = new[] { "navigation" },
+                        LiElementClasses = new[] { "page-item" },
+                        PageClasses = new[] { "page-link" },
+                        LinkToFirstPageFormat = "««",
+                        LinkToPreviousPageFormat = "«",
+                        LinkToIndividualPageFormat = "{0}",
+                        LinkToNextPageFormat = "»",
+                        LinkToLastPageFormat = "»»",
+
+                        UlElementClasses = new[] { "pagination" },
+                    })
                 </div>
             </div>
-            <!--ModalCategory2Edit End-->
         </div>
     </div>
-    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
-    {
-        DisplayItemSliceAndTotal = false,
-        ContainerDivClasses = new[] { "navigation" },
-        LiElementClasses = new[] { "page-item" },
-        PageClasses = new[] { "page-link" },
-        LinkToFirstPageFormat = "««",
-        LinkToPreviousPageFormat = "«",
-        LinkToIndividualPageFormat = "{0}",
-        LinkToNextPageFormat = "»",
-        LinkToLastPageFormat = "»»",
-
-        UlElementClasses = new[] { "pagination" },
-    })
 </div>

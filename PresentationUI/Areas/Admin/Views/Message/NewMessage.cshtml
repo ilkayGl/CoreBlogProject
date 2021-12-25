@@ -1,0 +1,83 @@
+﻿@model EntityLayer.Concrete.Message2
+@{
+    ViewData["Title"] = "NewMessage";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- include summernote css/js -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <!--MessageMenuPartialView-->
+        <partial name="~/Areas/Admin/Views/Message/MessageMenuPartialView.cshtml" />
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <h2>
+                    Mesaj Gönder
+                </h2>
+            </div>
+            <div class="mail-box">
+                <form asp-action="NewMessage" asp-controller="Message" method="post" enctype="multipart/form-data" autocomplete="off">
+
+                    <div class="mail-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alıcı :</label>
+                            <div class="col-sm-10">
+                                <select asp-for="ReceiverUser.WriterId" asp-items="@((List<SelectListItem>)ViewBag.dgr2)" class="form-control" border-radius: 10px">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Konu Başlığı :</label>
+                            <div class="col-sm-10">
+                                <input type="text" asp-for="Subject"  class="form-control" border-radius:10px" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mail-text h-200">
+                        <div class="form-group">
+                            <span class="badge badge-danger"></span>
+                            <textarea id="Content" asp-for="MessageDetails" required></textarea>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="mail-body text-right tooltip-demo">
+                        <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Gönder"><i class="fa fa-reply"></i> Gönder</button>
+                        <button type="reset" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="İptal Et"><i class="fa fa-times"></i> İptal</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--SummerNote JS-->
+<script>
+    $('#Content').summernote({
+        placeholder: 'Bir İçerik Girerek Başla..',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+    });
+</script>

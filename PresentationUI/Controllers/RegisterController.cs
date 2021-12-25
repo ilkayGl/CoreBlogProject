@@ -1,11 +1,10 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
-using DataAccessLayer.Concrete.EntityFramework;
+using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +15,22 @@ namespace PresentationUI.Controllers
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        WriterManager wm = new WriterManager(new EfWriterDal());
-        WriterValidator writerValidator = new WriterValidator();
+        private readonly Context c = new();
+        private readonly WriterValidator writerValidator = new();
+        private readonly IWriterService _ws;
+
+        public RegisterController(IWriterService ws)
+        {
+            _ws = ws;
+        }
+
+
 
         [HttpGet]
         public IActionResult Index()
         {
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
             return View();
         }
@@ -34,7 +43,7 @@ namespace PresentationUI.Controllers
             if (results.IsValid)
             {
                 writer.WriterStatus = true;
-                wm.TAddBL(writer);
+                _ws.TAddBL(writer);
                 return RedirectToAction("Index", "Blog");
             }
             else

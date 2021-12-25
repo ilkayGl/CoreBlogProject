@@ -12,5 +12,6 @@ namespace DataAccessLayer.Abstract
         List<Blog> GetListWithCategory(); // todo Blogları categori ile birlikte getir. Bloga özel olduğu için Burada tanımlanır
         List<Blog> GetListWithCategoryByWriter(int id); //incule metodu ile categori name getirdik
         List<Blog> GetBlogIdListWriter(int id); //include metodu ile blog id ye göre yazar adını aldık
+        List<Blog> GetBlogCategoryWriterD(); //include admin tarafı için yazar category blog üçlüsü alınır
     }
 }

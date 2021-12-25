@@ -10,5 +10,7 @@ namespace BusinessLayer.Abstract
     public interface ICommentService : IGenericService<Comment>
     {
         List<Comment> GetFilterList(int id);
+
+        List<Comment> GetCommentBlogList();
     }
 }

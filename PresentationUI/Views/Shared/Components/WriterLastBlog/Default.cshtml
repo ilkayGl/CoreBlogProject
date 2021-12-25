@@ -11,28 +11,30 @@
     </style>
 </head>
 
-
-<div class="tech-btm">
-    <h4 class="mb-3"><b>Yazarın Diğer Yazıları</b></h4>
-    @foreach (var item in Model)
-    {
-        <div class="blog-grids row mb-3">
-            <div class="col-md-5 blog-grid-left">
-                <a href="/Blog/BlogReadAll/@item.BlogId" style="width:40rem; height:40rem">
-                    <img src="@item.BlogImage" alt="image" class="img1 img-fluid" />
-                </a>
-            </div>
-
-            <div class="col-md-7 blog-grid-right">
-                <h5>@item.BlogTitle</h5>
-
-                <div class="sub-meta">
-                    <span>
-                        <i class="far fa-clock"></i> @item.BlogCreateDate.ToString("dd MMMM yyyy")
-                    </span>
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <div class="tech-btm">
+        <h4 class="mb-3"><b>Yazarın Diğer Yazıları</b></h4>
+        @foreach (var item in Model)
+        {
+            <div class="blog-grids row mb-3">
+                <div class="col-md-5 blog-grid-left">
+                    <a href="/Blog/BlogReadAll/@item.BlogId" style="width:40rem; height:40rem">
+                        <img src="~/BlogImageFiles/@item.BlogImage" alt="image" class="img1 img-fluid" />
+                    </a>
                 </div>
-            </div>
 
-        </div>
-    }
-</div>
+                <div class="col-md-7 blog-grid-right">
+                    <h5>@item.BlogTitle</h5>
+
+                    <div class="sub-meta">
+                        <span>
+                            <i class="far fa-clock"></i> @item.BlogCreateDate.ToString("dd MMMM yyyy")
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,144 @@
+﻿@using EntityLayer.Concrete
+@model List<Message2>
+@{
+    ViewData["Title"] = "SendBox";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<body class="hold-transition sidebar-mini">
+    <div class="">
+
+        <div class="content-wrapper">
+
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Mesaj Kutusu</h1>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+
+                    <partial name="~/Views/Message/InBoxMenuPartialView.cshtml" />
+
+                    <div class="col-md-9">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Gönderilen Mesajlar</h3>
+
+                            </div>
+
+                            <div class="card-body p-0">
+
+                                <div class="table-responsive mailbox-messages">
+                                    <table class="table table-hover table-striped">
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="icheck-primary">
+                                                            <input type="checkbox" value="" id="check1">
+                                                            <label for="check1"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="mailbox-star"><a><i class="fas fa-star text-warning"></i></a></td>
+                                                    <td class="mailbox-name">
+                                                        <i class="far fa-envelope"></i>
+                                                        <b>@item.ReceiverUser.WriterName</b>
+                                                    </td>
+                                                    <td class="mailbox-subject">
+                                                        <b>Konu : </b> @item.Subject <br />
+                                                    </td>
+                                                    <td class="mailbox-attachment"><i class="fas fa-paperclip"></i> <a href="/Message/MessageDetails/@item.MessageId">Mesajı Oku.</a></td>
+                                                    <td class="mailbox-date">
+                                                        @{ DateTime end = (DateTime)item.MessageDate;
+                                                            DateTime now = DateTime.Now;
+                                                            TimeSpan diff = end.Subtract(now); }
+                                                        @if (diff.Days != 0 && diff.Hours != 0 && diff.Minutes != 0)
+                                                        {
+                                                            <p class="text-gray mb-0 text-small">
+                                                                @diff.ToString(@"dd") gün
+                                                                @diff.ToString(@"hh") saat
+                                                                @diff.ToString(@"mm") dakika
+                                                                @diff.ToString(@"ss") saniye önce
+                                                            </p> }
+                                                        else if (diff.Days == 0 && diff.Hours != 0 && diff.Minutes != 0)
+                                                        {
+                                                            <p class="text-gray mb-0 text-small">
+                                                                @diff.ToString(@"hh") saat
+                                                                @diff.ToString(@"mm") dakika
+                                                                @diff.ToString(@"ss") saniye önce
+                                                            </p>}
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger" href="/Message/MessageDelete/@item.MessageId">
+                                                            Sil
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- Main content End -->
+
+        </div>
+    </div>
+
+    <!-- Page Script -->
+    <script>
+        $(function () {
+            //Enable check and uncheck all functionality
+            $('.checkbox-toggle').click(function () {
+                var clicks = $(this).data('clicks')
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
+                    $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
+                } else {
+                    //Check all checkboxes
+                    $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
+                    $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
+                }
+                $(this).data('clicks', !clicks)
+            })
+
+            //Handle starring for glyphicon and font awesome
+            $('.mailbox-star').click(function (e) {
+                e.preventDefault()
+                //detect type
+                var $this = $(this).find('a > i')
+                var glyph = $this.hasClass('glyphicon')
+                var fa = $this.hasClass('fa')
+
+                //Switch states
+                if (glyph) {
+                    $this.toggleClass('glyphicon-star')
+                    $this.toggleClass('glyphicon-star-empty')
+                }
+
+                if (fa) {
+                    $this.toggleClass('fa-star')
+                    $this.toggleClass('fa-star-o')
+                }
+            })
+        })
+    </script>
+
+</body>
+

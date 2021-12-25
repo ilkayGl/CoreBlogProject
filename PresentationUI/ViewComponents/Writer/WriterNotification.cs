@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,11 +11,15 @@ namespace PresentationUI.ViewComponents.Writer
 {
     public class WriterNotification : ViewComponent
     {
-        NotificationManager nm = new NotificationManager(new EfNotificationDal());
+        private readonly INotificationService _ns;
+        public WriterNotification(INotificationService ns)
+        {
+            _ns = ns;
+        }
 
         public IViewComponentResult Invoke()
         {
-            var values = nm.GetByDesTake3List();
+            var values = _ns.GetByDesTake3List();
             return View(values);
         }
     }

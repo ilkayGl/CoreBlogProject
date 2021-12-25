@@ -1,26 +1,14 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using AspNetCoreHero.ToastNotification;
-using DataAccessLayer.Concrete;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Identity;
-using EntityLayer.Concrete;
-using PresentationUI.Helpers;
-using System.Security.Claims;
 
 namespace PresentationUI
 {
@@ -48,8 +36,10 @@ namespace PresentationUI
 
             //services.AddAuthorization(options =>
             //{
-            //    options.AddPolicy("WriterOp", policy => policy.RequireClaim(ClaimTypes.Name));
+            //    options.AddPolicy("A", policy => policy.RequireClaim(ClaimTypes.Role));
             //});
+
+
 
             services.AddAuthentication(options =>
             {
@@ -82,6 +72,7 @@ namespace PresentationUI
             // services.AddScoped<IUserClaimsPrincipalFactory<Writer>, ApplicationUserClaimsPrincipalFactory>();
 
             //services.AddSession();
+
 
         }
 

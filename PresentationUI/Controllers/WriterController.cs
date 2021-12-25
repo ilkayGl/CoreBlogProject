@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
@@ -17,23 +18,19 @@ using System.Threading.Tasks;
 
 namespace PresentationUI.Controllers
 {
-    //[Authorize(Policy = "WriterOp")]
+    //[Authorize(Policy = "A")]
     public class WriterController : Controller
     {
-        WriterManager wm = new WriterManager(new EfWriterDal());
-        Context c = new Context();
+        private readonly Context c = new();
+        private readonly IWriterService _ws;
 
-        public IActionResult Index()
+        public WriterController(IWriterService ws)
         {
-            return View();
+            _ws = ws;
         }
 
-        public IActionResult WriterTest()
-        {
-            return View();
-        }
 
-      
+
         [HttpGet]
         public IActionResult WriterEditProfile()
         {
@@ -48,11 +45,18 @@ namespace PresentationUI.Controllers
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            var writerValues = wm.GetByID(writerID);
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+            var writerValues = _ws.GetByID(writerID);
             return View(writerValues);
         }
 
-        
+
         [HttpPost]
         public IActionResult WriterEditProfile(Writer w, AddProfileImage p)
         {
@@ -71,41 +75,11 @@ namespace PresentationUI.Controllers
             w.WriterPassword = p.WriterPassword;
             w.WriterStatus = true;
             w.WriterAbout = p.WriterAbout;
-            wm.TUpdateBL(w);
+            _ws.TUpdateBL(w);
             return RedirectToAction("Index", "Dashboard");
         }
 
 
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult WriterAdd()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult WriterAdd(AddProfileImage p)
-        {
-            Writer w = new Writer();
-            if (p.WriterImage != null)
-            {
-                var extension = Path.GetExtension(p.WriterImage.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                p.WriterImage.CopyTo(stream);
-                w.WriterImage = newimageName;
-            }
-            w.WriterName = p.WriterName;
-            w.WriterMail = p.WriterMail;
-            w.WriterPassword = p.WriterPassword;
-            w.WriterStatus = true;
-            w.WriterAbout = p.WriterAbout;
-            wm.TAddBL(w);
-            return RedirectToAction("Index", "Dashboard");
-
-        }
 
     }
 }

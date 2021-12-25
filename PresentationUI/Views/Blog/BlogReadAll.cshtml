@@ -32,7 +32,7 @@
                         <div class="b-grid-top">
                             <div class="blog_info_left_grid">
                                 <a style="width:40rem; height:40rem">
-                                    <img src="@item.BlogImage" alt="image" class="img1 img-fluid" />
+                                    <img src="~/BlogImageFiles/@item.BlogImage" alt="image" class="img1 img-fluid" />
                                 </a>
                             </div>
                             <div class="blog-info-middle">
@@ -50,7 +50,7 @@
                                     </li>
                                     <li>
                                         <a href="#">
-                                            <i class="far fa-comment"></i> Yorum
+                                            <i class="far fa-comment"></i> @ViewBag.comment Yorum
                                         </a>
                                     </li>
                                     <li class="ml-2">

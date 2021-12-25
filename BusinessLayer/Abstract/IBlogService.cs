@@ -14,5 +14,12 @@ namespace BusinessLayer.Abstract
         List<Blog> GetBlogListByWriter(int id);
 
         List<Blog> GetBlogIdListWriter(int id); //include metodu blog ile id ye göre yazar adını aldık
+
+        List<Blog> GetBlogCategoryWriter();
+
+        List<Blog> GetListWithCategoryByWriter(int id);
+
+        List<Blog> GetLast3Blog();
+
     }
 }

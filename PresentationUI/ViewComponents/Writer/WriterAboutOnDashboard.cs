@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,14 @@ namespace PresentationUI.ViewComponents.Writer
 {
     public class WriterAboutOnDashboard : ViewComponent
     {
-        WriterManager wm = new WriterManager(new EfWriterDal());
-        Context c = new Context();
+        private readonly Context c = new();
+        private readonly IWriterService _ws;
+
+        public WriterAboutOnDashboard(IWriterService ws)
+        {
+            _ws = ws;
+        }
+
 
         public IViewComponentResult Invoke()
         {
@@ -21,7 +28,7 @@ namespace PresentationUI.ViewComponents.Writer
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
             ViewBag.writerID = writerID;
 
-            var values = wm.GetWriterById(writerID);
+            var values = _ws.GetWriterById(writerID);
             return View(values);
         }
     }

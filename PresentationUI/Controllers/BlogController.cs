@@ -1,11 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessLayer.Concrete;
+using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,22 +13,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using X.PagedList;
 
 namespace PresentationUI.Controllers
 {
     public class BlogController : Controller
     {
-        BlogManager bm = new BlogManager(new EfBlogDal());
-        CategoryManager cm = new CategoryManager(new EfCategoryDal());
-        Context c = new Context();
-
+        private readonly Context c = new();
+        private readonly IBlogService _bs;
+        private readonly ICategoryService _cs;
         private readonly INotyfService _notyf;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public BlogController(INotyfService notyf)
+        public BlogController(IBlogService bs, ICategoryService cs, INotyfService notyf, IWebHostEnvironment hostEnvironment)
         {
+            _bs = bs;
+            _cs = cs;
             _notyf = notyf;
+            _hostEnvironment = hostEnvironment;
         }
 
 
@@ -36,6 +38,16 @@ namespace PresentationUI.Controllers
         [HttpGet]
         public IActionResult Index(int? Sayfa, string Blogsearch)
         {
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+            //yorum sayısını getirme-güncellenecek
+            var yrm = c.Comments.Select(u => u.CommentId).FirstOrDefault();
+            var value = c.Blogs.Where(x => x.BlogId == yrm).Count().ToString();
+            ViewBag.comment = value;
+
+
             var pageNumber = Sayfa ?? 1;
             int pagaSize = 9;
             ViewData["blogall"] = Blogsearch;
@@ -52,8 +64,12 @@ namespace PresentationUI.Controllers
         [AllowAnonymous]
         public IActionResult BlogReadAll(int id)
         {
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
             ViewBag.i = id; // todo =* ViewComment= BlogId ye göre yorum getirmek için id yi çekiyoruz BlogReadAll.cshtl Vc id olarak atıyoruz
-            var values = bm.GetBlogIdListWriter(id);
+            var values = _bs.GetBlogIdListWriter(id);
             return View(values);
         }
 
@@ -71,7 +87,15 @@ namespace PresentationUI.Controllers
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
-            var values = bm.GetListWithCategoryByWriterBm(writerID);
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+
+            var values = _bs.GetListWithCategoryByWriter(writerID);
             return View(values);
         }
 
@@ -90,8 +114,14 @@ namespace PresentationUI.Controllers
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
 
-            List<SelectListItem> deger1 = (from x in cm.GetList()
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+            List<SelectListItem> deger1 = (from x in _cs.GetList()
                                            select new SelectListItem
                                            {
                                                Text = x.CategoryName,
@@ -107,23 +137,50 @@ namespace PresentationUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlogAdd(Blog blog)
+        public IActionResult BlogAdd([Bind("BlogId", "BlogTitle", "BlogContent", "BlogThumbnailImage", "BlogImage", "Image", "BlogCreateDate", "BlogStatus", "CategoryId", "WriterId")] Blog blog)
         {
+
             var userMail = User.Identity.Name;
 
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
             ViewBag.writerID = writerID;
 
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
 
             BlogValidator bv = new BlogValidator();
             ValidationResult result = bv.Validate(blog);
             if (result.IsValid)
             {
+                var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "BlogImageFiles"); //birleştir
+                if (!Directory.Exists(dosyaYolu)) //yoksa
+                {
+                    Directory.CreateDirectory(dosyaYolu); //oluştur
+                }
+                var tamDosyaAdi = Path.Combine(dosyaYolu, blog.Image.FileName); //wwwroote içine img adında dosya yolu tanımlıyor
+                                                                                //file upload
+                using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+                {
+                    blog.Image.CopyTo(dosyaAkisi);
+                }//using ekleme amacımız Gc beklemeden kaynağı yok etmesidir.
+
+                blog.BlogImage = blog.Image.FileName;
+
                 blog.BlogStatus = true;
                 blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
                 blog.WriterId = writerID;
-                bm.TAddBL(blog);
+                _bs.TAddBL(blog);
                 _notyf.Success("Blog Başarıyla Eklendi.");
                 return RedirectToAction("BlogListByWriterr", "Blog");
             }
@@ -132,7 +189,7 @@ namespace PresentationUI.Controllers
                 foreach (var item in result.Errors)
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                    _notyf.Warning("Blog Eklenirken Bir Hata Oluştur");
+                    _notyf.Warning("Blog Eklenirken Bir Hata Oluştu");
                 }
             }
             return View();
@@ -142,7 +199,7 @@ namespace PresentationUI.Controllers
 
         public IActionResult BlogDelete(int id)
         {
-            var values = bm.GetByID(id);
+            var values = _bs.GetByID(id);
             if (values.BlogStatus == true)
             {
                 values.BlogStatus = false;
@@ -153,9 +210,10 @@ namespace PresentationUI.Controllers
                 values.BlogStatus = true;
                 _notyf.Success("Blog Başarıyla Eklendi.");
             }
-            bm.TUpdateBL(values);
+            _bs.TUpdateBL(values);
             return RedirectToAction("BlogListByWriterr", "Blog");
         }
+
 
         [HttpGet]
         public IActionResult BlogEdit(int id)
@@ -171,9 +229,16 @@ namespace PresentationUI.Controllers
             var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
             ViewBag.writerImage = writerImage;
 
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
 
-            var blogValue = bm.GetByID(id);
-            List<SelectListItem> deger1 = (from x in cm.GetList()
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
+
+            var blogValue = _bs.GetByID(id);
+            List<SelectListItem> deger1 = (from x in _cs.GetList()
                                            select new SelectListItem
                                            {
                                                Text = x.CategoryName,
@@ -188,20 +253,46 @@ namespace PresentationUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlogEdit(Blog blog)
+        public IActionResult BlogEdit(Blog b)
         {
             var userMail = User.Identity.Name;
 
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
             ViewBag.writerID = writerID;
 
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
             BlogValidator bv = new BlogValidator();
-            ValidationResult result = bv.Validate(blog);
+            ValidationResult result = bv.Validate(b);
             if (result.IsValid)
             {
-                blog.BlogStatus = true;
-                blog.WriterId = writerID;
-                bm.TUpdateBL(blog);
+                var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "BlogImageFiles");
+                if (!Directory.Exists(dosyaYolu))
+                {
+                    Directory.CreateDirectory(dosyaYolu);
+                }
+                var tamDosyaAdi = Path.Combine(dosyaYolu, b.Image.FileName);
+                using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+                {
+                    b.Image.CopyTo(dosyaAkisi);
+                }
+
+                b.BlogImage = b.Image.FileName;
+
+
+                b.BlogStatus = true;
+                b.WriterId = writerID;
+                _bs.TUpdateBL(b);
                 _notyf.Success("Blog Başarıyla Güncellendi.");
                 return RedirectToAction("BlogListByWriterr", "Blog");
             }

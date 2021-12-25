@@ -10,13 +10,8 @@
                     }
                     else
                     {
-                        @if (Context.User.Identity.IsAuthenticated)
-                        {
-                            <img src="~/@User.Identity.AuthenticationType" alt="profile">
-
-                        }
+                        <img src="~/WriterImageFiles/user-icon.jpg" alt="User Default Profile Picture">
                     }
-                    @*<img src="~/WriterImageFiles/@ViewBag.writerImage" alt="profile">*@
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
@@ -55,19 +50,26 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="/Blog/BlogListByWriterr">
-                <span class="menu-title">Bloglarım</span>
-                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-            </a>
-        </li>
+        @if (ViewBag.writerRole == "A" || ViewBag.writerRole == "Y")
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/Blog/BlogListByWriterr">
+                    <span class="menu-title">Bloglarım</span>
+                    <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                </a>
+            </li>
+        }
 
-        <li class="nav-item">
-            <a class="nav-link" href="/Blog/BlogAdd">
-                <span class="menu-title">Yeni Blog</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-            </a>
-        </li>
+
+        @if (ViewBag.writerRole == "A" || ViewBag.writerRole == "Y")
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/Blog/BlogAdd">
+                    <span class="menu-title">Yeni Blog</span>
+                    <i class="mdi mdi-chart-bar menu-icon"></i>
+                </a>
+            </li>
+        }
 
         <li class="nav-item">
             <a class="nav-link" href="/Message/InBox/">
@@ -89,6 +91,16 @@
                 <i class="mdi mdi-backup-restore menu-icon"></i>
             </a>
         </li>
+
+        @if (ViewBag.writerRole == "Y")
+        {
+            <li class="nav-item">
+                <a class="nav-link" target="_blank" href="/Admin/Category/Index/">
+                    <span class="menu-title">Yönetici Sayfası</span>
+                    <i class="mdi mdi-account-alert-outline menu-icon"></i>
+                </a>
+            </li>
+        }
 
         <li class="nav-item">
             <a class="nav-link" href="/Writer/WriterEditProfile">

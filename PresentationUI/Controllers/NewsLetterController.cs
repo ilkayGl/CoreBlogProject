@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
@@ -12,14 +13,16 @@ namespace PresentationUI.Controllers
 {
     public class NewsLetterController : Controller
     {
-        NewsLetterManager nlm = new NewsLetterManager(new EfNewsLetterDal());
-
+        private readonly INewsLetterService _nls;
         private readonly INotyfService _notyf;
 
-        public NewsLetterController(INotyfService notyf)
+        public NewsLetterController(INewsLetterService nls, INotyfService notyf)
         {
+            _nls = nls;
             _notyf = notyf;
         }
+
+
 
         [HttpGet]
         public IActionResult SubscribeMail()
@@ -31,7 +34,7 @@ namespace PresentationUI.Controllers
         public IActionResult SubscribeMail(NewsLetter newsLetter)
         {
             newsLetter.MailStatus = true;
-            nlm.TAddBL(newsLetter);
+            _nls.TAddBL(newsLetter);
             _notyf.Success("Bültene Abone Oldunuz.");
             return RedirectToAction("Index", "Blog");
         }

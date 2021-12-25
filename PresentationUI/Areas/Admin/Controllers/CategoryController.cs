@@ -1,47 +1,81 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessLayer.Concrete;
+using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
-using DataAccessLayer.Concrete.EntityFramework;
+using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using X.PagedList;
 namespace PresentationUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        CategoryManager cm = new CategoryManager(new EfCategoryDal());
-
+        private readonly Context c = new();
+        private readonly ICategoryService _cs;
+        private readonly IMessage2Service _ms;
         private readonly INotyfService _notyf;
 
-        public CategoryController(INotyfService notyf)
+        public CategoryController(ICategoryService cs, IMessage2Service ms, INotyfService notyf)
         {
+            _cs = cs;
+            _ms = ms;
             _notyf = notyf;
         }
 
 
 
-        [AllowAnonymous]
         public IActionResult Index(int page = 1)
         {
-            var values = cm.GetListAll().ToPagedList(page, 10);
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ///
+            var contactMessage = c.Contacts.Count().ToString();
+            ViewBag.contactMessage = contactMessage;
+
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+
+            var values = _cs.GetListAll().ToPagedList(page, 10);
             return View(values);
         }
 
-        [AllowAnonymous]
+
         [HttpGet]
         public IActionResult CategoryAdd()
         {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
             return View();
         }
 
-        [AllowAnonymous]
+
         [HttpPost]
         public IActionResult CategoryAdd(Category category)
         {
@@ -50,7 +84,7 @@ namespace PresentationUI.Areas.Admin.Controllers
             if (result.IsValid)
             {
                 category.CategoryStatus = true;
-                cm.TAddBL(category);
+                _cs.TAddBL(category);
                 _notyf.Success("Kategori Başarıyla Eklendi.");
                 return RedirectToAction("Index");
             }
@@ -66,28 +100,58 @@ namespace PresentationUI.Areas.Admin.Controllers
 
 
         }
-        [AllowAnonymous]
+
+
         [HttpGet]
         public IActionResult CategoryEdit(int id)
         {
-            var values = cm.GetByID(id);
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            var values = _cs.GetByID(id);
             return View(values);
         }
-        [AllowAnonymous]
+
+
         [HttpPost]
         public IActionResult CategoryEdit(Category category)
         {
+            var userMail = User.Identity.Name;
+
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
+            ViewBag.writerName = writerID;
+
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
             category.CategoryStatus = true;
-            cm.TUpdateBL(category);
+            _cs.TUpdateBL(category);
             _notyf.Success("Blog Başarıyla Güncellendi.");
             return RedirectToAction("Index");
 
         }
 
-        [AllowAnonymous]
+
         public IActionResult CategoryDelete(int id)
         {
-            var values = cm.GetByID(id);
+            var values = _cs.GetByID(id);
             if (values.CategoryStatus == true)
             {
                 values.CategoryStatus = false;
@@ -98,7 +162,7 @@ namespace PresentationUI.Areas.Admin.Controllers
                 values.CategoryStatus = true;
                 _notyf.Success("Kategori Başarıyla Eklendi.");
             }
-            cm.TUpdateBL(values);
+            _cs.TUpdateBL(values);
             return RedirectToAction("Index", "Category");
         }
     }

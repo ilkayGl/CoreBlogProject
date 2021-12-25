@@ -1,0 +1,64 @@
+﻿@model EntityLayer.Concrete.Message2
+
+@{
+    ViewData["Title"] = "MessageDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <!--MessageMenuPartialView-->
+        <partial name="~/Areas/Admin/Views/Message/MessageMenuPartialView.cshtml" />
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <div class="float-right tooltip-demo">
+                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
+                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
+                    <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>
+                </div>
+                <h2>
+                    Mesaj Görüntüle
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+
+                    <input type="hidden" asp-for="MessageId" />
+                    <h3>
+                        <span class="font-normal">Konu : </span> @Model.Subject
+                    </h3>
+                    <h5>
+                        <span class="float-right font-normal">
+                            @(((DateTime)Model.MessageDate).ToString("dd-MMMM-yyyy")) <br />
+                            @(((DateTime)Model.MessageDate).ToString(" h:mm tt"))
+                        </span>
+
+                    </h5>
+                    <h4>
+                        <span class="font-normal">Tarih : @(((DateTime)Model.MessageDate).ToString("dd-MMMM-yyyy")) </span>
+                    </h4>
+                    
+                </div>
+            </div>
+            <div class="mail-box">
+
+                <div class="mail-body">
+                    <p>
+                        @Html.Raw(@Model.MessageDetails)
+                    </p>
+                </div>
+
+                <div class="mail-body text-right tooltip-demo">
+                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-reply"></i> Reply</a>
+                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-arrow-right"></i> Forward</a>
+                    <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Print" class="btn btn-sm btn-white"><i class="fa fa-print"></i> Print</button>
+                    <button   data-placement="top" data-toggle="tooltip" data-original-title="Sil" class="btn btn-sm btn-white"><i class="fa fa-trash-o"></i> Sil</button>
+                </div>
+                <div class="clearfix"></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

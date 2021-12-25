@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
+using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,10 +11,15 @@ namespace PresentationUI.ViewComponents.Comment
 {
     public class CommentListByBlog : ViewComponent
     {
-        CommentManager cm = new CommentManager(new EfCommentDal());
+        private readonly ICommentService _cs;
+        public CommentListByBlog(ICommentService cs)
+        {
+            _cs = cs;
+        }
+
         public IViewComponentResult Invoke(int id)
         {
-            var values = cm.GetFilterList(id);
+            var values = _cs.GetFilterList(id);
             return View(values);
         }
     }

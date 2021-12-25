@@ -14,7 +14,9 @@ namespace DataAccessLayer.Concrete
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=.\\SQLEXPRESS;database=DbbCoreBlog; integrated security=true;");
+            //optionsBuilder.EnableSensitiveDataLogging();
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +32,7 @@ namespace DataAccessLayer.Concrete
                 .HasForeignKey(z => z.ReceiverId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+
         }
 
         //public Context(DbContextOptions<Context> options) : base(options) { }
@@ -43,8 +46,9 @@ namespace DataAccessLayer.Concrete
         public DbSet<NewsLetter> NewsLetters { get; set; }
         public DbSet<BlogRayting> BlogRaytings { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Message> Messages { get; set; }
         public DbSet<Message2> Message2s { get; set; }
+        public DbSet<ContactLocation> ContactLocations { get; set; }
+        public DbSet<LogoTitle> LogoTitles { get; set; }
 
     }
 }

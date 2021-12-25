@@ -1,77 +1,86 @@
-﻿<!DOCTYPE html>
-<html>
+﻿
+@if (ViewBag.writerRole == "Y")
+{
+    <!DOCTYPE html>
+    <html>
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>| Admin </title>
+        <title>| Admin </title>
 
-    <link href="~/Thema/AdminPanel/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/Thema/AdminPanel/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <link href="~/Thema/AdminPanel/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/Thema/AdminPanel/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="~/Thema/AdminPanel/css/animate.css" rel="stylesheet">
-    <link href="~/Thema/AdminPanel/css/style.css" rel="stylesheet">
+        <link href="~/Thema/AdminPanel/css/animate.css" rel="stylesheet">
+        <link href="~/Thema/AdminPanel/css/style.css" rel="stylesheet">
 
-</head>
+    </head>
 
-<body class="">
+    <body class="">
 
-    <div id="wrapper">
 
-        <!--NavBarPartialView-->
-        <partial name="~/Areas/Admin/Views/Shared/PartialViews/_NavBarPartialView.cshtml" />
 
-        <div id="page-wrapper" class="gray-bg">
 
-            <!--SideBarPartialView-->
-            <partial name="~/Areas/Admin/Views/Shared/PartialViews/_SideBarPartialView.cshtml" />
+        <div id="wrapper">
 
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-sm-4">
-                    <h2>This is main title</h2>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="#">This is</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <strong>Breadcrumb</strong>
-                        </li>
-                    </ol>
-                </div>
-            </div>
+            <!--NavBarPartialView-->
+            <partial name="~/Areas/Admin/Views/Shared/PartialViews/_NavBarPartialView.cshtml" />
 
-            <div class="wrapper wrapper-content">
-                @RenderBody()
+            <div id="page-wrapper" class="gray-bg">
 
-                @*<div class="middle-box text-center animated fadeInRightBig">
+                <!--SideBarPartialView-->
+                <partial name="~/Areas/Admin/Views/Shared/PartialViews/_SideBarPartialView.cshtml" />
 
+                @*<div class="row wrapper border-bottom white-bg page-heading">
+                        <div class="col-sm-4">
+                            <h2>İlgili Başlık</h2>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Burası</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <strong>İlgili Sayfa</strong>
+                                </li>
+                            </ol>
+                        </div>
                     </div>*@
 
-                <!--FooterPartialView-->
-                <partial name="~/Areas/Admin/Views/Shared/PartialViews/_FooterPartialView.cshtml" />
+                <div class="wrapper wrapper-content">
+                    @RenderBody()
+
+                    @*<div class="middle-box text-center animated fadeInRightBig">
+
+                        </div>*@
+
+                    <!--FooterPartialView-->
+                    <partial name="~/Areas/Admin/Views/Shared/PartialViews/_FooterPartialView.cshtml" />
+
+                </div>
 
             </div>
+
+            <!-- Mainly scripts -->
+            <script src="~/Thema/AdminPanel/js/jquery-3.1.1.min.js"></script>
+            <script src="~/Thema/AdminPanel/js/popper.min.js"></script>
+            <script src="~/Thema/AdminPanel/js/bootstrap.js"></script>
+            <script src="~/Thema/AdminPanel/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+            <script src="~/Thema/AdminPanel/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+            <!-- Custom and plugin javascript -->
+            <script src="~/Thema/AdminPanel/js/inspinia.js"></script>
+            <script src="~/Thema/AdminPanel/js/plugins/pace/pace.min.js"></script>
+
+            <!--Toastr-->
+            @await Component.InvokeAsync("Notyf")
+
         </div>
 
-        <!-- Mainly scripts -->
-        <script src="~/Thema/AdminPanel/js/jquery-3.1.1.min.js"></script>
-        <script src="~/Thema/AdminPanel/js/popper.min.js"></script>
-        <script src="~/Thema/AdminPanel/js/bootstrap.js"></script>
-        <script src="~/Thema/AdminPanel/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-        <script src="~/Thema/AdminPanel/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-        <!-- Custom and plugin javascript -->
-        <script src="~/Thema/AdminPanel/js/inspinia.js"></script>
-        <script src="~/Thema/AdminPanel/js/plugins/pace/pace.min.js"></script>
-
-        <!--Toastr-->
-        @await Component.InvokeAsync("Notyf")
-    </div>
-
-</body>
+    </body>
 
 </html>
-
+}
 

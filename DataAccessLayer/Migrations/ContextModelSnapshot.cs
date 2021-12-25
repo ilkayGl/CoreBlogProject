@@ -196,34 +196,58 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("EntityLayer.Concrete.Message", b =>
+            modelBuilder.Entity("EntityLayer.Concrete.ContactLocation", b =>
                 {
-                    b.Property<int>("MessageId")
+                    b.Property<int>("ContactLocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("MessageBool")
+                    b.Property<string>("ContactAdress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactEMail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactMapLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ContactStatus")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("MessageDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MessageDetails")
+                    b.Property<string>("ContactTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Receiver")
+                    b.Property<string>("ContactTitle2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Sender")
+                    b.HasKey("ContactLocationId");
+
+                    b.ToTable("ContactLocations");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.LogoTitle", b =>
+                {
+                    b.Property<int>("LogoTitleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Subject")
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("MessageId");
+                    b.HasKey("LogoTitleId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("LogoTitles");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Message2", b =>
@@ -330,8 +354,15 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("WriterPassword")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("WriterRole")
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
+
                     b.Property<bool>("WriterStatus")
                         .HasColumnType("bit");
+
+                    b.Property<string>("WriterTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("WriterId");
 

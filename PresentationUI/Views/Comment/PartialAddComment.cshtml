@@ -1,18 +1,64 @@
-﻿
+﻿@*<div class="comment-top">
+        <h4>Bir Yorum Bırak</h4>
+        <div class="comment-bottom">
+            <form asp-action="PartialAddComment" asp-controller="Comment" method="post" autocomplete="off">
+                <input class="form-control" type="hidden" name="BlogId" value="@ViewBag.i" required="">
+                <input class="form-control" type="text" name="CommentUserName" placeholder="Adınız" required="">
+                <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
+
+                <textarea class="form-control" name="CommentContent" placeholder="Message..." required=""></textarea>
+                <button type="submit" class="btn btn-primary submit">Yorum Yap</button>
+            </form>
+        </div>
+    </div>*@
+
+<!--//////////////////////////////////////////////////////////////////-->
+
 <div class="comment-top">
     <h4>Bir Yorum Bırak</h4>
     <div class="comment-bottom">
+        <form method="POST" id="form" autocomplete="off">
+            <input class="form-control" type="hidden" id="BlogId" value="@ViewBag.i" required="">
+            <input class="form-control" type="text" id="CommentUserName" placeholder="Adınız" required="">
+            <input class="form-control" type="text" id="CommentTitle" placeholder="Konu" required="">
 
-        <form asp-action="PartialAddComment" asp-controller="Comment" method="post" autocomplete="off">
-            <input class="form-control" type="hidden" name="BlogId" value="@ViewBag.i" placeholder="BlogID" required="">
-            <input class="form-control" type="text" name="CommentUserName" placeholder="Adınız" required="">
-            <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
-
-            <textarea class="form-control" name="CommentContent" placeholder="Message..." required=""></textarea>
-            <button type="submit" class="btn btn-primary submit">Yorum Yap</button>
+            <textarea class="form-control" id="CommentContent" placeholder="Message..." required=""></textarea>
+            <button type="submit" onclick="Save()" class="btn btn-primary submit">Yorum Yap</button>
         </form>
     </div>
 </div>
+
+
+
+
+<script>
+
+function Save() {
+    var BlogId = document.getElementById("BlogId");
+    var CommentUserName = document.getElementById("CommentUserName");
+    var CommentTitle = document.getElementById("CommentTitle");
+    var CommentContent = document.getElementById("CommentContent");
+    var form = document.getElementById("form");
+
+    var formData = new FormData(form);
+    formData.append("BlogId", BlogId.value);
+    formData.append("CommentUserName", CommentUserName.value);
+    formData.append("CommentTitle", CommentTitle.value);
+    formData.append("CommentContent", CommentContent.value);
+
+
+    var url = '/Comment/PartialAddComment';
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(res => res.json())
+        .then(result => {
+            alert("Yorum Kaydedildi!");
+        })
+} 
+</script>
+
 
 
 

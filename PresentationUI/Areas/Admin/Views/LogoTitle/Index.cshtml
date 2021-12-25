@@ -1,0 +1,90 @@
+﻿@using EntityLayer.Concrete
+@model List<LogoTitle>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h2>Logo / Başlık </h2>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                        <a class="">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Başlık</th>
+                                    <th>Görsel</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.LogoTitleId</td>
+                                        <td>@item.Title</td>
+                                        <td>
+                                            <img src="~/LogoImageFiles/@item.Logo" style="width:10rem;height:10rem;" alt="image" />
+                                        </td>
+
+                                        <td>
+                                            <a href="/Admin/LogoTitle/LogoTitleDelete/@item.LogoTitleId" class="btn btn-danger">
+                                                Sil
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <button class="btn btn-primary dim" data-toggle="modal" data-target="#Modal1">
+                            Yeni Oluştur
+                        </button>
+
+                        <!--ModalCategoryAdded-->
+                        <div class="modal mt-5" id="Modal1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2><b>Hakkımda</b></h2>
+                                    </div>
+                                    <form method="post" action="/Admin/LogoTitle/LogoTitleAdd/" autocomplete="off" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <label><b>Başlık Adı</b></label>
+                                            <input type="text" name="Title" required class="form-control" />
+                                            <br />
+                                            <label><b>Görsel</b></label>
+                                            <input type="file" name="Logo" class="form-control">
+                                            <br />
+                                            <button class="btn btn-success"> Ekle</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--ModalCategoryAddedEnd-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

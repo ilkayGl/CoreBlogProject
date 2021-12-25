@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
@@ -15,15 +16,16 @@ namespace PresentationUI.Controllers
 {
     public class CommentController : Controller
     {
-        CommentManager cm = new CommentManager(new EfCommentDal());
-        Context c = new Context();
-
+        private readonly ICommentService _cs;
         private readonly INotyfService _notyf;
 
-        public CommentController(INotyfService notyf)
+        public CommentController(ICommentService cs, INotyfService notyf)
         {
+            _cs = cs;
             _notyf = notyf;
         }
+
+
 
         public IActionResult Index()
         {
@@ -42,14 +44,13 @@ namespace PresentationUI.Controllers
         public IActionResult PartialAddComment(Comment comment)
         {
 
-            int parametre = c.Comments.Select(x => x.BlogId).FirstOrDefault();
-
             comment.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             comment.CommentStatus = true;
-            //comment.BlogId = 1;
-            cm.TAddBL(comment);
+
+            _cs.TAddBL(comment);
             _notyf.Success("Yorum Yaptınız");
-            return RedirectToAction("Index", "Blog");
+            //return RedirectToAction("Index", "Blog");
+            return Json(true);
 
 
         }
