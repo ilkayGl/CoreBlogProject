@@ -17,14 +17,15 @@
 <div class="comment-top">
     <h4>Bir Yorum Bırak</h4>
     <div class="comment-bottom">
-        <form method="POST" id="form" autocomplete="off">
+        <form method="POST" id="form" asp-action="PartialAddComment" asp-controller="Comment" autocomplete="off">
             <input class="form-control" type="hidden" id="BlogId" value="@ViewBag.i" required="">
-            <input class="form-control" type="text" id="CommentUserName" placeholder="Adınız" required="">
-            <input class="form-control" type="text" id="CommentTitle" placeholder="Konu" required="">
+            <input class="form-control" type="text" id="CommentUserName" placeholder="Adınız" required>
+            <input class="form-control" type="text" id="CommentTitle" placeholder="Konu" required>
 
-            <textarea class="form-control" id="CommentContent" placeholder="Message..." required=""></textarea>
-            <button type="button" onclick="Save()" class="btn btn-primary submit">Yorum Yap</button>
+            <textarea class="form-control" id="CommentContent" placeholder="Message..." required></textarea>
+
         </form>
+        <input type="submit" value="Yorum Yap" onclick="Save()" class="btn btn-success" />
     </div>
 </div>
 
@@ -33,34 +34,58 @@
 
 <script>
 
-function Save() {
-    var BlogId = document.getElementById("BlogId");
-    var CommentUserName = document.getElementById("CommentUserName");
-    var CommentTitle = document.getElementById("CommentTitle");
-    var CommentContent = document.getElementById("CommentContent");
-    var form = document.getElementById("form");
+    function Save() {
+        var BlogId = document.getElementById("BlogId");
+        var CommentUserName = document.getElementById("CommentUserName");
+        var CommentTitle = document.getElementById("CommentTitle");
+        var CommentContent = document.getElementById("CommentContent");
+        var form = document.getElementById("form");
 
-    var formData = new FormData(form);
-    formData.append("BlogId", BlogId.value);
-    formData.append("CommentUserName", CommentUserName.value);
-    formData.append("CommentTitle", CommentTitle.value);
-    formData.append("CommentContent", CommentContent.value);
+        var formData = new FormData(form);
+        formData.append("BlogId", BlogId.value);
+        formData.append("CommentUserName", CommentUserName.value);
+        formData.append("CommentTitle", CommentTitle.value);
+        formData.append("CommentContent", CommentContent.value);
 
 
-    var url = '/Comment/PartialAddComment';
+        var url = '/Comment/PartialAddComment/';
 
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    }).then(res => res.json())
-        .then(result => {
-            alert("Yorum Kaydedildi!");
-        })
-} 
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json())
+            .then(result => {
+                alert("Yorum Kaydedildi! Sayfayı yenileyin..");
+            })
+    }
 </script>
 
 
 
+@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        function Save() {
+            //Set the URL.
+            var url = $("#form").attr("action");
 
+            //Add the Field values to FormData object.
+            var formData = new FormData();
+            formData.append("BlogId", $("#BlogId").val());
+            formData.append("CommentUserName", $("#CommentUserName").val());
+            formData.append("CommentTitle", $("#CommentTitle").val());
+            formData.append("CommentContent", $("#CommentContent").val());
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    document.getElementById("u").value = data;
+                }
+            })
+        }
+    </script>*@
 
 

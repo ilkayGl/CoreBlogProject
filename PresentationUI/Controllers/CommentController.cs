@@ -1,16 +1,9 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
-using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PresentationUI.Controllers
 {
@@ -43,14 +36,22 @@ namespace PresentationUI.Controllers
         [HttpPost]
         public IActionResult PartialAddComment(Comment comment)
         {
+            if (comment.CommentContent == null || comment.CommentUserName == null || comment.CommentTitle == null)
+            {
+                _notyf.Warning("Yorum Alanını Boş Bırakamazsınız.");
+                //_cs.TDeleteBL(comment);
+                return Json(true);
+
+            }
 
             comment.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             comment.CommentStatus = true;
 
             _cs.TAddBL(comment);
             _notyf.Success("Yorum Yaptınız");
-            //return RedirectToAction("Index", "Blog");
+
             return Json(true);
+
 
 
         }
