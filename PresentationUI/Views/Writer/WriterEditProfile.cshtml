@@ -8,28 +8,6 @@
 
 <body class="hold-transition sidebar-mini">
 
-    <!-- Navbar -->
-    <!-- Content Wrapper. Contains page content -->
-    <!-- Content Header (Page header) -->
-
-    <section class="content-header">
-
-        <div class="container-fluid">
-
-            <div class="row mb-2">
-
-                <div class="col-sm-6">
-
-                    <h3>Profilim</h3>
-
-                </div>
-
-            </div>
-
-        </div><!-- /.container-fluid -->
-
-    </section>
-
     <!-- Main content -->
 
     <section class="content">
@@ -50,13 +28,14 @@
 
                                 @if (Model.WriterImage == null)
                                 {
-                                    <img width="150" height="150" class="img-circle"
+                                    <img width="150" height="150" class="img-circle" style="border-radius:30px 30px 30px 30px;"
                                          src="~/WriterImageFiles/user-icon.jpg"
                                          alt="User Default Profile Picture">
                                 }
                                 else
                                 {
-                                    <img src="~/WriterImageFiles/@Model.WriterImage" width="150" height="150" class="img-circle" alt="Profil Resmi" />
+                                    <img src="~/WriterImageFiles/@Model.WriterImage" width="150" height="150" class="img-circle"
+                                         style="border-radius:30px 30px 30px 30px;" alt="Profil Resmi" />
                                 }
 
                             </div>
@@ -110,7 +89,7 @@
                                         <input type="hidden" asp-for="WriterId" />
                                         <div class="form-group row">
 
-                                            <label for="inputName" class="col-sm-2 col-form-label">Adı / Soyadı : </label>
+                                            <label for="inputName" class="col-sm-2 col-form-label">Ad / Soyad : </label>
 
                                             <div class="col-sm-10">
 
@@ -151,7 +130,7 @@
 
                                             <label for="inputName" class="col-sm-2 col-form-label">Profil Fotorafı :</label>
 
-                                            <div class="custom-file" style="width:20rem ; margin-left:9px">
+                                            <div class="custom-file" style="width:20rem ; margin-left:18px">
                                                 <input type="file" name="WriterImage" class="custom-file-input" id="customFile">
                                                 <label class="custom-file-label " for="customFileLang">Resim Seçiniz</label>
                                             </div>

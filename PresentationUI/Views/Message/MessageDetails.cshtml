@@ -15,18 +15,19 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title mb-4"> Mesaj Detay Sayfası</h2>
+            <h2 class="card-title"> Mesaj Detayı :</h2>
+            <hr class="mb-5" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MessageId" />
 
             <div class="form-group">
-                <label for="exampleInputName2">Tarih</label>
+                <label for="exampleInputName2">Tarih:</label>
                 <input type="date" asp-for="MessageDate" placeholder="Tarih" class="form-control" border-radius:10px" readonly />
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName2">Konu</label>
+                <label for="exampleInputName2">Konu:</label>
                 <input type="text" asp-for="Subject" placeholder="" class="form-control" border-radius:10px" />
             </div>
 

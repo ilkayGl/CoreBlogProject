@@ -15,33 +15,39 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title mb-4"> Blog Güncelle</h2>
+            <h2 class="card-title"> Blog Güncelle</h2>
+            <hr class="mb-5" />
+
             <form class="forms-sample" asp-action="BlogEdit" asp-controller="Blog" method="post" autocomplete="off" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="BlogId" />
+
                 <div class="form-group">
-                    <label for="exampleInputName1">Blog Başlığı</label>
+                    <label for="exampleInputName1">Blog Başlığı:</label>
                     <input type="text" class="form-control" id="exampleInputName1" asp-for="BlogTitle" placeholder="Blog Başlığı">
                     <span class="badge badge-danger" asp-validation-for="BlogTitle"></span>
                 </div>
+
                 <div class="form-group">
                     <input type="text" asp-for="BlogCreateDate" placeholder="Tarih" class="form-control" border-radius:10px" />
                 </div>
+
                 <div class="form-group">
-                    <label for="exampleInputEmail3">Kategoriler</label>
+                    <label for="exampleInputEmail3">Kategoriler:</label>
                     <select asp-for="CategoryId" asp-items="@((List<SelectListItem>)ViewBag.dgr1)" class="form-control" border-radius: 10px">
                         <option>Kategori Seçiniz...</option>
                     </select>
                     <span class="badge badge-danger" asp-validation-for="CategoryId"></span>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail3">Görsel :</label>
 
-                    <div class="custom-file" style="width:20rem ; margin-left:9px">
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Blog Görseli:</label>
+                    <div class="custom-file">
                         <input type="file" asp-for="Image" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label " for="customFileLang">Resim Seçiniz</label>
+                        <label class="form-control custom-file-label " for="customFileLang">Resim Seçiniz</label>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <input type="text" asp-for="BlogImage" placeholder="Blog Resmi" class="form-control" border-radius:10px" />
                 </div>

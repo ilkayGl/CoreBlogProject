@@ -307,6 +307,8 @@ namespace PresentationUI.Controllers
             return View();
         }
 
+
+
         [AllowAnonymous]
         public IActionResult CategoryDetail(int? Sayfa, int id)
         {
