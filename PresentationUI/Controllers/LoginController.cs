@@ -31,6 +31,9 @@ namespace PresentationUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Writer writer)
         {
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+
             var datavalue = c.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
 
             if (datavalue != null)

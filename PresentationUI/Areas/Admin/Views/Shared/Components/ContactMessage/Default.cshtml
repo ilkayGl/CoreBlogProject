@@ -1,0 +1,61 @@
+﻿@using EntityLayer.Concrete
+@model List<Contact>
+
+
+<li class="dropdown">
+    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+        <i class="fa fa-envelope"></i>  <span class="label label-info">@ViewBag.contactMessages</span>
+    </a>
+    <ul class="dropdown-menu dropdown-messages">
+        @foreach (var item in Model)
+        {
+            <li>
+                <div class="dropdown-messages-box">
+                    <a class="dropdown-item float-left" href="/Admin/Message/ContactDetails/@item.ContactId">
+
+                        <img src="~/WriterImageFiles/user-icon.jpg" alt="image" class="rounded-circle">
+
+                    </a>
+                    <div class="media-body">
+                        <small class="float-right"></small>
+                        <strong>@item.ContactUserName sana mesaj gönderdi</strong>. <br>
+                        <small class="text-muted">
+                            @(((DateTime)item.ContactDate).ToString("dd-MMMM-yyyy"))
+                            @{
+                                DateTime end = (DateTime)item.ContactDate;
+                                DateTime now = DateTime.Now;
+                                TimeSpan diff = end.Subtract(now);
+                            }
+                            @if (diff.Days != 0 && diff.Hours != 0 && diff.Minutes != 0)
+                            {
+                                <span class="text-gray mb-0 text-small">
+                                    @diff.ToString(@"dd") gün
+                                    @diff.ToString(@"hh") saat
+                                    @diff.ToString(@"mm") dakika
+                                    @diff.ToString(@"ss") saniye önce
+                                </span>
+                            }
+                            else if (diff.Days == 0 && diff.Hours != 0 && diff.Minutes != 0)
+                            {
+                                <span class="text-gray mb-0 text-small">
+                                    @diff.ToString(@"hh") saat
+                                    @diff.ToString(@"mm") dakika
+                                    @diff.ToString(@"ss") saniye önce
+                                </span>
+                            }
+                        </small>
+                    </div>
+                    <hr />
+                </div>
+            </li>
+        }
+
+        <li>
+            <div class="text-center link-block">
+                <a href="#" class="dropdown-item">
+                    <i class="fa fa-envelope"></i> <strong>@ViewBag.contactMessages Yeni Mesaj</strong>
+                </a>
+            </div>
+        </li>
+    </ul>
+</li>

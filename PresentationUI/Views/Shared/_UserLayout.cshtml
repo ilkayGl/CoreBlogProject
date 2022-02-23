@@ -17,27 +17,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             window.scrollTo(0, 1);
         }
     </script>
+    <link href="~/css/ModuleDark.css" rel="stylesheet" />
     <link href="~/Thema/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="~/Thema/web/css/single.css">
     <link href="~/Thema/web/css/style.css" rel='stylesheet' type='text/css' />
     <link href="~/Thema/web/css/fontawesome-all.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
           rel="stylesheet">
-    <style>
-        .s {
-            background: linear-gradient(#fff,#cac0c0);
-        }
-    </style>
-
 
 </head>
 
 <body>
+
     <!--Header-->
     <partial name="~/Views/Shared/PartialViews/_HeaderPartialView.cshtml" />
     <!--//header-->
     <!--/main-->
-    <div class="s">
+    <div class="s ss1">
+        <div class="theme-switch-wrapper fixed-top" style="margin-top:8rem">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <span class="slider round"></span>
+            </label>
+            <em class="em">  <i class="fas fa-angle-double-right"></i> <i class="far fa-moon"></i> </em>
+        </div>
         @RenderBody()
     </div>
 
@@ -87,9 +90,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <!-- //Custom-JavaScript-File-Links -->
     <script src="~/Thema/web/js/bootstrap.js"></script>
+    <script src="~/css/ModuleDark.js"></script>
 
     <!--Toastr-->
     @await Component.InvokeAsync("Notyf")
+
+
 
 </body>
 

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authentication;
 using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using PresentationUI.Helpers;
+using DataAccessLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
 
 namespace PresentationUI
 {
@@ -24,8 +27,12 @@ namespace PresentationUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<Context>(opsions => opsions.UseSqlServer(Configuration.GetConnectionString("DbContext"))); //configuration
+            //configuration-Db
+            //services.AddDbContext<Context>(opsions => opsions.UseSqlServer(Configuration.GetConnectionString("DbContext"))); 
+            
+
             services.AddControllersWithViews();
+
             services.AddMvc(config =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -49,7 +56,7 @@ namespace PresentationUI
 
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Login/Index");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Login/Index");//Authentication
 
                 })
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
@@ -57,11 +64,10 @@ namespace PresentationUI
                     options.ClientId = Configuration["Authentication:Google:ClientId"];
                     options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                     options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                    //options.AuthorizationEndpoint += "?prompt=consent";
                 });
 
 
-
+            //ToastrNotyf
             services.AddNotyf(config =>
             {
                 config.DurationInSeconds = 10;
@@ -69,10 +75,8 @@ namespace PresentationUI
                 config.Position = NotyfPosition.BottomRight;
             });
 
-            // services.AddScoped<IUserClaimsPrincipalFactory<Writer>, ApplicationUserClaimsPrincipalFactory>();
-
-            //services.AddSession();
-
+            //AutoMapper
+            services.AddAutoMapper(c => c.AddProfile<AutoMapperProfiles>(), typeof(Startup));
 
         }
 
@@ -94,8 +98,6 @@ namespace PresentationUI
 
             app.UseStaticFiles();
 
-            // app.UseSession();
-
             app.UseRouting();
 
             app.UseAuthorization(); //
@@ -106,7 +108,7 @@ namespace PresentationUI
             {
                 endpoints.MapControllerRoute(
                    name: "areas",
-                   pattern: "{area:exists}/{controller=Category}/{action=Index}/{id?}");
+                   pattern: "{area:exists}/{controller=Category}/{action=Index}/{id?}"); //Areas PageMap
 
 
                 endpoints.MapControllerRoute(

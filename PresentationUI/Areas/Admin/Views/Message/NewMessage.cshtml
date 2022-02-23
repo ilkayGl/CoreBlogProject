@@ -35,7 +35,8 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Konu Başlığı :</label>
                             <div class="col-sm-10">
-                                <input type="text" asp-for="Subject"  class="form-control" border-radius:10px" />
+                                <input type="text" asp-for="Subject" class="form-control" border-radius:10px" />
+                                <span asp-validation-for="Subject" style="color:red"></span>
                             </div>
                         </div>
                     </div>
@@ -44,6 +45,7 @@
                         <div class="form-group">
                             <span class="badge badge-danger"></span>
                             <textarea id="Content" asp-for="MessageDetails" required></textarea>
+                            <span asp-validation-for="MessageDetails" style="color:red"></span>
                         </div>
 
                         <div class="clearfix"></div>
@@ -67,17 +69,9 @@
 <!--SummerNote JS-->
 <script>
     $('#Content').summernote({
-        placeholder: 'Bir İçerik Girerek Başla..',
+        placeholder: 'Bir Mesaj Oluştur...',
         tabsize: 2,
         height: 120,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ],
+
     });
 </script>

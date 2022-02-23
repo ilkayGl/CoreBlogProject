@@ -1,13 +1,9 @@
-﻿using BusinessLayer.Concrete;
-using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
+﻿using DataAccessLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using X.PagedList;
-using System.Threading.Tasks;
 using BusinessLayer.Abstract;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -17,11 +13,13 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly Context c = new();
         private readonly ICommentService _cms;
         private readonly IMessage2Service _ms;
+        private readonly INotyfService _notyf;
 
-        public CommentController(ICommentService cms, IMessage2Service ms)
+        public CommentController(ICommentService cms, IMessage2Service ms, INotyfService notyf)
         {
             _cms = cms;
             _ms = ms;
+            _notyf = notyf;
         }
 
 
@@ -59,6 +57,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         {
             var deleteValue = _cms.GetByID(id);
             _cms.TDeleteBL(deleteValue);
+            _notyf.Error("Yorum Başarıyla Silindi.");
             return RedirectToAction("Index");
         }
     }

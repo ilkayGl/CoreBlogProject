@@ -40,7 +40,6 @@ namespace PresentationUI.Areas.Admin.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,admin.WriterMail),
-                    //new Claim(ClaimTypes.Role,"A"),
 
                 };
 

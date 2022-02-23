@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using X.PagedList;
 using BusinessLayer.Abstract;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -12,11 +13,13 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly Context c = new();
         private readonly IBlogService _bs;
         private readonly IMessage2Service _ms;
+        private readonly INotyfService _notyf;
 
-        public BlogTitleController(IBlogService bs, IMessage2Service ms)
+        public BlogTitleController(IBlogService bs, IMessage2Service ms, INotyfService notyf)
         {
             _bs = bs;
             _ms = ms;
+            _notyf = notyf;
         }
 
 
@@ -54,6 +57,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         {
             var deleteValue = _bs.GetByID(id);
             _bs.TDeleteBL(deleteValue);
+            _notyf.Error("Blog Başarıyla Silindi.");
             return RedirectToAction("Index");
         }
 

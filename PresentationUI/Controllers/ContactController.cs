@@ -44,7 +44,7 @@ namespace PresentationUI.Controllers
         public IActionResult Index(Contact contact)
         {
             contact.ContactStatus = true;
-            contact.ContactDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+            contact.ContactDate = DateTime.Parse(DateTime.Now.ToString());
             _cs.TAddBL(contact);
             _notyf.Success("Mesajınız Başarıyla İletildi.");
             return RedirectToAction("Index", "Contact");

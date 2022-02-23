@@ -13,20 +13,20 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-lg-4" >
+            <div class="col-lg-4">
                 <div class="contact-box" style="border-radius:30px 30px;">
                     <a class="row">
                         <div class="col-4">
                             <div class="text-center">
                                 @if (item.WriterImage == null)
                                 {
-                                    <img class="rounded-circle m-t-xs img-fluid" style="height:10rem;"
-                                         src="~/WriterImageFiles/user-icon.jpg"
-                                         alt="User Default Profile Picture">
+                                    <img class="rounded-circle m-t-xs img-fluid" style="height:10rem;" src="~/WriterImageFiles/user-icon.jpg"
+                                 alt="User Default Profile Picture">
                                 }
                                 else
                                 {
-                                    <img src="~/WriterImageFiles/@item.WriterImage" class="rounded-circle m-t-xs img-fluid" style="height:10rem;" alt="image">
+                                    <img src="~/WriterImageFiles/@item.WriterImage" class="rounded-circle m-t-xs img-fluid"
+                                 style="height:10rem;" alt="image">
                                 }
 
                             </div>
@@ -60,18 +60,18 @@
 
     </div>
     @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
-       {
-           DisplayItemSliceAndTotal = false,
-           ContainerDivClasses = new[] { "navigation" },
-           LiElementClasses = new[] { "page-item" },
-           PageClasses = new[] { "page-link" },
-           LinkToFirstPageFormat = "««",
-           LinkToPreviousPageFormat = "«",
-           LinkToIndividualPageFormat = "{0}",
-           LinkToNextPageFormat = "»",
-           LinkToLastPageFormat = "»»",
+    {
+    DisplayItemSliceAndTotal = false,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToFirstPageFormat = "««",
+    LinkToPreviousPageFormat = "«",
+    LinkToIndividualPageFormat = "{0}",
+    LinkToNextPageFormat = "»",
+    LinkToLastPageFormat = "»»",
 
-           UlElementClasses = new[] { "pagination" },
-       })
+    UlElementClasses = new[] { "pagination" },
+    })
 
 </div>

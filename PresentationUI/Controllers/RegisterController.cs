@@ -1,8 +1,11 @@
-﻿using BusinessLayer.Abstract;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,10 +21,12 @@ namespace PresentationUI.Controllers
         private readonly Context c = new();
         private readonly WriterValidator writerValidator = new();
         private readonly IWriterService _ws;
+        private readonly INotyfService _notyf;
 
-        public RegisterController(IWriterService ws)
+        public RegisterController(IWriterService ws, INotyfService notyf)
         {
             _ws = ws;
+            _notyf = notyf;
         }
 
 
@@ -38,24 +43,31 @@ namespace PresentationUI.Controllers
         [HttpPost]
         public IActionResult Index(Writer writer)
         {
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
             ValidationResult results = writerValidator.Validate(writer);
             if (results.IsValid)
             {
+                writer.WriterTitle = "Üye";
+                writer.WriterRole = "B";
                 writer.WriterStatus = true;
                 _ws.TAddBL(writer);
-                return RedirectToAction("Index", "Blog");
+                _notyf.Success("Üye Olma İşleminiz Başarıyla Gerçekleşti!.");
+                return RedirectToAction("Index", "Login");
             }
             else
             {
                 foreach (var item in results.Errors)
                 {
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    _notyf.Warning("Ters Giden Şeyler Var... ");
                 }
             }
             return View();
 
         }
+
 
         //public List<SelectListItem> GetCityList()
         //{

@@ -1,8 +1,10 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
+using EntityLayer.DTOs;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -42,16 +44,11 @@ namespace PresentationUI.Controllers
             ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
-            //yorum sayısını getirme-güncellenecek
-            var yrm = c.Comments.Select(u => u.CommentId).FirstOrDefault();
-            var value = c.Blogs.Where(x => x.BlogId == yrm).Count().ToString();
-            ViewBag.comment = value;
-
 
             var pageNumber = Sayfa ?? 1;
             int pagaSize = 9;
             ViewData["blogall"] = Blogsearch;
-            //var values = c.GetBlogListWithCategory();
+
             var values = from x in c.Blogs.Include(x => x.Category).Include(x => x.Writer).OrderByDescending(d => d.BlogCreateDate).Where(s => s.BlogStatus == true) select x;
             if (!String.IsNullOrEmpty(Blogsearch))
             {
@@ -64,6 +61,9 @@ namespace PresentationUI.Controllers
         [AllowAnonymous]
         public IActionResult BlogReadAll(int id)
         {
+            //yorum sayısını getirme
+            var comment = c.Comments.Count(x => x.BlogId == id).ToString();
+            ViewBag.comment = comment;
 
             ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
@@ -100,6 +100,27 @@ namespace PresentationUI.Controllers
         }
 
 
+        [AllowAnonymous]
+        public IActionResult WriterBlogList(int? Sayfa, int id)
+        {
+            var writerImage = c.Writers.Where(x => x.WriterId == id).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerName = c.Writers.Where(x => x.WriterId == id).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
+            ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
+            ///
+
+            var pageNumber = Sayfa ?? 1;
+            int pagaSize = 9;
+
+            var values = _bs.GetListWithCategoryByWriter(id);
+            return View(values.ToPagedList(pageNumber, pagaSize));
+        }
+
+
         [HttpGet]
         public IActionResult BlogAdd()
         {
@@ -133,11 +154,12 @@ namespace PresentationUI.Controllers
 
             ViewBag.dgr1 = deger1;
 
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult BlogAdd([Bind("BlogId", "BlogTitle", "BlogContent", "BlogThumbnailImage", "BlogImage", "Image", "BlogCreateDate", "BlogStatus", "CategoryId", "WriterId")] Blog blog)
+        public IActionResult BlogAdd(Blog blog, BlogPostDTO p)
         {
 
             var userMail = User.Identity.Name;
@@ -159,7 +181,7 @@ namespace PresentationUI.Controllers
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
 
-            BlogValidator bv = new BlogValidator();
+            BlogValidator bv = new();
             ValidationResult result = bv.Validate(blog);
             if (result.IsValid)
             {
@@ -168,17 +190,17 @@ namespace PresentationUI.Controllers
                 {
                     Directory.CreateDirectory(dosyaYolu); //oluştur
                 }
-                var tamDosyaAdi = Path.Combine(dosyaYolu, blog.Image.FileName); //wwwroote içine img adında dosya yolu tanımlıyor
-                                                                                //file upload
+                var tamDosyaAdi = Path.Combine(dosyaYolu, p.BlogImage.FileName); //wwwroote içine  dosya yolu tanımlıyor
+                                                                                 //file upload
                 using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
                 {
-                    blog.Image.CopyTo(dosyaAkisi);
+                    p.BlogImage.CopyTo(dosyaAkisi);
                 }//using ekleme amacımız Gc beklemeden kaynağı yok etmesidir.
 
-                blog.BlogImage = blog.Image.FileName;
+                blog.BlogImage = p.BlogImage.FileName;
 
                 blog.BlogStatus = true;
-                blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
                 blog.WriterId = writerID;
                 _bs.TAddBL(blog);
                 _notyf.Success("Blog Başarıyla Eklendi.");
@@ -253,7 +275,7 @@ namespace PresentationUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult BlogEdit(Blog b)
+        public IActionResult BlogEdit(Blog b, BlogPostDTO p)
         {
             var userMail = User.Identity.Name;
 
@@ -272,7 +294,7 @@ namespace PresentationUI.Controllers
             ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
-            BlogValidator bv = new BlogValidator();
+            BlogValidator bv = new();
             ValidationResult result = bv.Validate(b);
             if (result.IsValid)
             {
@@ -281,13 +303,13 @@ namespace PresentationUI.Controllers
                 {
                     Directory.CreateDirectory(dosyaYolu);
                 }
-                var tamDosyaAdi = Path.Combine(dosyaYolu, b.Image.FileName);
+                var tamDosyaAdi = Path.Combine(dosyaYolu, p.BlogImage.FileName);
                 using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
                 {
-                    b.Image.CopyTo(dosyaAkisi);
+                    p.BlogImage.CopyTo(dosyaAkisi);
                 }
 
-                b.BlogImage = b.Image.FileName;
+                b.BlogImage = p.BlogImage.FileName;
 
 
                 b.BlogStatus = true;
@@ -312,31 +334,9 @@ namespace PresentationUI.Controllers
         [AllowAnonymous]
         public IActionResult CategoryDetail(int? Sayfa, int id)
         {
-            var userMail = User.Identity.Name;
-
-            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
-            ViewBag.writerID = writerID;
-
-            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
-            ViewBag.writerName = writerName;
-
-            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
-            ViewBag.writerImage = writerImage;
-
-            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
-            ViewBag.writerRole = writerRole;
-
-            /////
-
             ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
-
-            //yorum sayısını getirme-güncellenecek
-            var yrm = c.Comments.Select(u => u.CommentId).FirstOrDefault();
-            var value = c.Blogs.Where(x => x.BlogId == yrm).Count().ToString();
-            ViewBag.comment = value;
-
-
+            /////
 
             var pageNumber = Sayfa ?? 1;
             int pagaSize = 9;

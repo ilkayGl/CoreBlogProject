@@ -33,28 +33,28 @@
                             }
                             @if (diff.Days != 0 && diff.Hours != 0 && diff.Minutes != 0)
                             {
-                                <p class="text-gray mb-0 text-small">
+                                <span class="text-gray mb-0 text-small">
                                     @diff.ToString(@"dd") gün
                                     @diff.ToString(@"hh") saat
                                     @diff.ToString(@"mm") dakika
                                     @diff.ToString(@"ss") saniye önce
-                                </p>
+                                </span>
                             }
                             else if (diff.Days == 0 && diff.Hours != 0 && diff.Minutes != 0)
                             {
-                                <p class="text-gray mb-0 text-small">
+                                <span class="text-gray mb-0 text-small">
                                     @diff.ToString(@"hh") saat
                                     @diff.ToString(@"mm") dakika
                                     @diff.ToString(@"ss") saniye önce
-                                </p>
+                                </span>
                             }
                         </small>
                     </div>
+                    <hr />
                 </div>
             </li>
         }
 
-        <li class="dropdown-divider"></li>
         <li>
             <div class="text-center link-block">
                 <a href="#" class="dropdown-item">

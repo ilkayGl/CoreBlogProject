@@ -1,9 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -186,17 +188,51 @@ namespace PresentationUI.Controllers
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
             ViewBag.writerName = writerID;
 
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
+
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
+
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
             ViewBag.logo = c.LogoTitles.Select(x => x.Logo).FirstOrDefault();
             ViewBag.logoTitle = c.LogoTitles.Select(x => x.Title).FirstOrDefault();
 
+            ///
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
 
-            message2.SenderId = writerID;
-            message2.MessageBool = true;
-            message2.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-            _notyf.Success("Mesaj Başarıyla Gönderildi.");
-            _ms.TAddBL(message2);
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
 
-            return RedirectToAction("InBox", "Message");
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+            MessageValidator mv = new();
+            ValidationResult result = mv.Validate(message2);
+            if (result.IsValid)
+            {
+                message2.SenderId = writerID;
+                message2.MessageBool = true;
+                message2.MessageDate = DateTime.Parse(DateTime.Now.ToString());
+                _notyf.Success("Mesaj Başarıyla Gönderildi.");
+                _ms.TAddBL(message2);
+
+                return RedirectToAction("InBox", "Message");
+            }
+            else
+            {
+
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    _notyf.Warning("Mesaj Gönderilirken Bir Hata Oluştu.");
+                }
+            }
+            return View();
+
         }
 
 

@@ -1,0 +1,106 @@
+﻿@using X.PagedList.Web.Common
+@using X.PagedList.Mvc.Core
+@using X.PagedList;
+@using EntityLayer.Concrete
+@model IPagedList<Blog>
+@{
+    ViewData["Title"] = "WriterBlogList";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<head>
+    <link href="~/css/ModuleDark.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/709f5aa806.js" crossorigin="anonymous"></script>
+
+    <style>
+        .aa {
+            font-size: small;
+        }
+
+        ul.pagination li :hover:not(.active) {
+            background-color: #4CAF50;
+        }
+
+        .card-image:hover {
+            box-shadow: 0px 8px 16px 0 rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+            zoom: 1;
+            transform: scale(1);
+            transition: .3s ease-in-out;
+        }
+
+    </style>
+</head>
+
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <div class="container">
+            <h1 class="container text-center"><img src="~/WriterImageFiles/@ViewBag.writerImage" alt="image" class="text-center card-image" style="height:13rem;width:13rem;border-radius:30px 30px" /></h1>
+            <h1 class="container text-center"><b>@ViewBag.writerName</b></h1>
+        </div>
+
+        <div class="inner-sec">
+            <!--left-->
+            <div class="left-blog-info-w3layouts-agileits text-left">
+                <div class="row">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 card-header ss ss1" style="border-radius:20px 20px ">
+                            <a href="/Blog/BlogReadAll/@item.BlogId">
+                                <img src="~/BlogImageFiles/@item.BlogImage" style="height: 20rem; border-radius: 20px 20px; object-fit: fill" class="card-img-top img-fluid ss ss1 card-image" alt="">
+                            </a>
+                            <div class="card-body">
+                                <ul class="blog-icons my-4">
+                                    <li>
+                                        <a class="text-muted">
+                                            <i class="far fa-calendar-alt"></i> @item.BlogCreateDate.ToString("ddd, dd MMM yyyy")
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-muted" href="/Blog/CategoryDetail/@item.CategoryId">
+                                            <i class="fas fa-eye"></i> @item.Category.CategoryName
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-muted">
+                                            <i class="fas fa-feather-alt"></i> @item.Writer.WriterName
+                                        </a>
+                                    </li>
+
+                                </ul>
+                                <h5 class="card-title">
+                                    @item.BlogTitle
+                                </h5>
+                                <p>
+                                    @{string value = System.Text.RegularExpressions.Regex.Replace(item.BlogContent, @"<(.|\n)*?>", string.Empty); }
+                                    @Html.Raw(value.Substring(0, value.Substring(0, 120).LastIndexOf(" ")))...
+                                </p>
+                                <a href="/Blog/BlogReadAll/@item.BlogId" class="btn btn-primary read-m mt-3" style="border-radius:20px 20px">Devamını Oku...</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--//left-->
+                <hr />
+
+                @Html.PagedListPager((IPagedList)Model, Sayfa => Url.Action("Index", new { Sayfa = Sayfa }), new PagedListRenderOptions
+           {
+               DisplayItemSliceAndTotal = false,
+               ContainerDivClasses = new[] { "navigation" },
+               LiElementClasses = new[] { "page-item" },
+               PageClasses = new[] { "page-link" },
+               LinkToFirstPageFormat = "««",
+               LinkToPreviousPageFormat = "«",
+               LinkToIndividualPageFormat = "{0}",
+               LinkToNextPageFormat = "»",
+               LinkToLastPageFormat = "»»",
+               UlElementClasses = new[] { "pagination" },
+           })
+
+            </div>
+        </div>
+    </div>
+</section>
+

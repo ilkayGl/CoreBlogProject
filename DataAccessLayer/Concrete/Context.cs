@@ -1,5 +1,6 @@
 ﻿using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=.\\SQLEXPRESS;database=DbbCoreBlog; integrated security=true;");
             //optionsBuilder.EnableSensitiveDataLogging();
         }
+
+
+        //public Context(DbContextOptions<Context> options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +39,7 @@ namespace DataAccessLayer.Concrete
 
         }
 
-        //public Context(DbContextOptions<Context> options) : base(options) { }
+
 
         public DbSet<About> Abouts { get; set; }
         public DbSet<Blog> Blogs { get; set; }

@@ -18,7 +18,7 @@ namespace BusinessLayer.ValidationRules
             RuleFor(x => x.CategoryId).NotEmpty().WithMessage("Bir Kategori Seçiniz");
 
             RuleFor(x => x.BlogContent).NotEmpty().WithMessage("İçerik Alanını Boş Geçemezsiniz.");
-            RuleFor(x => x.BlogContent).MinimumLength(120).WithMessage("En Az 120 Karakter Girmeniz Gereklidir.");
+            RuleFor(x => x.BlogContent).MinimumLength(140).WithMessage("En Az 120 Karakter Girmeniz Gereklidir.");
         }
     }
 }

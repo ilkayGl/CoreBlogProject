@@ -32,11 +32,13 @@
                 <div class="form-group">
                     <label for="exampleInputName2">Konu:</label>
                     <input type="text" asp-for="Subject" placeholder="" class="form-control" border-radius:10px" />
+                    <span asp-validation-for="Subject" style="color:red"></span>
                 </div>
 
                 <div class="form-group">
                     <span class="badge badge-danger"></span>
                     <textarea id="Content" asp-for="MessageDetails"></textarea>
+                    <span asp-validation-for="MessageDetails" style="color:red"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Gönder</button>
             </form>
@@ -51,7 +53,11 @@
 <!--SummerNote JS-->
 <script>
 
-    $('#Content').summernote();
+    $('#Content').summernote({
+        placeholder: 'Bir Mesaj Oluştur...',
+        tabsize: 2,
+        height: 120,
+    });
 
 </script>
 

@@ -1,11 +1,6 @@
 ﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PresentationUI.ViewComponents.Writer
 {
@@ -19,6 +14,10 @@ namespace PresentationUI.ViewComponents.Writer
 
         public IViewComponentResult Invoke()
         {
+            var notifications = _ns.GetList().Count().ToString();
+            ViewBag.notifications = notifications;
+
+
             var values = _ns.GetByDesTake3List();
             return View(values);
         }

@@ -10,12 +10,10 @@
 
 <head>
     <meta http-equiv="refresh" content="40">
+    <link href="~/css/ModuleDark.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/709f5aa806.js" crossorigin="anonymous"></script>
 
     <style>
-        .ss {
-            background: linear-gradient(#cac0c0,#fff);
-        }
-
         .aa {
             font-size: small;
         }
@@ -23,12 +21,22 @@
         ul.pagination li :hover:not(.active) {
             background-color: #4CAF50;
         }
-    </style>
-</head>
 
+        .card-image:hover {
+            box-shadow: 0px 8px 16px 0 rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+            zoom: 1;
+        }
+    </style>
+
+</head>
 <section class="main-content-w3layouts-agileits">
     <div class="container">
-        <h3 class="tittle">Gündem <span class="text-muted text-small aa">@DateTime.Now.ToString("MM/dd/yyyy h:mm tt")</span></h3>
+        <h1 class="tit container text-center">
+            <b>Gündem</b> <span class="text-muted text-small aa">@DateTime.Now.ToString("MM/dd/yyyy h:mm tt")</span>
+        </h1>
+
         <div class="inner-sec">
             <!--left-->
             <div class="left-blog-info-w3layouts-agileits text-left">
@@ -36,34 +44,43 @@
 
                     @foreach (var item in Model)
                     {
-                        <div class="col-lg-4 card ss">
+
+                        <div class="col-lg-4 card-header ss" style="border-radius:20px 20px ">
                             <a href="/Blog/BlogReadAll/@item.BlogId">
-                                <img src="~/BlogImageFiles/@item.BlogImage" style="height:18rem" class="card-img-top img-fluid ss" alt="">
+                                <img src="~/BlogImageFiles/@item.BlogImage" style="height: 20rem; border-radius: 20px 20px; object-fit: fill" class="card-img-top ss card-image" alt="Image">
                             </a>
                             <div class="card-body">
                                 <ul class="blog-icons my-4">
                                     <li>
-                                        <a href="#">
-                                            <i class="far fa-calendar-alt"></i>@item.BlogCreateDate.ToString("ddd, dd MMM yyyy")
-                                        </a>
-                                    </li>
-                                    <li class="mx-2">
-                                        <a href="#">
-                                            <i class="far fa-comment"></i> @ViewBag.comment
+                                        <a class="text-muted">
+                                            <i class="far fa-calendar-alt"></i> @item.BlogCreateDate.ToString("ddd, dd MMM yyyy")
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a class="text-muted" href="/Blog/CategoryDetail/@item.CategoryId">
                                             <i class="fas fa-eye"></i> @item.Category.CategoryName
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="text-muted" href="/Blog/WriterBlogList/@item.WriterId">
+                                            <i class="fas fa-feather-alt"></i> @item.Writer.WriterName
+                                        </a>
+                                    </li>
+
 
                                 </ul>
                                 <h5 class="card-title">
                                     @item.BlogTitle
                                 </h5>
-                                @*<p class="card-text mb-3">@Html.Raw(item.BlogContent.Substring(0, item.BlogContent.Substring(0, 120).LastIndexOf(" ")))... </p>*@
-                                <a href="/Blog/BlogReadAll/@item.BlogId" class="btn btn-primary read-m">Devamını Oku</a>
+                                <p>
+                                    @{
+                                        string value = System.Text.RegularExpressions.Regex.Replace(item.BlogContent, @"<(.|\n)*?>", string.Empty);
+                                    }
+                                    @Html.Raw(value.Substring(0, value.Substring(0, 120).LastIndexOf(" ")))...
+                                </p>
+                                <a href="/Blog/BlogReadAll/@item.BlogId" class="btn btn-primary read-m mt-3" style="border-radius:20px 20px">
+                                    Devamını Oku...
+                                </a>
                             </div>
                         </div>
                     }
@@ -72,38 +89,21 @@
                 <hr />
 
                 @Html.PagedListPager((IPagedList)Model, Sayfa => Url.Action("Index", new { Sayfa = Sayfa }), new PagedListRenderOptions
-           {
-               DisplayItemSliceAndTotal = false,
-               ContainerDivClasses = new[] { "navigation" },
-               LiElementClasses = new[] { "page-item" },
-               PageClasses = new[] { "page-link" },
-               LinkToFirstPageFormat = "««",
-               LinkToPreviousPageFormat = "«",
-               LinkToIndividualPageFormat = "{0}",
-               LinkToNextPageFormat = "»",
-               LinkToLastPageFormat = "»»",
+                {
+                DisplayItemSliceAndTotal = false,
+                ContainerDivClasses = new[] { "navigation" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                LinkToFirstPageFormat = "««",
+                LinkToPreviousPageFormat = "«",
+                LinkToIndividualPageFormat = "{0}",
+                LinkToNextPageFormat = "»",
+                LinkToLastPageFormat = "»»",
+                UlElementClasses = new[] { "pagination" },
 
-
-               ///////////////CustumSetting///////////////
-               //PageCountAndCurrentLocationFormat = "Sayfa {0} of {1}.",
-               //ItemSliceAndTotalFormat = "Gösterilen Sayfa {0} Bulunduğun Sayfa {1} of {2}.",
-               //FunctionToDisplayEachPageNumber = null,
-               //ClassToApplyToFirstListItemInPager = null,
-               //lassToApplyToLastListItemInPager = null,
-               //DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-               //DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
-               //DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
-               //DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
-               //DisplayLinkToIndividualPages = true,
-               //DisplayPageCountAndCurrentLocation = true,
-               //MaximumPageNumbersToDisplay = 3,
-               //EllipsesFormat = "&#8230;",
-               UlElementClasses = new[] { "pagination" },
-           })
-
+                })
 
             </div>
         </div>
     </div>
 </section>
-

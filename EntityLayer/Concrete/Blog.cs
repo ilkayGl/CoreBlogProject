@@ -23,8 +23,8 @@ namespace EntityLayer.Concrete
 
         public string BlogImage { get; set; }
         
-        [NotMapped]
-        public IFormFile Image { get; set; }
+        //[NotMapped]
+        //public IFormFile Image { get; set; }
 
         public DateTime BlogCreateDate { get; set; }
 

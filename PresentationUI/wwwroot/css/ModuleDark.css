@@ -1,0 +1,117 @@
+﻿/* .dark-mode{
+  filter: invert(1) hue-rotate(180deg);
+}
+.invert{
+  filter: invert(1) hue-rotate(180deg);
+} */
+
+[data-theme="light"] {
+    /*--primary-color: #020202;*/
+    --title: #020202;
+    --bg-thema: linear-gradient(#fff,#cac0c0);
+    --bg-postcolor: linear-gradient(#cac0c0,#fff);
+}
+
+
+[data-theme="dark"] {
+    --title: #fff;
+    --bg-thema: #000000;
+    --bg-category: #000000;
+    --font-color1: #fff;
+    --bg-postcolor: #000000;
+    --bg-hamburgerMenu: #262525;
+}
+
+
+
+
+.ss {
+    background: var(--bg-postcolor);
+}
+
+.s {
+    background: var(--bg-thema);
+}
+
+.cc {
+    background: var(--bg-category);
+    color: var(--font-color1);
+}
+
+.tit, tittle {
+    color: var(--title)
+}
+
+p, h1, h2, h3, h4, h5, a, li {
+    color: var(--font-color1);
+}
+
+.bb {
+    background: var(--bg-hamburgerMenu)
+}
+
+
+.em {
+    color: var(--font-color1);
+}
+
+
+
+
+
+
+
+/*Dark mod için geçiş anahtarı modeli*/
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+    .theme-switch input {
+        display: none;
+    }
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.4s;
+}
+
+    .slider:before {
+        background-color: #fff;
+        bottom: 4px;
+        content: "";
+        height: 26px;
+        left: 4px;
+        position: absolute;
+        transition: 0.4s;
+        width: 26px;
+    }
+
+input:checked + .slider {
+    background-color: #01CD74;
+}
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }

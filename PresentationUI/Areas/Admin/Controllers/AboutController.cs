@@ -1,8 +1,10 @@
-﻿using BusinessLayer.Abstract;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
+using EntityLayer.DTOs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using PresentationUI.Areas.Admin.Models;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,12 +17,17 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly Context c = new();
         private readonly IAboutService _about;
         private readonly IMessage2Service _ms;
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly INotyfService _notyf;
 
-        public AboutController(IAboutService about, IMessage2Service ms)
+        public AboutController(IAboutService about, IMessage2Service ms, IWebHostEnvironment hostEnvironment, INotyfService notyf)
         {
             _about = about;
             _ms = ms;
+            _hostEnvironment = hostEnvironment;
+            _notyf = notyf;
         }
+
 
         public IActionResult AboutIndex()
         {
@@ -79,7 +86,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AboutAdd(AboutImageFileAdd about)
+        public IActionResult AboutAdd(About w, AboutImageFileDTO about)
         {
             var userMail = User.Identity.Name;
 
@@ -102,24 +109,30 @@ namespace PresentationUI.Areas.Admin.Controllers
             var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
             ViewBag.inboxMessage = inboxMessage;
 
-            About w = new();
-            if (about.AboutImage1 != null)
+
+
+            var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "AboutImageFiles");
+            if (!Directory.Exists(dosyaYolu))
             {
-                var extension = Path.GetExtension(about.AboutImage1.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AboutImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                about.AboutImage1.CopyTo(stream);
-                w.AboutImage1 = newimageName;
+                Directory.CreateDirectory(dosyaYolu);
             }
+            var tamDosyaAdi = Path.Combine(dosyaYolu, about.AboutImage1.FileName);
+
+            using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+            {
+                about.AboutImage1.CopyTo(dosyaAkisi);
+            }
+
+            w.AboutImage1 = about.AboutImage1.FileName;
 
             w.AboutId = about.AboutId;
             w.AboutDetails1 = about.AboutDetails1;
-            w.AboutDetails2 = about.AboutDetails2; 
+            w.AboutDetails2 = about.AboutDetails2;
             w.AboutMapLocation = about.AboutMapLocation;
             w.AboutStatus = true;
 
             _about.TAddBL(w);
+            _notyf.Success("Başarılı Bir Şekilde Eklendi.");
             return RedirectToAction("AboutIndex");
         }
 
@@ -153,7 +166,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AboutEdit(AboutImageFileAdd about)
+        public IActionResult AboutEdit(About w, AboutImageFileDTO about)
         {
             var userMail = User.Identity.Name;
 
@@ -176,16 +189,20 @@ namespace PresentationUI.Areas.Admin.Controllers
             var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
             ViewBag.inboxMessage = inboxMessage;
 
-            About w = new();
-            if (about.AboutImage1 != null)
+
+            var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "AboutImageFiles");
+            if (!Directory.Exists(dosyaYolu))
             {
-                var extension = Path.GetExtension(about.AboutImage1.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/AboutImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                about.AboutImage1.CopyTo(stream);
-                w.AboutImage1 = newimageName;
+                Directory.CreateDirectory(dosyaYolu);
             }
+            var tamDosyaAdi = Path.Combine(dosyaYolu, about.AboutImage1.FileName);
+
+            using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+            {
+                about.AboutImage1.CopyTo(dosyaAkisi);
+            }
+
+            w.AboutImage1 = about.AboutImage1.FileName;
 
             w.AboutId = about.AboutId;
             w.AboutDetails1 = about.AboutDetails1;
@@ -194,6 +211,15 @@ namespace PresentationUI.Areas.Admin.Controllers
             w.AboutStatus = true;
 
             _about.TUpdateBL(w);
+            _notyf.Success("Güncelleme Başarılı.");
+            return RedirectToAction("AboutIndex");
+        }
+
+        public IActionResult AboutDelete(int id)
+        {
+            var deleteValue = _about.GetByID(id);
+            _about.TDeleteBL(deleteValue);
+            _notyf.Error("Silme İşlemi Başarıyla Gerçekleşti.");
             return RedirectToAction("AboutIndex");
         }
     }

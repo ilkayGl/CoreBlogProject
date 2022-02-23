@@ -1,19 +1,16 @@
-﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
+using EntityLayer.DTOs;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using PresentationUI.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 
 namespace PresentationUI.Controllers
@@ -23,12 +20,17 @@ namespace PresentationUI.Controllers
     {
         private readonly Context c = new();
         private readonly IWriterService _ws;
+        private readonly IMapper _mapper;
+        private readonly INotyfService _notyf;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public WriterController(IWriterService ws)
+        public WriterController(IWriterService ws, IMapper mapper, INotyfService notyf, IWebHostEnvironment hostEnvironment)
         {
             _ws = ws;
+            _mapper = mapper;
+            _notyf = notyf;
+            _hostEnvironment = hostEnvironment;
         }
-
 
 
         [HttpGet]
@@ -58,25 +60,36 @@ namespace PresentationUI.Controllers
 
 
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer w, AddProfileImage p)
+        public IActionResult WriterEditProfile(Writer w, AddProfileImageDTO p)
         {
-            if (p.WriterImage != null)
+            var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "WriterImageFiles"); //birleştir
+            if (!Directory.Exists(dosyaYolu)) //yoksa
             {
-                var extension = Path.GetExtension(p.WriterImage.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                p.WriterImage.CopyTo(stream);
-                w.WriterImage = newimageName;
+                Directory.CreateDirectory(dosyaYolu); //oluştur
             }
+            var tamDosyaAdi = Path.Combine(dosyaYolu, p.WriterImage.FileName); //wwwroote içine  dosya yolu tanımlıyor
+                                                                               //file upload
+            using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+            {
+                p.WriterImage.CopyTo(dosyaAkisi);
+            }//using ekleme amacımız Gc beklemeden kaynağı yok etmesidir.
+
+            w.WriterImage = p.WriterImage.FileName;
+
             w.WriterId = p.WriterId;
             w.WriterName = p.WriterName;
             w.WriterMail = p.WriterMail;
             w.WriterPassword = p.WriterPassword;
             w.WriterStatus = true;
             w.WriterAbout = p.WriterAbout;
+            w.WriterRole = w.WriterRole;
+            w.WriterTitle = w.WriterTitle;
             _ws.TUpdateBL(w);
+
+            _notyf.Success("Blog Başarıyla Eklendi.");
+
             return RedirectToAction("Index", "Dashboard");
+
         }
 
 

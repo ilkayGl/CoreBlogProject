@@ -1,10 +1,10 @@
 ﻿using BusinessLayer.Concrete;
 using ClosedXML.Excel;
 using DataAccessLayer.Concrete;
+using EntityLayer.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PresentationUI.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,12 +50,12 @@ namespace PresentationUI.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public List<BlogModel> BlogTitleList()
+        public List<BlogExcelDTO> BlogTitleList()
         {
-            List<BlogModel> bm = new();
+            List<BlogExcelDTO> bm = new();
             using (var c = new Context())
             {
-                bm = c.Blogs.Include(x => x.Writer).Include(y => y.Category).OrderByDescending(d => d.BlogCreateDate).Select(x => new BlogModel
+                bm = c.Blogs.Include(x => x.Writer).Include(y => y.Category).OrderByDescending(d => d.BlogCreateDate).Select(x => new BlogExcelDTO
                 {
                     BlogName = x.BlogTitle,
                     Writer = x.Writer.WriterName,
@@ -101,12 +101,12 @@ namespace PresentationUI.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public List<CommentModel> CommentBlogList()
+        public List<CommentExcelDTO> CommentBlogList()
         {
-            List<CommentModel> cm = new();
+            List<CommentExcelDTO> cm = new();
             using (var c = new Context())
             {
-                cm = c.Comments.Include(x => x.Blog).OrderByDescending(d => d.CommentDate).Select(x => new CommentModel
+                cm = c.Comments.Include(x => x.Blog).OrderByDescending(d => d.CommentDate).Select(x => new CommentExcelDTO
                 {
                     CommentUser = x.CommentUserName,
                     CommentDate = x.CommentDate,

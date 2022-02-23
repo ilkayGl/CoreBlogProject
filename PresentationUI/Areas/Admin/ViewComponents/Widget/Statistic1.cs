@@ -1,23 +1,26 @@
-﻿using BusinessLayer.Concrete;
+﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace PresentationUI.Areas.Admin.ViewComponents.Widget
 {
     public class Statistic1 : ViewComponent
     {
-        BlogManager bm = new(new EfBlogDal());
-        Context c = new();
+        private readonly Context c = new();
+        private readonly IBlogService _bs;
+
+        public Statistic1(IBlogService bs)
+        {
+            _bs = bs;
+        }
+
+       
 
         public IViewComponentResult Invoke()
         {
-            ViewBag.totalBlog = bm.GetList().Count();
+            ViewBag.totalBlog = _bs.GetList().Count;
             ViewBag.contactMessage = c.Contacts.Count();
             ViewBag.totalComment = c.Comments.Count();
 

@@ -5,22 +5,22 @@
     <style>
         .img1 {
             padding: 0;
-            max-height: 100%;
-            /* min-width: 100%;*/
+            object-fit: cover;
         }
     </style>
 </head>
 
 @if (Context.User.Identity.IsAuthenticated)
 {
+    <h4 class="mb-3"><b>Yazarın Diğer Yazıları</b></h4>
     <div class="tech-btm">
-        <h4 class="mb-3"><b>Yazarın Diğer Yazıları</b></h4>
+
         @foreach (var item in Model)
         {
             <div class="blog-grids row mb-3">
                 <div class="col-md-5 blog-grid-left">
-                    <a href="/Blog/BlogReadAll/@item.BlogId" style="width:40rem; height:40rem">
-                        <img src="~/BlogImageFiles/@item.BlogImage" alt="image" class="img1 img-fluid" />
+                    <a href="/Blog/BlogReadAll/@item.BlogId">
+                        <img src="~/BlogImageFiles/@item.BlogImage" style="width:8rem; height:8rem" alt="image" class="img1" />
                     </a>
                 </div>
 

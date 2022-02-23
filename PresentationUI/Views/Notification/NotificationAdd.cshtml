@@ -1,0 +1,82 @@
+﻿@model EntityLayer.Concrete.Notification
+@{
+    ViewData["Title"] = "NotificationAdd";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<!-- include summernote css/js -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+
+
+
+
+<div class="col-12 grid-margin stretch-card ">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title"><b>Yeni Bir Bildirim Oluştur</b></h1>
+            <hr class="mb-5" />
+            <form class="forms-sample" asp-action="NotificationAdd" asp-controller="Notification" method="post" autocomplete="off" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Bildiri</label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="NotificationType" placeholder="Bildiri">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Bildiri Sembolü <i id="btn1" class="mdi mdi-alert-octagon"></i></label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="NotificationTypeSymbol" placeholder="Bildiri Sembolü">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Bildiri Rengi <i id="btn2" class="mdi mdi-alert-octagon"></i></label>
+                    <input type="text" class="form-control" id="exampleInputName1" asp-for="NotificationColor" placeholder="Bildiri Rengi">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Bildiri Zamanı</label>
+                    <input type="date" class="form-control" id="exampleInputName1" asp-for="NotificationDate">
+                </div>
+
+
+                @*<div class="form-group">
+                    <span class="badge badge-danger"></span>
+                    <textarea id="summernote" asp-for="NotificationDetails"></textarea>
+                </div>*@
+
+                <div class="form-group">
+                    <span class="badge badge-danger"></span>
+                    <textarea style="tab-size:2;height:100px" class="form-control" asp-for="NotificationDetails" placeholder="Bildirim İçeriğini Giriniz..." required></textarea>
+                </div>
+
+
+                <button type="submit" class="btn btn-gradient-success mr-2">Ekle</button>
+                <button class="btn btn-light" type="reset">İptal Et</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#btn1').click(function () {
+        swal("mdi mdi-calendar // mdi mdi-settings // mdi mdi-link-variant // mdi mdi-alarm // mdi mdi-web.");
+    });
+    $('#btn2').click(function () {
+        swal("preview-icon bg-success // preview-icon bg-warning // preview-icon bg-info.");
+    });
+</script>
+
+<!--SummerNote JS-->
+
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Bildirim İçeriğini Giriniz..',
+        tabsize: 2,
+        height: 120,
+    });
+</script>

@@ -1,14 +1,18 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessLayer.Abstract;
+using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace PresentationUI.Controllers
 {
     public class CommentController : Controller
     {
+        private readonly Context c = new();
         private readonly ICommentService _cs;
         private readonly INotyfService _notyf;
 
@@ -20,10 +24,6 @@ namespace PresentationUI.Controllers
 
 
 
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [AllowAnonymous]
         [HttpGet]
@@ -40,6 +40,7 @@ namespace PresentationUI.Controllers
             {
                 _notyf.Warning("Yorum Alanını Boş Bırakamazsınız.");
                 //_cs.TDeleteBL(comment);
+
                 return Json(true);
 
             }
@@ -53,6 +54,9 @@ namespace PresentationUI.Controllers
             return Json(true);
 
 
+            //var jsonComment = JsonConvert.SerializeObject(comment);
+
+            //return Json(jsonComment);
 
         }
 

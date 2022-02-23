@@ -1,11 +1,9 @@
-﻿using BusinessLayer.Abstract;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -15,11 +13,13 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly Context c = new();
         private readonly IContactLocationService _cls;
         private readonly IMessage2Service _ms;
+        private readonly INotyfService _notyf;
 
-        public ContactLocationController(IContactLocationService cls, IMessage2Service ms)
+        public ContactLocationController(IContactLocationService cls, IMessage2Service ms, INotyfService notyf)
         {
             _cls = cls;
             _ms = ms;
+            _notyf = notyf;
         }
 
 
@@ -62,7 +62,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         {
             c.ContactStatus = true;
             _cls.TAddBL(c);
-
+            _notyf.Success(" Başarıyla Eklendi.");
             return RedirectToAction("Index");
         }
 
@@ -70,6 +70,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         {
             var delete = _cls.GetByID(id);
             _cls.TDeleteBL(delete);
+            _notyf.Error("Başarıyla Silindi.");
             return RedirectToAction("Index");
         }
     }

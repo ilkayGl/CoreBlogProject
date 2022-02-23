@@ -44,6 +44,7 @@
                             <p class="text-muted text-center">@Model.WriterName </p>
 
 
+
                         </div>
 
                         <!-- /.card-body -->
@@ -87,6 +88,8 @@
                                     <form class="form-horizontal" asp-action="WriterEditProfile" asp-controller="Writer" method="post" autocomplete="off" enctype="multipart/form-data">
 
                                         <input type="hidden" asp-for="WriterId" />
+                                        <input type="hidden" asp-for="WriterRole" />
+                                        <input type="hidden" asp-for="WriterTitle" />
                                         <div class="form-group row">
 
                                             <label for="inputName" class="col-sm-2 col-form-label">Ad / Soyad : </label>

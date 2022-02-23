@@ -6,7 +6,7 @@
     <div>
         @if (Context.User.Identity.IsAuthenticated)
         {
-            <span class="alert-warning">
+            <span class="pl-3 pr-3" style="border-radius: 5px 5px; background-color: #01CD74">
                 <a style="color:black" href="/Dashboard/Index">Hoşgeldin : <b>"@User.Identity.Name"</b></a>
             </span>
 

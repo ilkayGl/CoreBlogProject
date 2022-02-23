@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<EntityLayer.Concrete.Category>
+<link href="~/css/ModuleDark.css" rel="stylesheet" />
 
-<div class="tech-btm">
-    <h4>Kategoriler</h4>
-    <table class="table  table-hover">
+<h4 class="cc mb-2"><b>Kategoriler</b></h4>
+<div class="cc">
+
+    <table class="table table-hover">
         @foreach (var item in Model)
         {
             <tr>
-                <td colspan="2"><a style="color:black;" href="/Blog/CategoryDetail/@item.CategoryId">@item.CategoryName </a></td>
-
+                <td colspan="2"><a href="/Blog/CategoryDetail/@item.CategoryId">@item.CategoryName </a></td>
             </tr>
         }
     </table>

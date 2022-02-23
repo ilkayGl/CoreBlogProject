@@ -1,0 +1,18 @@
+﻿@using EntityLayer.Concrete
+@model List<Category>
+
+<link href="~/css/ModuleDark.css" rel="stylesheet" />
+
+<h6 class="cc text-center mb-3"><b>Kategoriler</b></h6>
+<div class="cc" style="column-count: 2;  column-rule: 2px solid #27680e;">
+
+
+    @foreach (var item in Model)
+    {
+        <ul style="list-style-type: none;">
+            <li class="col"><a href="/Blog/CategoryDetail/@item.CategoryId">@item.CategoryName</a></li>
+        </ul>
+    }
+
+</div>
+

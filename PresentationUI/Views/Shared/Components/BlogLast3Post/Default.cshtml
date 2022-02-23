@@ -5,8 +5,7 @@
     <style>
         .img1 {
             padding: 0;
-            max-height: 100%;
-            /* min-width: 100%;*/
+            object-fit: cover;
         }
     </style>
 </head>
@@ -17,17 +16,12 @@
     {
         <div class="blog-grids row mb-3">
             <div class="col-md-5 blog-grid-left">
-                <a href="/Blog/BlogReadAll/@item.BlogId" style="width:40rem; height:40rem">
-                    <img src="~/BlogImageFiles/@item.BlogImage" alt="image" class="img1 img-fluid" />
+                <a href="/Blog/BlogReadAll/@item.BlogId">
+                    <img src="~/BlogImageFiles/@item.BlogImage" style="width:8rem; height:8rem" alt="image" class="img1" />
                 </a>
             </div>
-
-
             <div class="col-md-7 blog-grid-right">
-                <h4>@item.BlogTitle</h4>
-                <h5>
-                    @*<a href="/Blog/BlogReadAll/@item.BlogId">@item.BlogContent.Substring(0, item.BlogContent.Substring(0, 50).LastIndexOf(" "))... </a>*@
-                </h5>
+                <h4 style="color:snow">@item.BlogTitle</h4>
                 <div class="sub-meta">
                     <span>
                         <i class="far fa-clock"></i> @item.BlogCreateDate.ToString("dd MMMM yyyy")

@@ -1,16 +1,15 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
+<link href="~/css/ModuleDark.css" rel="stylesheet" />
 <header>
-    <div class="top-bar_sub_w3layouts container-fluid">
+    <div class="top-bar_sub_w3layouts container-fluid ss">
         <div class="row">
             <div class="col-md-4 logo text-left">
                 <a class="navbar-brand" href="/Blog/Index">
-                    @*<i class="fab fa-linode"></i> Weblog*@
                     <img src="~/LogoImageFiles/@ViewBag.logo" class="circle" height="50" alt="logo" />
-                    @ViewBag.logoTitle
+                    <span class="tit">@ViewBag.logoTitle</span>
                 </a>
             </div>
             <!--LoginPartial-->
@@ -23,13 +22,11 @@
                     <li>
                         <a href="#" class="facebook1 mx-2">
                             <i class="fab fa-facebook-f"></i>
-
                         </a>
                     </li>
                     <li>
                         <a href="#" class="twitter2">
                             <i class="fab fa-twitter"></i>
-
                         </a>
                     </li>
                     <li>
@@ -42,58 +39,64 @@
                             <i class="fab fa-pinterest-p"></i>
                         </a>
                     </li>
+                    <li>
+
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 
-
 </header>
 
-<div class="header_top" id="home">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+<div class="ss header_top" id="home">
+    <nav class="navbar navbar-expand-lg navbar-light  ss">
+        <button class="bb navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse ss" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
+                <li class="nav-item active">
+                    <a class="nav-link" style="border-radius:5px 5px">
                         AnaSayfa
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/About/Index">Hakkımızda</a>
+                    <a class="nav-link" style="border-radius:5px 5px" href="/About/Index">Hakkımızda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Blog/Index">Bloglar</a>
+                    <a class="nav-link" style="border-radius:5px 5px" href="/Blog/Index">Bloglar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Contact/Index">İletişim</a>
+                    <a class="nav-link" style="border-radius:5px 5px" href="/Contact/Index">İletişim</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" style="border-radius:5px 5px" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                         Kategoriler
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item"><vc:category-list></vc:category-list></a>
-
-
+                    <div class="ss dropdown-menu" aria-labelledby="navbarDropdown">
+                        <vc:category-nav-bar-list></vc:category-nav-bar-list>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="border-radius:5px 5px" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Yazarlar
+                    </a>
+                    <div class="ss dropdown-menu" aria-labelledby="navbarDropdown">
+                        <vc:writer-nav-bar-list></vc:writer-nav-bar-list>
                     </div>
                 </li>
             </ul>
 
             <form asp-action="Index" asp-controller="Blog" autocomplete="off" method="get" class="form-inline my-2 my-lg-0 header-search">
-                <input class="form-control mr-sm-2" value="@ViewData["blogall"]" type="search" placeholder="Arama yap..." name="Blogsearch" required="">
-                <button class="btn btn1 my-2 my-sm-0" type="submit">
+                <input style="border-radius:10px 10px" class="form-control mr-sm-1" value="@ViewData["blogall"]" type="search" placeholder="Arama yap..." name="Blogsearch" required="">
+                <button style="border-radius:20px 20px 20px 20px" class="btn btn1 my-2 my-sm-0" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
-
 
         </div>
     </nav>

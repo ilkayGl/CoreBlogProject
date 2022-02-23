@@ -1,16 +1,14 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using BusinessLayer.Abstract;
-using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
-using Microsoft.AspNetCore.Authorization;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -226,14 +224,51 @@ namespace PresentationUI.Areas.Admin.Controllers
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterId).FirstOrDefault();
             ViewBag.writerName = writerID;
 
+            var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.writerName = writerName;
 
-            message2.SenderId = writerID;
-            message2.MessageBool = true;
-            message2.MessageDate = DateTime.Parse(DateTime.Now.ToString());
-            _notyf.Success("Mesaj Başarıyla Gönderildi.");
-            _ms.TAddBL(message2);
+            var writerImage = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterImage).FirstOrDefault();
+            ViewBag.writerImage = writerImage;
 
-            return RedirectToAction("InBox", "Message");
+            var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
+            ViewBag.writerRole = writerRole;
+
+            ///
+            var contactMessage = c.Contacts.Count().ToString();
+            ViewBag.contactMessage = contactMessage;
+
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
+            MessageValidator mv = new();
+            ValidationResult result = mv.Validate(message2);
+            if (result.IsValid)
+            {
+                message2.SenderId = writerID;
+                message2.MessageBool = true;
+                message2.MessageDate = DateTime.Parse(DateTime.Now.ToString());
+                _notyf.Success("Mesaj Başarıyla Gönderildi.");
+                _ms.TAddBL(message2);
+
+                return RedirectToAction("InBox", "Message");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    _notyf.Warning("Mesaj Gönderilirken Bir Hata Oluştu.");
+                }
+            }
+
+            return View();
+
         }
 
 
@@ -333,6 +368,16 @@ namespace PresentationUI.Areas.Admin.Controllers
             _notyf.Error("Mesaj Kalıcı Olarak Silindi.");
             _ms.TDeleteBL(values);
             return RedirectToAction("TrashBox", "Message");
+        }
+
+        public IActionResult ContactDelete(int id)
+        {
+            var contactDelete = _cts.GetByID(id);
+            _notyf.Error("Mesaj Başarıyla Silindi.");
+            _cts.TDeleteBL(contactDelete);
+            return RedirectToAction("ContactMessage", "Message");
+
+
         }
     }
 }

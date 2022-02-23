@@ -1,17 +1,13 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
-using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using PresentationUI.Areas.Admin.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using X.PagedList;
-using System.Threading.Tasks;
 using BusinessLayer.Abstract;
+using Microsoft.AspNetCore.Hosting;
+using EntityLayer.DTOs;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -22,12 +18,14 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly IWriterService _ws;
         private readonly IMessage2Service _ms;
         private readonly INotyfService _notyf;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public WriterController(IWriterService ws, IMessage2Service ms, INotyfService notyf)
+        public WriterController(IWriterService ws, IMessage2Service ms, INotyfService notyf, IWebHostEnvironment hostEnvironment)
         {
             _ws = ws;
             _ms = ms;
             _notyf = notyf;
+            _hostEnvironment = hostEnvironment;
         }
 
 
@@ -54,6 +52,12 @@ namespace PresentationUI.Areas.Admin.Controllers
 
             var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
             ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
 
 
             var value = _ws.GetList().ToPagedList(page, 9);
@@ -85,31 +89,45 @@ namespace PresentationUI.Areas.Admin.Controllers
             var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
             ViewBag.inboxMessage = inboxMessage;
 
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
 
             return View();
         }
 
 
         [HttpPost]
-        public IActionResult WriterAdd(WriterImageFileAdd p)
+        public IActionResult WriterAdd(Writer w, AddProfileImageDTO p)
         {
-            Writer w = new Writer();
-            if (p.WriterImage != null)
+            var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "WriterImageFiles"); //birleştir
+            if (!Directory.Exists(dosyaYolu)) //yoksa
             {
-                var extension = Path.GetExtension(p.WriterImage.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                p.WriterImage.CopyTo(stream);
-                w.WriterImage = newimageName;
+                Directory.CreateDirectory(dosyaYolu); //oluştur
             }
+            var tamDosyaAdi = Path.Combine(dosyaYolu, p.WriterImage.FileName); //wwwroote içine  dosya yolu tanımlıyor
+                                                                               //file upload
+            using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+            {
+                p.WriterImage.CopyTo(dosyaAkisi);
+            }//using ekleme amacımız Gc beklemeden kaynağı yok etmesidir.
+
+            w.WriterImage = p.WriterImage.FileName;
+
+            w.WriterId = p.WriterId;
             w.WriterName = p.WriterName;
             w.WriterMail = p.WriterMail;
             w.WriterPassword = p.WriterPassword;
             w.WriterStatus = true;
             w.WriterAbout = p.WriterAbout;
+            w.WriterRole = "B";
+            w.WriterTitle = "Üye";
             _ws.TAddBL(w);
-            _notyf.Success("Başarıyla Eklendi.");
+
+            _notyf.Success("Yazar Başarıyla Eklendi.");
             return RedirectToAction("Index");
 
         }
@@ -132,6 +150,19 @@ namespace PresentationUI.Areas.Admin.Controllers
             var writerRole = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterRole).FirstOrDefault();
             ViewBag.writerRole = writerRole;
 
+            ///
+            var contactMessage = c.Contacts.Count().ToString();
+            ViewBag.contactMessage = contactMessage;
+
+            var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
+            ViewBag.inboxMessage = inboxMessage;
+
+            var sendboxMessage = _ms.GetSendBoxWriter(writerID).Count().ToString();
+            ViewBag.sendboxMessage = sendboxMessage;
+
+            var trashboxMessage = _ms.GetTrashMessageWriter(writerID).Count().ToString();
+            ViewBag.trashboxMessage = trashboxMessage;
+
 
             var writerValues = _ws.GetByID(id);
             return View(writerValues);
@@ -139,17 +170,9 @@ namespace PresentationUI.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult WriterRole(Writer w, WriterImageFileAdd p)
+        public IActionResult WriterRole(Writer w, AddProfileImageDTO p)
         {
-            if (p.WriterImage != null)
-            {
-                var extension = Path.GetExtension(p.WriterImage.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                p.WriterImage.CopyTo(stream);
-                w.WriterImage = newimageName;
-            }
+
             w.WriterId = p.WriterId;
             w.WriterName = p.WriterName;
             w.WriterMail = p.WriterMail;
@@ -158,9 +181,9 @@ namespace PresentationUI.Areas.Admin.Controllers
             w.WriterAbout = p.WriterAbout;
             w.WriterRole = p.WriterRole;
             w.WriterTitle = p.WriterTitle;
+            _ws.TUpdateBL(w);
 
             _notyf.Success("Başarıyla Güncellendi.");
-            _ws.TUpdateBL(w);
             return RedirectToAction("Index");
 
         }
@@ -168,6 +191,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         public IActionResult WriterDelete(int id)
         {
             var deleteValue = _ws.GetByID(id);
+            _notyf.Error("Başarıyla Silindi.");
             _ws.TDeleteBL(deleteValue);
             return RedirectToAction("Index");
         }

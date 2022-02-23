@@ -79,7 +79,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult CategoryAdd(Category category)
         {
-            CategoryValidator cv = new CategoryValidator();
+            CategoryValidator cv = new();
             ValidationResult result = cv.Validate(category);
             if (result.IsValid)
             {

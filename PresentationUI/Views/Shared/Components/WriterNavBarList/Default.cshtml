@@ -1,0 +1,19 @@
+﻿@using EntityLayer.Concrete
+@model List<Writer>
+
+<link href="~/css/ModuleDark.css" rel="stylesheet" />
+
+<h6 class="cc text-center mb-3"><b>Yazarlar</b></h6>
+<div class="cc" style="column-count: 2; column-width:auto;  column-rule: 2px solid #27680e;">
+
+
+    @foreach (var item in Model)
+    {
+        <ul style="list-style-type: none;">
+            <li class="col"><a href="/Blog/WriterBlogList/@item.WriterId">@item.WriterName</a></li>
+
+        </ul>
+        <hr class="cc" />
+    }
+
+</div>

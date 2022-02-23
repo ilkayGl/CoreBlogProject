@@ -13,7 +13,6 @@ namespace PresentationUI.ViewComponents.Category
 {
     public class CategoryList : ViewComponent
     {
-        private readonly Context c = new();
         private readonly ICategoryService _cs;
         public CategoryList(ICategoryService cs)
         {

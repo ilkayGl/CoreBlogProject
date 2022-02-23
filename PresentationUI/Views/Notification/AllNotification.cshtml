@@ -16,8 +16,9 @@
                     <tr>
                         <th>Bildirimler</th>
                         <th>Tarihi</th>
-                        <th>Bildirim İçeriği</th>
-                        <th>Sil</th>
+                        <th>Bildirim İçeriği</th>                 
+                        <th></th>
+
                     </tr>
                 </thead>
                 @foreach (var item in Model)
@@ -50,18 +51,31 @@
                             }
                         </td>
                         <td><span class=""> @item.NotificationDetails</span></td>
-                        <td><a href="/Notification/NotificationDelete/@item.NotificationId" class="btn btn-gradient-danger">Sil</a></td>
+                        <td>
+                            @if (ViewBag.writerRole == "Y")
+                            {
+                                <a href="/Notification/NotificationDelete/@item.NotificationId" class="btn btn-gradient-danger">Sil</a>
+                            }
+
+                        </td>
                     </tr>
                 }
             </table>
+            <br />
+            @if (ViewBag.writerRole == "Y")
+            {
+                <a href="/Notification/NotificationAdd" class="btn btn-gradient-success">Yeni Bildirim Oluştur.</a>
+            }
+
         </div>
+
     </div>
 </div>
 
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />*@
 <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
 <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>

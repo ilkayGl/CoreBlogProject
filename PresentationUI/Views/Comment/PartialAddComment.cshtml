@@ -1,18 +1,4 @@
-﻿@*<div class="comment-top">
-        <h4>Bir Yorum Bırak</h4>
-        <div class="comment-bottom">
-            <form asp-action="PartialAddComment" asp-controller="Comment" method="post" autocomplete="off">
-                <input class="form-control" type="hidden" name="BlogId" value="@ViewBag.i" required="">
-                <input class="form-control" type="text" name="CommentUserName" placeholder="Adınız" required="">
-                <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
-
-                <textarea class="form-control" name="CommentContent" placeholder="Message..." required=""></textarea>
-                <button type="submit" class="btn btn-primary submit">Yorum Yap</button>
-            </form>
-        </div>
-    </div>*@
-
-<!--//////////////////////////////////////////////////////////////////-->
+﻿
 
 <div class="comment-top">
     <h4>Bir Yorum Bırak</h4>
@@ -22,7 +8,7 @@
             <input class="form-control" type="text" id="CommentUserName" placeholder="Adınız" required>
             <input class="form-control" type="text" id="CommentTitle" placeholder="Konu" required>
 
-            <textarea class="form-control" id="CommentContent" placeholder="Message..." required></textarea>
+            <textarea class="form-control" id="CommentContent" placeholder="Yorumunuz..." required></textarea>
 
         </form>
         <input type="submit" value="Yorum Yap" onclick="Save()" class="btn btn-success" />
@@ -32,9 +18,16 @@
 
 
 
+
+
+
 <script>
 
     function Save() {
+
+        //Set the URL.
+        var controllerUrl = $("#form").attr("action");
+
         var BlogId = document.getElementById("BlogId");
         var CommentUserName = document.getElementById("CommentUserName");
         var CommentTitle = document.getElementById("CommentTitle");
@@ -47,16 +40,16 @@
         formData.append("CommentTitle", CommentTitle.value);
         formData.append("CommentContent", CommentContent.value);
 
-
-        var url = '/Comment/PartialAddComment/';
+        var url = controllerUrl;
 
         fetch(url, {
             method: 'POST',
             body: formData
         }).then(res => res.json())
             .then(result => {
-                alert("Yorum Kaydedildi! Sayfayı yenileyin..");
-            })
+                alert("Yorum Kaydedildi!");
+                window.location.reload(1);
+            }, 1000);
     }
 </script>
 
@@ -81,8 +74,9 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    document.getElementById("u").value = data;
+                success: function (func) {
+                    let result = jQuery.parseJSON(func);
+                    alert("Yorum Yapıldı");
                 }
             })
         }

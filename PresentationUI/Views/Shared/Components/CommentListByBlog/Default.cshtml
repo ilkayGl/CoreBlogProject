@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<EntityLayer.Concrete.Comment>
 
+<link href="~/css/ModuleDark.css" rel="stylesheet" />
+
 <div class="comment-top">
 
     <h4>Yorumlar</h4>
@@ -8,22 +10,18 @@
     {
         <hr />
         <div class="media">
-            <img src="~/WriterImageFiles/yok.ico" style="min-width:3rem; max-height:5rem" alt="" class="img-fluid" />
+            <img src="~/WriterImageFiles/yok.ico" style="min-width:3rem; max-height:5rem" alt="profile" class="img-fluid" />
             <div class="media-body">
-                <h5 class="mt-0">@item.CommentUserName</h5>
+                <h5 class="cc">@item.CommentUserName</h5>
                 <span class="text-muted mt-0">@item.CommentDate.ToString("dddd, dd /MM /yyyy")</span>
-                <div>
+                <div class="cc">
                     @item.CommentTitle
                     <br />
                     @item.CommentContent
                 </div>
-                <p>
-
-                </p>
             </div>
         </div>
         <hr />
     }
-
 </div>
 

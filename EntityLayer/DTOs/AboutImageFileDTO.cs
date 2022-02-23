@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationUI.Areas.Admin.Models
+namespace EntityLayer.DTOs
 {
-    public class AboutImageFileAdd
+    public class AboutImageFileDTO
     {
         public int AboutId { get; set; }
 
@@ -17,7 +18,6 @@ namespace PresentationUI.Areas.Admin.Models
         public IFormFile AboutImage1 { get; set; }
 
         public string AboutImage2 { get; set; }
-
 
         public string AboutMapLocation { get; set; }
 

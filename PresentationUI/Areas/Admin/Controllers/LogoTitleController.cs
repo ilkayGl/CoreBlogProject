@@ -1,14 +1,12 @@
-﻿using BusinessLayer.Abstract;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
-using Microsoft.AspNetCore.Authorization;
+using EntityLayer.DTOs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using PresentationUI.Areas.Admin.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PresentationUI.Areas.Admin.Controllers
 {
@@ -18,11 +16,15 @@ namespace PresentationUI.Areas.Admin.Controllers
         private readonly Context c = new();
         private readonly ILogoTitleService _lts;
         private readonly IMessage2Service _ms;
+        private readonly INotyfService _notyf;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public LogoTitleController(ILogoTitleService lts, IMessage2Service ms)
+        public LogoTitleController(ILogoTitleService lts, IMessage2Service ms, INotyfService notyf, IWebHostEnvironment hostEnvironment)
         {
             _lts = lts;
             _ms = ms;
+            _notyf = notyf;
+            _hostEnvironment = hostEnvironment;
         }
 
 
@@ -86,7 +88,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult LogoTitleAdd(LogoImageFilesAdd logoTitle)
+        public IActionResult LogoTitleAdd(LogoTitle l, LogoImageFileDTO logoTitle)
         {
             var userMail = User.Identity.Name;
 
@@ -109,22 +111,27 @@ namespace PresentationUI.Areas.Admin.Controllers
             var inboxMessage = _ms.GetInBoxListWriter(writerID).Count().ToString();
             ViewBag.inboxMessage = inboxMessage;
 
-            LogoTitle l = new();
-            if (logoTitle.Logo != null)
+
+            var dosyaYolu = Path.Combine(_hostEnvironment.WebRootPath, "LogoImageFiles");
+            if (!Directory.Exists(dosyaYolu))
             {
-                var extension = Path.GetExtension(logoTitle.Logo.FileName);
-                var newimageName = Guid.NewGuid() + extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/LogoImageFiles/", newimageName);
-                var stream = new FileStream(location, FileMode.Create);
-                logoTitle.Logo.CopyTo(stream);
-                l.Logo = newimageName;
+                Directory.CreateDirectory(dosyaYolu);
+            }
+            var tamDosyaAdi = Path.Combine(dosyaYolu, logoTitle.Logo.FileName);
+
+            using (var dosyaAkisi = new FileStream(tamDosyaAdi, FileMode.Create))
+            {
+                logoTitle.Logo.CopyTo(dosyaAkisi);
             }
 
-            l.LogoTitleId = logoTitle.Id;
+            l.Logo = logoTitle.Logo.FileName;
+
+            l.LogoTitleId = logoTitle.LogoTitleId;
             l.Title = logoTitle.Title;
             l.Status = true;
 
             _lts.TAddBL(l);
+            _notyf.Success("Logo Başarıyla Eklendi.");
             return RedirectToAction("Index");
         }
 
@@ -133,6 +140,7 @@ namespace PresentationUI.Areas.Admin.Controllers
         {
             var delete = _lts.GetByID(id);
             _lts.TDeleteBL(delete);
+            _notyf.Error("Logo Başarıyla Silindi.");
             return RedirectToAction("Index");
         }
 

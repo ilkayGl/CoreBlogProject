@@ -23,7 +23,17 @@
                             {
                                 <tr>
                                     <td>
-                                        <img src="~/WriterImageFiles/@item.Writer.WriterImage" class="mr-2" alt="image"> @item.Writer.WriterName
+
+                                        @if (item.Writer.WriterImage == null)
+                                        {
+                                            <img class="img-circle" src="~/WriterImageFiles/user-icon.jpg" alt="User Default Profile Picture">
+                                            @item.Writer.WriterName
+                                        }
+                                        else
+                                        {
+                                            <img src="~/WriterImageFiles/@item.Writer.WriterImage" class="mr-2" alt="image"> @item.Writer.WriterName
+                                        }
+
                                     </td>
 
                                     <td> @item.BlogTitle </td>

@@ -15,7 +15,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public List<Blog> GetBlogCategoryWriterD()
         {
             using var c = new Context();
-            return c.Blogs.Include(x => x.Writer).Include(y => y.Category).OrderByDescending(d => d.BlogCreateDate).ToList(); 
+            return c.Blogs.Include(x => x.Writer).Include(y => y.Category).OrderByDescending(d => d.BlogCreateDate).ToList();
             //admin tarafı için yazar category blog üçlüsü alınır
         }
 
@@ -35,7 +35,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public List<Blog> GetListWithCategoryByWriter(int id)
         {
             using var c = new Context();
-            return c.Blogs.Include(x => x.Category).Where(x => x.WriterId == id).ToList(); // yazarın bloglarına ait kategorileri getir
+            return c.Blogs.Include(x => x.Category).Include(y => y.Writer).Where(x => x.WriterId == id).ToList(); // yazarın bloglarına ait kategorileri getir
         }
     }
 }

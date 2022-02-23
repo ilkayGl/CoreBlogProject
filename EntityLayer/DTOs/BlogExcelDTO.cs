@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationUI.Areas.Admin.Models
+namespace EntityLayer.DTOs
 {
-    public class BlogModel
+    public class BlogExcelDTO
     {
         public int ID { get; set; }
+
         public string Category { get; set; }
+
         public string Writer { get; set; }
+
         public string BlogName { get; set; }
+
         public DateTime BlogDate { get; set; }
     }
 }
